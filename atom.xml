@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-10-27T17:08:12.000Z</updated>
+  <updated>2016-10-27T17:27:27.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2016/10/27/Hexo%E6%90%AD%E5%BB%BA%E4%B8%80%E5%A5%97%E5%B1%9E%E4%BA%8E%E8%87%AA%E5%B7%B1%E7%9A%84Blog/"/>
     <id>http://yoursite.com/2016/10/27/Hexo搭建一套属于自己的Blog/</id>
     <published>2016-10-27T15:55:38.000Z</published>
-    <updated>2016-10-27T17:08:12.000Z</updated>
+    <updated>2016-10-27T17:27:27.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="起源"><a href="#起源" class="headerlink" title="起源"></a>起源</h2><p>  最近机缘巧合的逼迫自己在搭建属于自己的<code>blog</code>，经过了几次周折最终选择了网络上比较火的<code>Hexo</code>，使用之后的确是非常的方便。本文不会去太多的阐述安装，更多的是描述在使用过程中一些记忆深刻的点吧。</p>
 <h2 id="命令方式"><a href="#命令方式" class="headerlink" title="命令方式"></a>命令方式</h2><p>  <code>Hexo</code>安装成功之后，整个命令行使用的让我非常开心。😄😄😄</p>
@@ -35,6 +35,11 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">social:</div><div class="line">github: https:<span class="comment">//github.com/monkeytest15</span></div><div class="line">twitter: https:<span class="comment">//twitter.com/snowangelsimon</span></div><div class="line">weibo: http:<span class="comment">//weibo.com/534598827</span></div><div class="line">zhihu: https:<span class="comment">//www.zhihu.com/people/chen-ye-47</span></div><div class="line">	</div><div class="line"></div></pre></td></tr></table></figure>
 <p> 效果如下：</p>
 <p> <img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-10-28%20%E4%B8%8A%E5%8D%8812.25.45.png" alt="社交"></p>
+<h2 id="本地搜索"><a href="#本地搜索" class="headerlink" title="本地搜索"></a>本地搜索</h2><p> 安装插件：<code>$ npm install hexo-generator-search --save</code><br> 增加配置：<br> <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">search:</div><div class="line">	path: search.xml</div><div class="line">	field: post</div><div class="line"></div></pre></td></tr></table></figure></p>
+<p>  效果就很好：<br>  <img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-10-28%20%E4%B8%8A%E5%8D%881.19.05.png" alt="本地搜索"></p>
+<h2 id="关于404公益界面"><a href="#关于404公益界面" class="headerlink" title="关于404公益界面"></a>关于404公益界面</h2><p>我们需要新建一个404的page，<code>hexo</code>能够很容易的帮助我们新建。然后只需要在对应的<code>index.md</code>中增加404网站的代码即可。<br> <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"> </div><div class="line"></div><div class="line">&lt;iframe scrolling='no' frameborder='0' </div><div class="line">src='http://yibo.iyiyun.com/Home/Distribute/ad404/key/1209395' </div><div class="line">width='654' height='470' style='display:block;'&gt;&lt;/iframe&gt;</div><div class="line"></div><div class="line"></div></pre></td></tr></table></figure></p>
+<p>这样每当我们404的时候也是做了一份公益了.<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-10-28%20%E4%B8%8A%E5%8D%881.21.23.png" alt="404"></p>
+<h2 id="域名绑定"><a href="#域名绑定" class="headerlink" title="域名绑定"></a>域名绑定</h2><p>这里主要要强调的就是需要在<code>github.io</code>的根目录下新建全大写的<code>CNAME</code>，否则是不会生效的。别的就没有什么主意的了。根据我给的图配置就可以了。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-10-27%20%E4%B8%8B%E5%8D%8811.58.25.png" alt="域名绑定"></p>
 ]]></content>
     
     <summary type="html">
