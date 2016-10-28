@@ -226,12 +226,40 @@
     <link href="http://yoursite.com/2016/03/27/%E4%B8%8D%E4%BD%9C%E4%B8%8D%E4%BC%9A%E6%AD%BB%E4%B9%8B%E6%97%85/"/>
     <id>http://yoursite.com/2016/03/27/不作不会死之旅/</id>
     <published>2016-03-26T18:08:17.000Z</published>
-    <updated>2016-10-27T09:27:25.000Z</updated>
+    <updated>2016-10-28T03:43:56.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>Jenkins2.0出来有些时间了，我也是一直没空来尝鲜，今天终于有机会了。最终导致我晚饭都没有吃，故事是这样的。</p>
+<h2 id="first-blood"><a href="#first-blood" class="headerlink" title="first blood"></a>first blood</h2><p>兴冲冲的前往jenkins2.0的下载网站，和以前一样，提供了.war、.pkg还有docker下载。看着新页面表示希望能有一个好的开始。我这里使用的是mac的osx，然后使用了我最喜欢最傻瓜的<code>java -jar jenkins.war</code>开始了我的傻逼之旅。</p>
+<p>正常运行之后看到了如下界面，好感度＋＋😄😄😄<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/4762ed644166b3e9db0dc20df12f263f.jpg" alt="jenkins2.0"></p>
+<p>接着就是VPN全开，全部下载完毕之后我们可以看到和Jenkins老版本一样的界面，那么第一步我自然先进入设置进行member安全的设置。按照惯例我勾选了如下两个选项</p>
+<ul>
+<li>设置安全矩阵</li>
+<li>允许注册</li>
+</ul>
+<p>接着我把自己添加了所有root的权限，设置了匿名有read的权限，一切总是那么的美好，一切总是来的那么突然。我点击保存之后，<strong>出现了jenkins crash，说是匿名必须要设置admin权限，卧槽，我简直震惊了。不过无所谓，我选择了先使用我自己的账号进行登陆。稍等，我看到了不该看到的界面，what，jenkins跳出了404界面</strong></p>
+<h2 id="second-blood"><a href="#second-blood" class="headerlink" title="second blood"></a>second blood</h2><p>天了鲁了。404怎办呢，我通过了各种Google确定了一种解决方案——放弃了我傻逼的启动方式，换成了tomcat，我没有想到的是这又是一个更傻逼的旅程</p>
+<p>经过了一番配置之后，我表示jenkins正常启动了，但是jenkins2.0相比老版本多出来了一个admin初始化密码，在使用java -jar的启动方式的情况下，我们可以在~/.jenkins/secrets下面找到这个密码，然而然而，jenkins2.0无论我们使用什么方式，都提示在同样的路径下，那么问题来了，我也经过了如下尝试</p>
+<ul>
+<li>我清空了~/.jenkins这个路径</li>
+<li>我关闭了所有已经开的服务</li>
+</ul>
+<p>好，一切重新开始，同时我也查看了tomcat里webapp的log日志，log日志里面清清楚楚的写着:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">your password is </div><div class="line">**************</div><div class="line">you can also find it in /var/root/jenkins/sercets/......</div></pre></td></tr></table></figure>
+<p>苍天啊，你就不能提示的正常点么。结果我发现了原本的~/.jenkins目录压根就没有生成任何的文件，另外我在tomcat里也找不到相关初始化密码的文件。</p>
+<p>稍等，有人说你是傻逼么，上面不是有写你的密码是什么么。对的，这个密码我放进去就是说不正确！不正确！不正确！快救救我吧😱😱😱😱😱</p>
+<h2 id="no-blood"><a href="#no-blood" class="headerlink" title="no blood"></a>no blood</h2><p>最后，我一切归零，正常搞定了。提醒大家的是<br><strong>不要太在意jenkins2.0的这个提示，看来很多的坑，尽量自己多找找相关文件在哪里<br>千万千万不要去装推荐的插件，插件肯定有冲突，最终我没有安装，所以就没有出现404，成功的过坑了<br>初始化密码是个很坑的设置，各种飘</strong></p>
+<p>之后有啥我还会继续更新的。。。。</p>
+]]></content>
     
     <summary type="html">
     
+      &lt;p&gt;Jenkins2.0出来有些时间了，我也是一直没空来尝鲜，今天终于有机会了。最终导致我晚饭都没有吃，故事是这样的。&lt;/p&gt;
+&lt;h2 id=&quot;first-blood&quot;&gt;&lt;a href=&quot;#first-blood&quot; class=&quot;headerlink&quot; title=&quot;first
+    
     </summary>
     
+    
+      <category term="持续集成" scheme="http://yoursite.com/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"/>
     
   </entry>
   
