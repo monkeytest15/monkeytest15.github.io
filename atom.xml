@@ -17,8 +17,8 @@
   
   <entry>
     <title>Monkey的7年回忆，也是空杯的开始</title>
-    <link href="http://yoursite.com/2016/10/30/Monkey%E7%9A%847%E5%B9%B4%E5%9B%9E%E5%BF%86/"/>
-    <id>http://yoursite.com/2016/10/30/Monkey的7年回忆/</id>
+    <link href="http://yoursite.com/2016/10/30/Monkey_Seven_Memory/"/>
+    <id>http://yoursite.com/2016/10/30/Monkey_Seven_Memory/</id>
     <published>2016-10-29T16:35:05.000Z</published>
     <updated>2016-10-29T17:41:41.000Z</updated>
     
@@ -63,8 +63,8 @@
   
   <entry>
     <title>Hexo搭建一套属于自己的Blog</title>
-    <link href="http://yoursite.com/2016/10/27/Hexo%E6%90%AD%E5%BB%BA%E4%B8%80%E5%A5%97%E5%B1%9E%E4%BA%8E%E8%87%AA%E5%B7%B1%E7%9A%84Blog/"/>
-    <id>http://yoursite.com/2016/10/27/Hexo搭建一套属于自己的Blog/</id>
+    <link href="http://yoursite.com/2016/10/27/hexobuildblog/"/>
+    <id>http://yoursite.com/2016/10/27/hexobuildblog/</id>
     <published>2016-10-27T15:55:38.000Z</published>
     <updated>2016-10-28T07:16:37.000Z</updated>
     
@@ -101,8 +101,8 @@
   
   <entry>
     <title>STF修改之三——NodeJS-AngularJS修改传递数据</title>
-    <link href="http://yoursite.com/2016/10/27/STF%E4%BF%AE%E6%94%B9%E4%B9%8B%E4%B8%89%E2%80%94%E2%80%94NodeJS-AngularJS%E4%BF%AE%E6%94%B9%E4%BC%A0%E9%80%92%E6%95%B0%E6%8D%AE/"/>
-    <id>http://yoursite.com/2016/10/27/STF修改之三——NodeJS-AngularJS修改传递数据/</id>
+    <link href="http://yoursite.com/2016/10/27/STF3/"/>
+    <id>http://yoursite.com/2016/10/27/STF3/</id>
     <published>2016-10-27T03:53:25.000Z</published>
     <updated>2016-10-27T03:53:25.000Z</updated>
     
@@ -115,8 +115,8 @@
   
   <entry>
     <title>首发—大话2专项测试试读</title>
-    <link href="http://yoursite.com/2016/10/27/%E9%A6%96%E5%8F%91%E2%80%94%E5%A4%A7%E8%AF%9D2%E4%B8%93%E9%A1%B9%E6%B5%8B%E8%AF%95%E8%AF%95%E8%AF%BB/"/>
-    <id>http://yoursite.com/2016/10/27/首发—大话2专项测试试读/</id>
+    <link href="http://yoursite.com/2016/10/27/dahua2xu/"/>
+    <id>http://yoursite.com/2016/10/27/dahua2xu/</id>
     <published>2016-10-27T03:53:00.000Z</published>
     <updated>2016-10-27T11:14:10.000Z</updated>
     
@@ -131,8 +131,8 @@
   
   <entry>
     <title>nginx+gor 初心者之旅</title>
-    <link href="http://yoursite.com/2016/10/27/nginx+gor%20%E5%88%9D%E5%BF%83%E8%80%85%E4%B9%8B%E6%97%85/"/>
-    <id>http://yoursite.com/2016/10/27/nginx+gor 初心者之旅/</id>
+    <link href="http://yoursite.com/2016/10/27/nginxgor/"/>
+    <id>http://yoursite.com/2016/10/27/nginxgor/</id>
     <published>2016-10-26T18:09:01.000Z</published>
     <updated>2016-10-26T18:13:49.000Z</updated>
     
@@ -145,8 +145,8 @@
   
   <entry>
     <title>ReactNative 大会卖萌 View</title>
-    <link href="http://yoursite.com/2016/10/27/ReactNative%20%E5%A4%A7%E4%BC%9A%E5%8D%96%E8%90%8C%20View/"/>
-    <id>http://yoursite.com/2016/10/27/ReactNative 大会卖萌 View/</id>
+    <link href="http://yoursite.com/2016/10/27/ReactNativeBuiildView/"/>
+    <id>http://yoursite.com/2016/10/27/ReactNativeBuiildView/</id>
     <published>2016-10-26T18:08:04.000Z</published>
     <updated>2016-10-26T18:14:01.000Z</updated>
     
@@ -159,8 +159,8 @@
   
   <entry>
     <title>ReactNative 扫盲实践</title>
-    <link href="http://yoursite.com/2016/10/27/ReactNative%20%E6%89%AB%E7%9B%B2%E5%AE%9E%E8%B7%B5/"/>
-    <id>http://yoursite.com/2016/10/27/ReactNative 扫盲实践/</id>
+    <link href="http://yoursite.com/2016/10/27/ReactNativeNew/"/>
+    <id>http://yoursite.com/2016/10/27/ReactNativeNew/</id>
     <published>2016-10-26T18:07:44.000Z</published>
     <updated>2016-10-26T18:14:12.000Z</updated>
     
@@ -187,8 +187,8 @@
   
   <entry>
     <title>《大话移动App测试2.0》序开放试读</title>
-    <link href="http://yoursite.com/2016/07/27/%E3%80%8A%E5%A4%A7%E8%AF%9D%E7%A7%BB%E5%8A%A8App%E6%B5%8B%E8%AF%952-0%E3%80%8B%E5%BA%8F%E5%BC%80%E6%94%BE%E8%AF%95%E8%AF%BB/"/>
-    <id>http://yoursite.com/2016/07/27/《大话移动App测试2-0》序开放试读/</id>
+    <link href="http://yoursite.com/2016/07/27/dahuaapp2/"/>
+    <id>http://yoursite.com/2016/07/27/dahuaapp2/</id>
     <published>2016-07-27T03:52:32.000Z</published>
     <updated>2016-10-28T08:34:36.000Z</updated>
     
@@ -241,22 +241,44 @@
   
   <entry>
     <title>接口测试初学者心得——从 0 开始</title>
-    <link href="http://yoursite.com/2016/07/16/%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95%E5%88%9D%E5%AD%A6%E8%80%85%E5%BF%83%E5%BE%97%E2%80%94%E2%80%94%E4%BB%8E%200%20%E5%BC%80%E5%A7%8B/"/>
-    <id>http://yoursite.com/2016/07/16/接口测试初学者心得——从 0 开始/</id>
+    <link href="http://yoursite.com/2016/07/16/Api_1/"/>
+    <id>http://yoursite.com/2016/07/16/Api_1/</id>
     <published>2016-07-15T18:08:31.000Z</published>
-    <updated>2016-10-27T09:27:56.000Z</updated>
+    <updated>2016-10-30T17:10:48.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>今天还有人把我列成大牛，我真心受不起。这几天由于后台架构问题，打乱了我原本使用python框架来测试接口的计划，不得不使用java进行编写。对于我而言，这块经验我和应届生，甚至连应届生都不如。下面的方法用了2个小时才完全调通，真心惭愧。</p>
+<p><strong>不过我觉得人贵在挑战自己，贵在愿意去尝试不熟悉的东西，愿意不耻下问，愿意分享，哪怕再初级的东西。每个人都有自己的短板，每个人都要从0到1</strong></p>
+<p>从我一个App出身的人来讲，其实我以前对于maven并没有太大的理解，反而觉得pom这个文件配置也很繁琐，没有太感觉到好处。但的确任何事情不去从0开始做的话，很难去体会其中的一些因素，比如我这次做接口测试也一样。我在2年多前做完完整的以python为基础的API测试，但java的话，从0开始去选型，去搭建的确是第一次。</p>
+<p>开始我凭借我的经验就是选择了httpclinet，但httpclinet去做接口测试，仅仅是为了调试通各种不同类型的请求就下载了很多依赖库，这方面我真的吐槽Java吐槽的无力了。而且仅仅使用httpclinet的话也不能成体系，简单来讲可以做demo，但无法真正在项目上很有效率的落地。所以我开始寻求了另外的方式，同时不得不说为了追求速度，我就直接手动下载各种jar包了，开始还是很爽的，但后来就发现痛不欲生，这个时候就有一个想法，也许如果很多年前是我的话，我也会想到用maven这种方式吧，否则实在受不了了，感觉就算工程写完了也是一乱团。</p>
+<h2 id="第二次尝试"><a href="#第二次尝试" class="headerlink" title="第二次尝试"></a>第二次尝试</h2><p>首先我是选择了<code>rest-assured</code>，对我来讲是完全陌生的东西，当然既然是重新来一次，这次我选择了我从来不怎么喜欢用的maven，一切就这样开始了。<br>既然是从0开始，我们就一步一步来讲吧。新建一个maven工程：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/36014ce8578a19a96e84f41f25faa713.png" alt="maven"></p>
+<p>当然在pom中默认我们得要配置上我们基础要用的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&lt;dependency&gt;</div><div class="line">          &lt;groupId&gt;com.jayway.restassured&lt;/groupId&gt;</div><div class="line">          &lt;artifactId&gt;rest-assured&lt;/artifactId&gt;</div><div class="line">          &lt;version&gt;2.9.0&lt;/version&gt;</div><div class="line">          &lt;scope&gt;test&lt;/scope&gt;</div><div class="line">      &lt;/dependency&gt;</div><div class="line">      &lt;dependency&gt;</div><div class="line">          &lt;groupId&gt;junit&lt;/groupId&gt;</div><div class="line">          &lt;artifactId&gt;junit&lt;/artifactId&gt;</div><div class="line">          &lt;version&gt;4.12&lt;/version&gt;</div><div class="line">          &lt;scope&gt;test&lt;/scope&gt;</div><div class="line">      &lt;/dependency&gt;</div><div class="line">      &lt;dependency&gt;</div></pre></td></tr></table></figure>
+<p>接着我们来看下我们的测试代码，一个方法是直接断言，一个方法是rest-assured我写的demo方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.monkey.app.my_rest_test;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.junit.Before;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.jayway.restassured.RestAssured;</div><div class="line"></div><div class="line"><span class="keyword">import</span> junit.framework.TestCase;</div><div class="line"><span class="keyword">import</span> junit.framework.TestSuite;</div><div class="line"></div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> com.jayway.restassured.RestAssured.expect;</div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.hamcrest.Matchers.equalTo;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.testng.annotations.BeforeTest;</div><div class="line"></div><div class="line"><span class="comment">//import org.junit.Test;</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> org.testng.annotations.Test;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Unit test for simple App.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="meta">@BeforeTest</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUp</span><span class="params">()</span> </span>&#123;</div><div class="line">        RestAssured.baseURI = <span class="string">""</span>;</div><div class="line">        RestAssured.port = <span class="number">8080</span>;</div><div class="line">        RestAssured.basePath = <span class="string">""</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testUserLogin</span><span class="params">()</span> </span>&#123;</div><div class="line">        expect().statusCode(<span class="number">200</span>).body(<span class="string">"success"</span>, equalTo(<span class="keyword">true</span>)).when().get(<span class="string">""</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AppTest</span><span class="params">(String testName)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>(testName);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Rigourous Test :-)</div><div class="line">     */</div><div class="line">    <span class="meta">@Test</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testApp</span><span class="params">()</span> </span>&#123;</div><div class="line">        assertTrue(<span class="keyword">true</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其实最开始并没有想用testng的，但过程中为了更好的管理case和生成report，（maven默认的报告已经丑哭了）所以最终还是选择了testng。所以pom做了增加：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&lt;dependency&gt;</div><div class="line">        &lt;groupId&gt;org.testng&lt;/groupId&gt;</div><div class="line">        &lt;artifactId&gt;testng&lt;/artifactId&gt;</div><div class="line">        &lt;version&gt;6.8&lt;/version&gt;</div><div class="line">        &lt;scope&gt;test&lt;/scope&gt;</div><div class="line">    &lt;/dependency&gt;</div><div class="line"></div><div class="line">&lt;build&gt;</div><div class="line">    &lt;plugins&gt;</div><div class="line">        &lt;plugin&gt;</div><div class="line">            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</div><div class="line">            &lt;artifactId&gt;maven-surefire-report-plugin&lt;/artifactId&gt;</div><div class="line">            &lt;version&gt;2.19.1&lt;/version&gt;</div><div class="line">        &lt;/plugin&gt;</div><div class="line">        &lt;plugin&gt;</div><div class="line">            &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;</div><div class="line">            &lt;artifactId&gt;cobertura-maven-plugin&lt;/artifactId&gt;</div><div class="line">            &lt;version&gt;2.5.1&lt;/version&gt;</div><div class="line">        &lt;/plugin&gt;</div><div class="line">    &lt;/plugins&gt;</div><div class="line">&lt;/build&gt;</div></pre></td></tr></table></figure>
+<p>build标签里的主要就是报告和代码覆盖率。<br>同时增加了testng的case管理xml。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;suite name="test" parallel="true"&gt;</div><div class="line"></div><div class="line">    &lt;test name="test" preserver-order="true"&gt;</div><div class="line">        &lt;classes&gt;</div><div class="line">            &lt;class name="com.monkey.app.my_rest_test.AppTest" /&gt;</div><div class="line"></div><div class="line">        &lt;/classes&gt;</div><div class="line">        &lt;listeners&gt;</div><div class="line">            &lt;property&gt;</div><div class="line">                &lt;name&gt;userdefaultlisteners&lt;/name&gt;</div><div class="line">                &lt;value&gt;false&lt;/value&gt;</div><div class="line">            &lt;/property&gt;</div><div class="line">            &lt;listener class-name="org.uncommons.reportng.HTMLReporter" /&gt;</div><div class="line">            &lt;listener class-name="org.uncommons.reportng.JUnitXMLReporter" /&gt;</div><div class="line">        &lt;/listeners&gt;</div><div class="line">    &lt;/test&gt; &lt;!-- Test --&gt;</div><div class="line">&lt;/suite&gt; &lt;!-- Suite --&gt;</div></pre></td></tr></table></figure>
+<p>其实还是很简单的，直接mvn test就可以执行了。我们可以看到这种报告。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/03e80a9b07141b7157c1e466af54c064.png" alt="report1"><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/a36ddf6b7cb4b424652f3a11677a5887.png" alt="report2"></p>
+<p>接下来就是1到100的事情了，我也是要不停的去学习更多新的东西，哪怕对很多人来讲是老的东西。</p>
+]]></content>
     
     <summary type="html">
     
+      &lt;p&gt;今天还有人把我列成大牛，我真心受不起。这几天由于后台架构问题，打乱了我原本使用python框架来测试接口的计划，不得不使用java进行编写。对于我而言，这块经验我和应届生，甚至连应届生都不如。下面的方法用了2个小时才完全调通，真心惭愧。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;不过我
+    
     </summary>
     
+    
+      <category term="接口测试" scheme="http://yoursite.com/tags/%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/"/>
     
   </entry>
   
   <entry>
     <title>接口初心者心得第二版</title>
-    <link href="http://yoursite.com/2016/07/13/%E6%8E%A5%E5%8F%A3%E5%88%9D%E5%BF%83%E8%80%85%E5%BF%83%E5%BE%97%E7%AC%AC%E4%BA%8C%E7%89%88/"/>
-    <id>http://yoursite.com/2016/07/13/接口初心者心得第二版/</id>
+    <link href="http://yoursite.com/2016/07/13/apibeginning2/"/>
+    <id>http://yoursite.com/2016/07/13/apibeginning2/</id>
     <published>2016-07-12T18:08:49.000Z</published>
     <updated>2016-10-27T09:28:15.000Z</updated>
     
@@ -269,8 +291,8 @@
   
   <entry>
     <title>Jenkins2.0 不作不会死之旅</title>
-    <link href="http://yoursite.com/2016/03/27/%E4%B8%8D%E4%BD%9C%E4%B8%8D%E4%BC%9A%E6%AD%BB%E4%B9%8B%E6%97%85/"/>
-    <id>http://yoursite.com/2016/03/27/不作不会死之旅/</id>
+    <link href="http://yoursite.com/2016/03/27/jenkinsbuzuobusi/"/>
+    <id>http://yoursite.com/2016/03/27/jenkinsbuzuobusi/</id>
     <published>2016-03-26T18:08:17.000Z</published>
     <updated>2016-10-28T07:16:51.000Z</updated>
     
@@ -311,8 +333,8 @@
   
   <entry>
     <title>第一届 Geek Testing in ShangHai 会议总结</title>
-    <link href="http://yoursite.com/2016/03/01/TesterHomeGeekTestinginShangHaiZongJie/"/>
-    <id>http://yoursite.com/2016/03/01/TesterHomeGeekTestinginShangHaiZongJie/</id>
+    <link href="http://yoursite.com/2016/03/01/GeekTestinginShangHai/"/>
+    <id>http://yoursite.com/2016/03/01/GeekTestinginShangHai/</id>
     <published>2016-03-01T13:42:22.000Z</published>
     <updated>2016-10-30T14:27:59.000Z</updated>
     
