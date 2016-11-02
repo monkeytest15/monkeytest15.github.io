@@ -46,7 +46,7 @@
 <link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="ReactNative," />
 
 
 
@@ -64,16 +64,24 @@
 
 
 
-<meta name="description" content="舍得舍得，有舍才有得">
+<meta name="description" content="今天早上看到了FB发的一个关于RN框架开发过程中的故事的文章，真的感觉很好啊。一个开源的项目，很多人参与进来真心是个不错的事情，真不知道TesterHome啥时候能有人来merge代码，😢😢😢。
+根据之前的ReactNative扫盲实践，我们继续来看一些组合View怎么来做。使用RN比Native的实现成本的确低了很多。不过性能方面的话，等以后复杂的应用再来对比了。
+我们下载了一个大会的ba">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ReactNative 大会卖萌 View">
 <meta property="og:url" content="http://yoursite.com/2016/10/27/ReactNativeBuiildView/index.html">
 <meta property="og:site_name" content="Monkey`s Note">
-<meta property="og:description" content="舍得舍得，有舍才有得">
-<meta property="og:updated_time" content="2016-10-26T18:14:01.000Z">
+<meta property="og:description" content="今天早上看到了FB发的一个关于RN框架开发过程中的故事的文章，真的感觉很好啊。一个开源的项目，很多人参与进来真心是个不错的事情，真不知道TesterHome啥时候能有人来merge代码，😢😢😢。
+根据之前的ReactNative扫盲实践，我们继续来看一些组合View怎么来做。使用RN比Native的实现成本的确低了很多。不过性能方面的话，等以后复杂的应用再来对比了。
+我们下载了一个大会的ba">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-03%20%E4%B8%8A%E5%8D%8812.50.01.png">
+<meta property="og:updated_time" content="2016-11-02T16:51:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ReactNative 大会卖萌 View">
-<meta name="twitter:description" content="舍得舍得，有舍才有得">
+<meta name="twitter:description" content="今天早上看到了FB发的一个关于RN框架开发过程中的故事的文章，真的感觉很好啊。一个开源的项目，很多人参与进来真心是个不错的事情，真不知道TesterHome啥时候能有人来merge代码，😢😢😢。
+根据之前的ReactNative扫盲实践，我们继续来看一些组合View怎么来做。使用RN比Native的实现成本的确低了很多。不过性能方面的话，等以后复杂的应用再来对比了。
+我们下载了一个大会的ba">
+<meta name="twitter:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-03%20%E4%B8%8A%E5%8D%8812.50.01.png">
 <meta name="twitter:creator" content="@[object Object]">
 
 
@@ -331,7 +339,21 @@
       
 
       
-        
+        <p>今天早上看到了FB发的一个关于RN框架开发过程中的故事的文章，真的感觉很好啊。一个开源的项目，很多人参与进来真心是个不错的事情，真不知道TesterHome啥时候能有人来merge代码，😢😢😢。</p>
+<p>根据之前的ReactNative扫盲实践，我们继续来看一些组合View怎么来做。使用RN比Native的实现成本的确低了很多。不过性能方面的话，等以后复杂的应用再来对比了。</p>
+<p>我们下载了一个大会的banner，放到我们的View中。如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;Text style=&#123;&#123;fontSize:16&#125;&#125;&gt;'测试大会来啦'&lt;/Text&gt;</div><div class="line">&lt;Image style=&#123;&#123;flex: 1, height: 300, resizeMode: Image.resizeMode.stretch&#125;&#125; source=&#123; require('./img/meeting.png')&#125; /&gt;</div></pre></td></tr></table></figure>
+<p>然后是选择票的种类，这里选择了picker选择器：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">var AwesomeProject = React.createClass(&#123;</div><div class="line">   getInitialState: function() &#123;</div><div class="line">    return &#123;</div><div class="line">      language: '',</div><div class="line">    &#125;;</div><div class="line">  &#125;,</div><div class="line">  render() &#123;</div><div class="line">    return (</div><div class="line">&lt;View  style=&#123;&#123;marginLeft:10,marginTop:10&#125;&#125;&gt;</div><div class="line"></div><div class="line">        &lt;Text &gt;</div><div class="line">         长的漂亮的都来买票了</div><div class="line">        &lt;/Text&gt;</div><div class="line">        &lt;Picker </div><div class="line">          mode=&#123;'dropdown'&#125;</div><div class="line">          style=&#123;&#123;width:200&#125;&#125;</div><div class="line">          selectedValue=&#123;this.state.language&#125;</div><div class="line">          onValueChange=&#123;(value) =&gt; this.setState(&#123;language: value&#125;)&#125;&gt;</div><div class="line">          &lt;Picker.Item label="个人早鸟无虫吃票" value="个人早鸟无虫吃票" /&gt;</div><div class="line">          &lt;Picker.Item label="个人早鸟有虫吃票" value="个人早鸟有虫吃票" /&gt;</div><div class="line">           &lt;Picker.Item label="组队早鸟被虫吃票" value="组队早鸟被虫吃票" /&gt;</div><div class="line">          &lt;Picker.Item label="长的帅的人的票" value="长的帅的人的票" /&gt;</div><div class="line">        &lt;/Picker&gt;</div><div class="line">        &lt;Text&gt;当前选择的是:&#123;this.state.language&#125;&lt;/Text&gt;</div><div class="line">      &lt;/View&gt;</div></pre></td></tr></table></figure>
+<p>可以见下效果图。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-03%20%E4%B8%8A%E5%8D%8812.50.01.png" alt="reactnative1"></p>
+<p>另外附上图片的一些设置方法：<br>通过Image.resizeMode来适配图片布局，包括contain, cover, stretch<br>默认不设置模式等于cover模式</p>
+<ul>
+<li>contain模式自适应宽高，给出高度值即可</li>
+<li>cover铺满容器，但是会做截取</li>
+<li>stretch铺满容器，拉伸</li>
+</ul>
+
       
     </div>
 
@@ -355,6 +377,12 @@
     </div>
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ReactNative/" rel="tag">#ReactNative</a>
+          
+        </div>
       
 
       
@@ -472,7 +500,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

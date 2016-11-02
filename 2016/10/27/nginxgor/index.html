@@ -46,7 +46,7 @@
 <link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="gor," />
 
 
 
@@ -64,16 +64,34 @@
 
 
 
-<meta name="description" content="舍得舍得，有舍才有得">
+<meta name="description" content="hi 各位，我又来了。我最近都是初心者。踩坑王就是我。
+背景就是我们都知道有一个引流工具gor，为了调试这个货，我想在本地起几个不同端口的服务进行调试，所以才有了今天卧槽的经验。
+配置nginx首先我们先安装nginx
+12brew search nginxbrew install nginx
+nginx本身的nginx.config是设置好的，如下:
+1234567891011121314151">
 <meta property="og:type" content="article">
 <meta property="og:title" content="nginx+gor 初心者之旅">
 <meta property="og:url" content="http://yoursite.com/2016/10/27/nginxgor/index.html">
 <meta property="og:site_name" content="Monkey`s Note">
-<meta property="og:description" content="舍得舍得，有舍才有得">
-<meta property="og:updated_time" content="2016-10-26T18:13:49.000Z">
+<meta property="og:description" content="hi 各位，我又来了。我最近都是初心者。踩坑王就是我。
+背景就是我们都知道有一个引流工具gor，为了调试这个货，我想在本地起几个不同端口的服务进行调试，所以才有了今天卧槽的经验。
+配置nginx首先我们先安装nginx
+12brew search nginxbrew install nginx
+nginx本身的nginx.config是设置好的，如下:
+1234567891011121314151">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/987bdca036d392c9b89620cf04234b86.png">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-03%20%E4%B8%8A%E5%8D%8812.45.27.png">
+<meta property="og:updated_time" content="2016-11-02T16:47:32.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="nginx+gor 初心者之旅">
-<meta name="twitter:description" content="舍得舍得，有舍才有得">
+<meta name="twitter:description" content="hi 各位，我又来了。我最近都是初心者。踩坑王就是我。
+背景就是我们都知道有一个引流工具gor，为了调试这个货，我想在本地起几个不同端口的服务进行调试，所以才有了今天卧槽的经验。
+配置nginx首先我们先安装nginx
+12brew search nginxbrew install nginx
+nginx本身的nginx.config是设置好的，如下:
+1234567891011121314151">
+<meta name="twitter:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/987bdca036d392c9b89620cf04234b86.png">
 <meta name="twitter:creator" content="@[object Object]">
 
 
@@ -331,7 +349,31 @@
       
 
       
-        
+        <p>hi 各位，我又来了。我最近都是初心者。踩坑王就是我。</p>
+<p>背景就是我们都知道有一个引流工具gor，为了调试这个货，我想在本地起几个不同端口的服务进行调试，所以才有了今天卧槽的经验。</p>
+<h2 id="配置nginx"><a href="#配置nginx" class="headerlink" title="配置nginx"></a>配置nginx</h2><p>首先我们先安装<code>nginx</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">brew search nginx</div><div class="line">brew install nginx</div></pre></td></tr></table></figure>
+<p>nginx本身的nginx.config是设置好的，如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">&lt;!-- lang: shell --&gt;</div><div class="line">worker_processes  <span class="number">1</span>;  </div><div class="line"></div><div class="line">error_log       /usr/local/var/log/nginx/error.log warn;</div><div class="line"></div><div class="line">pid        /usr/local/var/run/nginx.pid;</div><div class="line"></div><div class="line">events &#123;</div><div class="line">    worker_connections  <span class="number">256</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line">http &#123;</div><div class="line">    include       mime.types;</div><div class="line">    default_type  application/octet-stream;</div><div class="line"></div><div class="line">    log_format  main  <span class="string">'$remote_addr - $remote_user [$time_local] "$request" '</span></div><div class="line">                      <span class="string">'$status $body_bytes_sent "$http_referer" '</span></div><div class="line">                      <span class="string">'"$http_user_agent" "$http_x_forwarded_for"'</span>;</div><div class="line"></div><div class="line">    access_log      /usr/local/var/log/nginx/access.log main;</div><div class="line">    port_in_redirect off;</div><div class="line">    sendfile        on; </div><div class="line">    keepalive_timeout  <span class="number">65</span>; </div><div class="line"></div><div class="line">    include /usr/local/etc/nginx/conf.d<span class="comment">/*.conf;</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果我们想启动多个服务，那么我们需要在路径./conf.d/里面新建多个server.conf，在同一个conf里面写多个server是不允许。<br>所以我们新建了两个，配置如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&lt;!-- lang: shell --&gt;</div><div class="line">server &#123;</div><div class="line">    listen       8080; 这里写启动的端口</div><div class="line">    server_name  localhost; 这里是server name</div><div class="line">    root /Users/user_name/nginx_sites/; 这里是自定义webapp的目录</div><div class="line"></div><div class="line">    location / &#123; </div><div class="line">        index index.php; 页面文件</div><div class="line">        autoindex on; </div><div class="line">    &#125;   </div><div class="line"></div><div class="line">    #proxy the php scripts to php-fpm  </div><div class="line">    location ~ \.php$ &#123;</div><div class="line">        include /usr/local/etc/nginx/fastcgi.conf;</div><div class="line">        fastcgi_intercept_errors on; </div><div class="line">        fastcgi_pass   127.0.0.1:9000; </div><div class="line">    &#125;   </div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Mac OSX自带了php-fpm，但如果直接启动会报错，说log文件路径不正确。所以我们还需要更改php-fpm.conf文件如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">[global]</div><div class="line">; Pid file</div><div class="line">; Note: the default prefix is /usr/local/var</div><div class="line">; Default Value: none</div><div class="line">;pid = run/php-fpm.pid</div><div class="line"></div><div class="line">; Error log file</div><div class="line">; If it's set to "syslog", log is sent to syslogd instead of being written</div><div class="line">; in a local file.</div><div class="line">; Note: the default prefix is /usr/local/var</div><div class="line">; Default Value: log/php-fpm.log</div><div class="line">error_log = /usr/local/var/log/php-fpm.log 此处需要自定义目录</div></pre></td></tr></table></figure>
+<p>按照如上配置，我们是可以正常启动服务的，但这个时候我们访问localhost:8080会出现403，原因是我们index.php所在的所有根目录都需要有755权限，如果没有，我们需要chmod 755 path就可以了。正常的界面如下：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/987bdca036d392c9b89620cf04234b86.png" alt="php"></p>
+<h2 id="gor"><a href="#gor" class="headerlink" title="gor"></a>gor</h2><p>这就是坑的开始。先配置golang的环境以及安装gor我就不说了。<br>我碰见的问题是这样的。我使用命令<br><code>./gor --input-http :8080 --output-http www.verycd.com -stats -verbose</code></p>
+<p>此时我访问8080界面会变成ok，这说明是gor接受到了这个input而出现的界面，如下：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-03%20%E4%B8%8A%E5%8D%8812.45.27.png" alt="phpok"></p>
+<p>同时gor的log显示让我很无语：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">[DEBUG][PID <span class="number">2963</span>][<span class="number">1462464221018871751</span>][<span class="number">1462464221018.871826</span>ms] [HTTPClient] Connecting: http:<span class="comment">//www.verycd.com</span></div><div class="line">[DEBUG][PID <span class="number">2963</span>][<span class="number">1462464236080793607</span>][<span class="number">15061.921856</span>ms] [HTTPClient] Connecting: http:<span class="comment">//www.verycd.com</span></div><div class="line">[DEBUG][PID <span class="number">2963</span>][<span class="number">1462464236080850524</span>][<span class="number">0.056917</span>ms] [HTTP] Disconnected:  http:<span class="comment">//www.verycd.com</span></div><div class="line">[DEBUG][PID <span class="number">2963</span>][<span class="number">1462464247776394823</span>][<span class="number">11695.544299</span>ms] [HTTPClient] Connecting: http:<span class="comment">//www.verycd.com</span></div><div class="line">[DEBUG][PID <span class="number">2963</span>][<span class="number">1462464247776448620</span>][<span class="number">0.053797</span>ms] [HTTP] Disconnected:  http:<span class="comment">//www.verycd.com</span></div><div class="line">[DEBUG][PID <span class="number">2963</span>][<span class="number">1462464251310765636</span>][<span class="number">3534.317016</span>ms] [HTTPClient] Connecting: http:<span class="comment">//www.verycd.com</span></div><div class="line">[DEBUG][PID <span class="number">2963</span>][<span class="number">1462464251310821301</span>][<span class="number">0.055665</span>ms] [HTTP] Disconnected:  http:<span class="comment">//www.verycd.com</span></div></pre></td></tr></table></figure>
+<p>此时我尝试了几个方法。</p>
+<ul>
+<li>方法一：Google Group<br>group里有一个和我碰见一样的问题，我看到了作者给了最新的binary，我下载之后，mac无法识别，估计是编译模式不同导致的吧。failed</li>
+<li>方法二：重新下载最新的代码，go build<br>生成了gor，可以使用，但日志和前面一样</li>
+<li>方法三：直接从官方地址去下载最新build的binary<br>可以使用，但日志和前面一样</li>
+</ul>
+<p>到此，我要吐槽的不是这个日志了，关键是gor之后连version都不显示。我几乎可以判断gor还在demo阶段，根本无法投入正式使用这个结论。暂时到这里吧。</p>
+
       
     </div>
 
@@ -355,6 +397,12 @@
     </div>
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/gor/" rel="tag">#gor</a>
+          
+        </div>
       
 
       
@@ -472,7 +520,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -573,7 +621,7 @@
               
             
             
-              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#配置nginx"><span class="nav-number">1.</span> <span class="nav-text">配置nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gor"><span class="nav-number">2.</span> <span class="nav-text">gor</span></a></li></ol></div>
             
           </div>
         </section>
