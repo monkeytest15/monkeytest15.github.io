@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/07/13/apibeginning2/</loc>
+    
+    <lastmod>2016-11-02T15:51:52.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/10/27/STF3/</loc>
+    
+    <lastmod>2016-11-02T15:47:34.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/11/02/MobileSkill/</loc>
     
     <lastmod>2016-11-02T11:41:14.000Z</lastmod>
@@ -79,13 +93,6 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2016/07/13/apibeginning2/</loc>
-    
-    <lastmod>2016-10-27T09:28:15.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://yoursite.com/about/index.html</loc>
     
     <lastmod>2016-10-27T08:08:18.000Z</lastmod>
@@ -96,13 +103,6 @@
     <loc>http://yoursite.com//404.html</loc>
     
     <lastmod>2016-10-27T07:12:31.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2016/10/27/STF3/</loc>
-    
-    <lastmod>2016-10-27T03:53:25.000Z</lastmod>
     
   </url>
   

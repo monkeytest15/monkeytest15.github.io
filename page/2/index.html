@@ -449,7 +449,26 @@
       
         
           
-            
+            <p>好吧，持续做了几天，我继续来做分享了，也希望各位前辈多多指教。我表示我还不是很懂。</p>
+<p>目前使用的testng和rest-assured。这几天增加了DataProvider和rest-assured的方法。</p>
+<p>testng这里是支持新建数据驱动的xml，比如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;data&gt;</div><div class="line">    &lt;testmethod1&gt;</div><div class="line">        &lt;abc&gt;123&lt;/abc&gt;</div><div class="line">        &lt;def&gt;456&lt;/def&gt;</div><div class="line">    &lt;/testmethod1&gt;</div></pre></td></tr></table></figure>
+<p>接着可以通过在类中定义DataProvider来实现xml的解析实现，假设dataprovider对应的方法在A类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@DataProvider</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Object[][] providerMethod(Method method) &#123;</div><div class="line">...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在接下来的要使用到数据的时候就可以直接去添加dataprovider对应的的标签，同时testng会根据test method的方法名去找xml中对应的数据，如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">    <span class="meta">@Test</span>(dataProvider = <span class="string">"providerMethod"</span>, dataProviderClass = A.class)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testmethod1</span><span class="params">(Map&lt;?, ?&gt; param)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line">...</div><div class="line"></div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>这样就可以直接一对多的进行数据驱动了。</p>
+<p><strong>这里我有个问题，一般非testng.xml的准备数据的xml里面，很多数据都是不同类型的，但现在我这边读取出来都是String，这个数据类型的设置在xml里面能够直接设置么？或者还有什么好的方式？欢迎大家来告诉我哈</strong></p>
+<p>接着再来看下rest-assured吧，Google了相关信息，相比其它框架少了不少。我就用下来的情况说下心得吧。rest-assured也是结合了BDD风格的一个框架。通过given，when，then的结合更方便的进行了API的验证。虽然我个人还是不是很习惯这个语法。我们来看几个例子。<br>比如这样的Json：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line"><span class="string">"lotto"</span>:&#123;</div><div class="line"> <span class="string">"lottoId"</span>:<span class="number">5</span>,</div><div class="line"> <span class="string">"winning-numbers"</span>:[<span class="number">2</span>,<span class="number">45</span>,<span class="number">34</span>,<span class="number">23</span>,<span class="number">7</span>,<span class="number">5</span>,<span class="number">3</span>],</div><div class="line"> <span class="string">"winners"</span>:[&#123;</div><div class="line">   <span class="string">"winnerId"</span>:<span class="number">23</span>,</div><div class="line">   <span class="string">"numbers"</span>:[<span class="number">2</span>,<span class="number">45</span>,<span class="number">34</span>,<span class="number">23</span>,<span class="number">3</span>,<span class="number">5</span>]</div><div class="line"> &#125;,&#123;</div><div class="line">   <span class="string">"winnerId"</span>:<span class="number">54</span>,</div><div class="line">   <span class="string">"numbers"</span>:[<span class="number">52</span>,<span class="number">3</span>,<span class="number">12</span>,<span class="number">11</span>,<span class="number">18</span>,<span class="number">22</span>]</div><div class="line"> &#125;]</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>那么我们的验证就可以这样写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">expect().</div><div class="line">         body(<span class="string">"lotto.lottoId"</span>, equalTo(<span class="number">5</span>)).</div><div class="line">         body(<span class="string">"lotto.winners.winnderId"</span>, hasItems(<span class="number">23</span>, <span class="number">54</span>)).</div><div class="line">when().</div><div class="line">       get(<span class="string">"/lotto"</span>);</div></pre></td></tr></table></figure>
+<p>当然我们其实在使用mvn跑的时候我们希望能够看到更多的req，res的日志的话我们可以这样增加，这就是rest-assured style了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">expect().</div><div class="line">         log().all().</div><div class="line">         body(<span class="string">"lotto.lottoId"</span>, equalTo(<span class="number">5</span>)).</div><div class="line">         body(<span class="string">"lotto.winners.winnderId"</span>, hasItems(<span class="number">23</span>, <span class="number">54</span>)).</div><div class="line">when().</div><div class="line">         get(<span class="string">"/lotto"</span>);</div></pre></td></tr></table></figure>
+<p>我们也可以看一个比较复杂点的语句吧。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">given().log().all().contentType(<span class="string">"application/json"</span>)</div><div class="line">              .header(<span class="string">"cookie"</span>,</div><div class="line">                      <span class="string">"abcdefghijkl"</span>)</div><div class="line">              .request().body(jsonbody).expect().statusCode(<span class="number">200</span>).body(<span class="string">"result"</span>, equalTo(<span class="keyword">true</span>)).when()</div><div class="line">              .post(<span class="string">"/xxxxx"</span>);</div></pre></td></tr></table></figure>
+<p>所以其实一条语句中将请求，返回，断言，包括url_param等都包括在内了。看个人喜好了。不过从rest assured框架的支持上来讲，断言支持的类型很多，有兴趣的也可以试试看。我目前先按照这个架构往下尝试了，大家可以继续等我的心得。</p>
+
           
         
       
@@ -772,7 +791,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

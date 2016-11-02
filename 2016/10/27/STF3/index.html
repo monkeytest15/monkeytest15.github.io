@@ -46,7 +46,7 @@
 <link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="STF," />
 
 
 
@@ -64,16 +64,26 @@
 
 
 
-<meta name="description" content="舍得舍得，有舍才有得">
+<meta name="description" content="最近我终于明白了AngularJS1.x的模式是MVW，W就是Whatever的意思😂 😂 😂 😂 😂 😂 😂 😂
+接着就需要来进一步修改了，比如我们想新增一个报告界面，但想着复用STF的架构，所以就开始继续啃代码，先来说新增一个标签吧，比如下图:
+device界面解析根据STF的界面来看，我们想着在这个界面新增一个标签然后复用device的界面，device界面主要目录在/res">
 <meta property="og:type" content="article">
 <meta property="og:title" content="STF修改之三——NodeJS-AngularJS修改传递数据">
 <meta property="og:url" content="http://yoursite.com/2016/10/27/STF3/index.html">
 <meta property="og:site_name" content="Monkey`s Note">
-<meta property="og:description" content="舍得舍得，有舍才有得">
-<meta property="og:updated_time" content="2016-10-27T03:53:25.000Z">
+<meta property="og:description" content="最近我终于明白了AngularJS1.x的模式是MVW，W就是Whatever的意思😂 😂 😂 😂 😂 😂 😂 😂
+接着就需要来进一步修改了，比如我们想新增一个报告界面，但想着复用STF的架构，所以就开始继续啃代码，先来说新增一个标签吧，比如下图:
+device界面解析根据STF的界面来看，我们想着在这个界面新增一个标签然后复用device的界面，device界面主要目录在/res">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-02%20%E4%B8%8B%E5%8D%8811.35.20.png">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/e7da37b22e74c30fd22cef31a73849a2.jpg">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/6d3335707565a0702cc06d93581e4011.png">
+<meta property="og:updated_time" content="2016-11-02T15:47:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="STF修改之三——NodeJS-AngularJS修改传递数据">
-<meta name="twitter:description" content="舍得舍得，有舍才有得">
+<meta name="twitter:description" content="最近我终于明白了AngularJS1.x的模式是MVW，W就是Whatever的意思😂 😂 😂 😂 😂 😂 😂 😂
+接着就需要来进一步修改了，比如我们想新增一个报告界面，但想着复用STF的架构，所以就开始继续啃代码，先来说新增一个标签吧，比如下图:
+device界面解析根据STF的界面来看，我们想着在这个界面新增一个标签然后复用device的界面，device界面主要目录在/res">
+<meta name="twitter:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-02%20%E4%B8%8B%E5%8D%8811.35.20.png">
 <meta name="twitter:creator" content="@[object Object]">
 
 
@@ -331,7 +341,39 @@
       
 
       
-        
+        <p><strong>最近我终于明白了AngularJS1.x的模式是MVW，W就是Whatever的意思😂 😂 😂 😂 😂 😂 😂 😂</strong></p>
+<p>接着就需要来进一步修改了，比如我们想新增一个报告界面，但想着复用STF的架构，所以就开始继续啃代码，先来说新增一个标签吧，比如下图:<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-02%20%E4%B8%8B%E5%8D%8811.35.20.png" alt="stf3"></p>
+<h2 id="device界面解析"><a href="#device界面解析" class="headerlink" title="device界面解析"></a><code>device</code>界面解析</h2><p>根据STF的界面来看，我们想着在这个界面新增一个标签然后复用device的界面，device界面主要目录在<code>/res/app/</code>这里，由于STF中主要的界面都是复用这里的模版和文件的，所以先对于这个目录下的文件做一定的解析。</p>
+<p><code>res/app/index.js</code> 这个主要是整个<code>http://localhost:7100/#!/devices</code>对应的界面的主界面代码。这里可以看得出来对应url是/devices，同时引用了<code>./device-list.jade</code>的模版以及<code>DeviceListCtrl</code>的这个<code>Controller</code>。 代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">require(<span class="string">'./device-list.css'</span>)</div><div class="line"></div><div class="line"><span class="keyword">module</span>.<span class="keyword">exports</span> = angular.<span class="keyword">module</span>(<span class="string">'device-list'</span>, [</div><div class="line">require ...</div><div class="line">])</div><div class="line">  .config([<span class="string">'$routeProvider'</span>, function($routeProvider) &#123;</div><div class="line">    $routeProvider</div><div class="line">      .when(<span class="string">'/devices'</span>, &#123;</div><div class="line">        template: require(<span class="string">'./device-list.jade'</span>),</div><div class="line">        controller: <span class="string">'DeviceListCtrl'</span></div><div class="line">      &#125;)</div><div class="line">  &#125;])</div><div class="line">  .run(function(editableOptions) &#123;</div><div class="line">    <span class="comment">// bootstrap3 theme for xeditables</span></div><div class="line">    editableOptions.theme = <span class="string">'bs3'</span></div><div class="line">  &#125;)</div><div class="line">  .controller(<span class="string">'DeviceListCtrl'</span>, require(<span class="string">'./device-list-controller'</span>))</div></pre></td></tr></table></figure>
+<ul>
+<li><code>res/app/device-list</code>， 这就是<code>index.js</code>对应模版的样式</li>
+<li><code>res/app/device-list.jade</code>，这里是整个index加载的界面元素模版，我们的标签也是加在这个地方，后面会详细来说的。<br>*<code>res/app/device-list-controller.js</code>，这个文件比较复杂，首先是通过<code>$scope</code>在这个<code>Controller</code>里面去动态获取了所有当前链接的机器，并且创建对应的服务和监听。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$scope.tracker = DeviceService.trackAll($scope)</div><div class="line">$scope.control = ControlService.create($scope.tracker.devices, <span class="string">'*ALL'</span>)</div><div class="line"></div><div class="line">$scope.columnDefinitions = DeviceColumnService</div></pre></td></tr></table></figure>
+<p>同时在里面定义了界面列表的元素有哪些并做了绑定以及一些初始化排序的工作，如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">$scope.columns = defaultColumns</div><div class="line"></div><div class="line">SettingsService.bind($scope, &#123;</div><div class="line">  target: <span class="string">'columns'</span></div><div class="line">, source: <span class="string">'deviceListColumns'</span></div><div class="line">&#125;)</div><div class="line"></div><div class="line">var defaultSort = &#123;</div><div class="line">  fixed: [</div><div class="line">    &#123; </div><div class="line">      name: <span class="string">'state'</span></div><div class="line">      , order: <span class="string">'asc'</span></div><div class="line">    &#125;</div><div class="line">  ]</div><div class="line">  , user: [</div><div class="line">    &#123;</div><div class="line">      name: <span class="string">'name'</span></div><div class="line">      , order: <span class="string">'asc'</span></div><div class="line">    &#125;</div><div class="line">  ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在整个结构中还有一个文件夹叫做<code>details</code>，这个文件夹中的界面，页面结构都是复用<code>util</code>下面的这些文件，这个待会儿再会来详细说，我们先继续来讲增加标签的事情。</p>
+<h2 id="增加标签"><a href="#增加标签" class="headerlink" title="增加标签"></a>增加标签</h2><p>如下增加<code>res/app/device-list.jade</code>的代码，<code>jade</code>严格控制锁进，所以要切记</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">uib-tab(active=<span class="string">'activeTabs.monkey'</span>, select=<span class="string">'focusSearch()'</span>, ng-<span class="keyword">if</span>=<span class="string">'!$root.basicMode'</span>)</div><div class="line">  uib-tab-heading</div><div class="line">    i.fa.fa-<span class="function">list</span></div><div class="line">    <span class="title">span</span><span class="params">(translate)</span> monkey</div><div class="line">  div.device-list-monkey-<span class="title">content</span><span class="params">(ng-<span class="keyword">if</span>=<span class="string">'activeTabs.monkey'</span>)</span>.selectable</div><div class="line"></div><div class="line">    device-list-<span class="title">monkey</span><span class="params">(tracker=<span class="string">'tracker'</span>, columns=<span class="string">'columns'</span>, sort=<span class="string">'sort'</span>, filter=<span class="string">'filter'</span>)</span>.selectable</div></pre></td></tr></table></figure>
+<p>这里增加了一个<code>activeTabs.monkey</code>这样一个标签，同时看到了这样一行代码d<code>evice-list-monkey(tracker=&#39;tracker&#39;, columns=&#39;columns&#39;, sort=&#39;sort&#39;, filter=&#39;filter&#39;).selectable，</code>可以先有个印象，待会儿再来说。增加了标签之后，需要在controller里面增加对应的定义和绑定，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$scope.activeTabs = &#123;</div><div class="line">  icons: <span class="keyword">true</span></div><div class="line">, details: <span class="keyword">false</span></div><div class="line">, monkey: <span class="keyword">false</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最后在<code>/res/app/</code>增加对应的<code>monkey</code>文件夹，同时记得在<code>index.js</code>中增加<code>require(&#39;./monkey&#39;).name</code>,引用当然下面文件的名字对应都要修改。Angular本身还是有一定规范的。</p>
+<h2 id="nodejs–-gt-JS"><a href="#nodejs–-gt-JS" class="headerlink" title="nodejs–&gt;JS"></a>nodejs–&gt;JS</h2><p>有了标签之后，那么接下来就说数据怎么传输过去了。那么这里就有两个问题，第一个问题就是怎么传到界面上，第二个问题就是怎么修改STF原有的数据。先来说第一个</p>
+<p>我们可以在<code>lib/units/app/index.js</code>中增加如下代码，这样在STF启动的时候这个服务就会生效。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">app.get(<span class="string">'/monkey/demo'</span>, function(req, res) &#123;</div><div class="line">          var monkey_map = &#123;tips:<span class="string">"this is demo"</span>&#125;</div><div class="line">          res.send(monkey_map)</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>同时我们可以在<code>res/app/device-list</code>中增加一个界面请求数据的方法，这里就要用到<code>$http</code>和<code>$scope</code>，在界面刷新的时候自动会进行对应url的请求。同时需要在jade中有一个ng的标签是等于<code>monkey_demo</code>，比如<code>(ng-model=&#39;sbmonkey&#39;)</code>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$scope.monkey = &#123;</div><div class="line">  monkey: $http.get(<span class="string">'/monkey/demo'</span>).success(function(data,header,config,status)&#123;</div><div class="line">    console.log(data.tips);</div><div class="line">    $scope.monkey.monkey_demo = data.tips</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>对于$scope实在太博大精深，这里share一张图，附上网盘地址：<a href="http://pan.baidu.com/s/1eROs7qM" target="_blank" rel="external">http://pan.baidu.com/s/1eROs7qM</a><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/e7da37b22e74c30fd22cef31a73849a2.jpg" alt="scope"></p>
+<p>在STF中很多实用到$rootScope的方法，这些我们都可以在源码中看到方法的定义，有兴趣的同学可以进一步查看。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="function">function <span class="title">Scope</span><span class="params">()</span> </span>&#123;</div><div class="line">  <span class="comment">// 省略属性定义</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">Scope.prototype = &#123;</div><div class="line">  constructor: Scope,</div><div class="line"></div><div class="line">  $<span class="keyword">new</span>: function(isolate) &#123;...&#125;,</div><div class="line"></div><div class="line">  $watch: function(watchExp, listener, objectEquality) &#123;...&#125;,</div><div class="line"></div><div class="line">  $watchGroup: function(watchExpressions, listener) &#123;...&#125;,</div><div class="line"></div><div class="line">  $watchCollection: function(obj, listener) &#123;...&#125;,</div><div class="line"></div><div class="line">  $digest: function() &#123;...&#125;,</div><div class="line"></div><div class="line">  $destroy: function() &#123;...&#125;,</div><div class="line"></div><div class="line">  $eval: function(expr, locals) &#123;...&#125;,</div><div class="line"></div><div class="line">  $evalAsync: function(expr) &#123;...&#125;,</div><div class="line"></div><div class="line">  $apply: function(expr) &#123;...&#125;,</div><div class="line"></div><div class="line">  $applyAsync: function(expr) &#123;...&#125;,</div><div class="line"></div><div class="line">  $on: function(name, listener) &#123;...&#125;,</div><div class="line"></div><div class="line">  $emit: function(name, args) &#123;...&#125;,</div><div class="line"></div><div class="line">  $broadcast: function(name, args) &#123;...&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h2 id="nodejs–-gt-STF-JS"><a href="#nodejs–-gt-STF-JS" class="headerlink" title="nodejs–&gt;STF JS"></a>nodejs–&gt;STF JS</h2><p>这里为了不破坏STF原本的架构，所以都基于STF原本的代码去修改的，所以还是比较好理解的。按照网上说的，从首先修改了res/app/device-list/column/device-column-service.js这个文件的第一列获取数据的代码，新定义了一个device.monkeytest()</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span>.<span class="keyword">exports</span> = <span class="function">function <span class="title">DeviceColumnService</span><span class="params">($filter, gettext)</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    state: DeviceStatusCell(&#123;</div><div class="line">      title: gettext(<span class="string">'Status'</span>)</div><div class="line">    , value: function(device) &#123;</div><div class="line">        <span class="keyword">return</span> device.monkeytest()</div><div class="line">      &#125;</div><div class="line">    &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接着我们需要修改这个数据来源，在<code>res/app/components/stf/device/enhance-device/enhance-device-service.js</code>，这里也定义了<code>device.monkeytest</code>的值是什么。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">  var monkey_aaa</div><div class="line">  device.monkeytest = function()&#123;$http.get(<span class="string">'/monkey/demo'</span>).success(function(data,header,config,status)&#123;</div><div class="line">    monkey_aaa = data.tips</div><div class="line"></div><div class="line">  &#125;).error(function(data,header,config,status)&#123;</div><div class="line">    console.log(data)</div><div class="line">  &#125;)</div><div class="line">    <span class="keyword">return</span> monkey_aaa</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/6d3335707565a0702cc06d93581e4011.png" alt="stf3-2"></p>
+<p>好吧，所以就是我大概理解了<code>Whatever</code>的意思。to be continue…..</p>
+
       
     </div>
 
@@ -355,6 +397,12 @@
     </div>
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/STF/" rel="tag">#STF</a>
+          
+        </div>
       
 
       
@@ -472,7 +520,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -573,7 +621,7 @@
               
             
             
-              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#device界面解析"><span class="nav-number">1.</span> <span class="nav-text">device界面解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#增加标签"><span class="nav-number">2.</span> <span class="nav-text">增加标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nodejs–-gt-JS"><span class="nav-number">3.</span> <span class="nav-text">nodejs–>JS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nodejs–-gt-STF-JS"><span class="nav-number">4.</span> <span class="nav-text">nodejs–>STF JS</span></a></li></ol></div>
             
           </div>
         </section>
