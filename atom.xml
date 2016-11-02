@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-10-29T17:41:41.000Z</updated>
+  <updated>2016-11-02T11:41:14.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,262 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>移动无线测试技能树</title>
+    <link href="http://yoursite.com/2016/11/02/MobileSkill/"/>
+    <id>http://yoursite.com/2016/11/02/MobileSkill/</id>
+    <published>2016-11-02T11:39:11.000Z</published>
+    <updated>2016-11-02T11:41:14.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>###-常用IDE</p>
+<pre><code>- Android
+    - ADT
+    - Android Studio
+- iOS
+    - Xcode
+- Common
+    - Atom
+    - Sublime Text
+    - Vim
+    - Visual Studio Code
+</code></pre><p>###-基础知识</p>
+<pre><code>- Android
+    - 掌握Android开发基础技能     
+- iOS
+    - 掌握iOS开发基础技能
+- web
+    - 掌握web开发基础技能
+- api
+    - 掌握api相关基础知识
+- 测试
+    - 掌握基本的测试用例设计方法和思想
+</code></pre><p>###-常见应用模式</p>
+<pre><code>- Native
+- Hybrid
+- H5 App
+- ReactNative 
+</code></pre><p>###-常用工具</p>
+<pre><code>- Android
+    - Android sdk manager
+    - adb
+    - ddms
+    - ant
+    - aapt
+    - emulator
+    - Genymotion
+    - hierarchyviewer
+    - monitor
+    - monkey
+    - monkeyrunner
+    - uiautomatorviewer
+- iOS
+    - lldb
+    - iExplorer
+    - libimobiledevice 套件
+    - codesign
+    - instruments
+    - xcodebuild
+    - atos
+    - xcrun
+</code></pre><p>###-常用UI Automation框架</p>
+<pre><code>- Android
+    - Instrumentation
+    - uiautomator2.0
+    - Athrun
+    - Robotium
+    - Monkey
+    - Monkeyrunner
+    - uiautomator
+    - Selendroid
+    - Calabash-Android
+    - monkeytalk
+    - UiAutomation
+    - Espresso
+    - cafe
+- iOS
+    - UIAutomation（旧）
+    - XCUITesting
+    - KIF
+    - Frank
+    - Appium
+    - ios-driver
+    - WebdriverAgent
+    - Mechanic.js
+    - monkeytalk
+    - Calabash-iOS
+    - TuneupJs
+    - ynm3k
+- Appium
+- Macaca
+</code></pre><p>###-常用单元测试框架</p>
+<pre><code>- Android
+    - robolectric
+    - Instrumentation
+    - Mockito
+    - RxJava
+- iOS
+    - OCUnit
+    - GHUnit
+    - XCTest 
+    - OCMock
+    - OCMockito
+    - Expecta
+    - OCHamcrest
+</code></pre><p>###-常用性能工具</p>
+<pre><code>- 抓包
+    - Charles
+    - fiddler
+    - burpsuites
+    - tcpdump
+    - anyproxy
+- 弱网模拟
+    - iOS developer mode
+    - ATC
+    - Charles
+- memory
+    - Android
+        - MAT
+        - ddms
+        - Memory Monitor
+        - Allocation Tracker
+        - LeakCanary
+        - dumpsys
+        - procrank
+        - top
+    - iOS
+        - Memory Leaks
+- Scan
+    - Android
+        - findbugs
+        - lint
+        - infer
+        - CheckStyle
+        - PMD
+    - iOS
+        - scan-build
+        - oclint
+        - infer
+        - deployment
+-other
+    - Common
+        - 安捷伦
+        - tcpdump
+        - wireshark
+        - 高速(慢速)摄像机
+        - 埋点
+        - 腾讯GT
+        - 网易Emmagee
+    - Android
+        - gfxinfo
+        - dumpsys
+        - traceview
+        - systrace
+        - GameBench
+        - battery-historian
+    - iOS
+        - Core Animation(instruments)
+        - Network(instruments)
+        - TimeProfiler(instruments)
+        - Zombies(instruments)
+</code></pre><p>###-安全</p>
+<pre><code>- Android
+    - Drozer
+    - apktool
+    - dex2jar
+    - proguard
+    - 加固
+    - exported/permission
+    - AndBug
+    - androguard
+    - Xposed
+
+- iOS
+    - IDB
+    - iRET
+    - DVIA
+    - LibiMobileDevice
+    - otool
+</code></pre><p>###-覆盖率</p>
+<pre><code>- Android
+    - Jacoco
+    - EMMA
+- iOS
+    - gcov
+</code></pre><p>###-动态更新</p>
+<pre><code>- Android
+    - Dexposed（二次开发之后）
+    - Robust
+    - android-frontia
+    - Nuwa
+    - HotFix
+    - RocooFix
+    - DroidFix
+    - AndFix 
+- iOS
+    - JSPatch
+    - WaxPatch
+- ota
+- ReactNative
+- weex
+</code></pre><p>###-abtest</p>
+<pre><code>- AB Tester
+- AppAdhocOptimizer
+- Google Website Optimizer
+- Visual Website Optimizer
+</code></pre><p>###-常用灰度测试工具</p>
+<pre><code>- testflight
+- 蒲公英
+- fir
+- pre
+</code></pre><p>###-常用云测平台</p>
+<pre><code>- testin
+- MQC
+- MTC
+</code></pre><p>###-常用持续集成平台／相关工具</p>
+<pre><code>- Jenkins
+- Travis CI 
+- Android
+    - mvn
+    - gradle
+- iOS
+    - xctool
+    - Cocoapods
+</code></pre><p>###-多语言开发应用</p>
+<pre><code>- SL4A
+- gomobile
+</code></pre><p>###-多设备远程管理平台</p>
+<pre><code>- STF
+</code></pre><p>###-自动遍历工具</p>
+<pre><code>- AppCrawle
+</code></pre><p>###-软技能</p>
+<pre><code>- 知识管理/总结分享
+- 沟通技巧/团队协作
+- 需求管理/PM
+- 交互设计/可用性/可访问性知识
+- 快速的学习能力
+</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;###-常用IDE&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;- Android
+    - ADT
+    - Android Studio
+- iOS
+    - Xcode
+- Common
+    - Atom
+    - Sublime Text
+    - Vim
+    
+    
+    </summary>
+    
+    
+      <category term="无线测试" scheme="http://yoursite.com/tags/%E6%97%A0%E7%BA%BF%E6%B5%8B%E8%AF%95/"/>
+    
+  </entry>
   
   <entry>
     <title>Monkey的7年回忆，也是空杯的开始</title>
