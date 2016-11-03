@@ -46,7 +46,7 @@
 <link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="ReactNative," />
 
 
 
@@ -64,15 +64,24 @@
 
 
 
-<meta name="description" content="舍得舍得，有舍才有得">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Monkey`s Note">
-<meta property="og:url" content="http://yoursite.com/archives/2016/index.html">
+<meta name="description" content="今天早上看到了FB发的一个关于RN框架开发过程中的故事的文章，真的感觉很好啊。一个开源的项目，很多人参与进来真心是个不错的事情，真不知道TesterHome啥时候能有人来merge代码，😢😢😢。
+根据之前的ReactNative扫盲实践，我们继续来看一些组合View怎么来做。使用RN比Native的实现成本的确低了很多。不过性能方面的话，等以后复杂的应用再来对比了。
+我们下载了一个大会的ba">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ReactNative 大会卖萌 View">
+<meta property="og:url" content="http://yoursite.com/2016/10/27/ReactNativeBuiildView/index.html">
 <meta property="og:site_name" content="Monkey`s Note">
-<meta property="og:description" content="舍得舍得，有舍才有得">
+<meta property="og:description" content="今天早上看到了FB发的一个关于RN框架开发过程中的故事的文章，真的感觉很好啊。一个开源的项目，很多人参与进来真心是个不错的事情，真不知道TesterHome啥时候能有人来merge代码，😢😢😢。
+根据之前的ReactNative扫盲实践，我们继续来看一些组合View怎么来做。使用RN比Native的实现成本的确低了很多。不过性能方面的话，等以后复杂的应用再来对比了。
+我们下载了一个大会的ba">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-03%20%E4%B8%8A%E5%8D%8812.50.01.png">
+<meta property="og:updated_time" content="2016-11-02T16:51:20.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Monkey`s Note">
-<meta name="twitter:description" content="舍得舍得，有舍才有得">
+<meta name="twitter:title" content="ReactNative 大会卖萌 View">
+<meta name="twitter:description" content="今天早上看到了FB发的一个关于RN框架开发过程中的故事的文章，真的感觉很好啊。一个开源的项目，很多人参与进来真心是个不错的事情，真不知道TesterHome啥时候能有人来merge代码，😢😢😢。
+根据之前的ReactNative扫盲实践，我们继续来看一些组合View怎么来做。使用RN比Native的实现成本的确低了很多。不过性能方面的话，等以后复杂的应用再来对比了。
+我们下载了一个大会的ba">
+<meta name="twitter:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-03%20%E4%B8%8A%E5%8D%8812.50.01.png">
 <meta name="twitter:creator" content="@[object Object]">
 
 
@@ -94,10 +103,10 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/2016/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/10/27/ReactNativeBuiildView/"/>
 
 
-  <title> Archive | Monkey`s Note </title>
+  <title> ReactNative 大会卖萌 View | Monkey`s Note </title>
 </head>
 
 <body itemscope itemtype="//schema.org/WebPage" lang="en">
@@ -136,7 +145,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  page-archive  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
@@ -257,621 +266,175 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
-
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      Um..! 16 posts in total. Keep on posting.
-    </span>
-
+  <div id="posts" class="posts-expand">
     
-
-      
-      
-      
-
-      
-        
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2016">2016</h2>
-        </div>
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/11/03/nineyears/" itemprop="url">
-              
-                <span itemprop="name">nineyears</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-11-03T15:16:00+08:00"
-              content="2016-11-03" >
-          11-03
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/11/03/testtoquilty/" itemprop="url">
-              
-                <span itemprop="name">测试到质量转变</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-11-03T14:39:40+08:00"
-              content="2016-11-03" >
-          11-03
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/11/02/MobileSkill/" itemprop="url">
-              
-                <span itemprop="name">移动无线测试技能树</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-11-02T19:39:11+08:00"
-              content="2016-11-02" >
-          11-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/10/30/Monkey_Seven_Memory/" itemprop="url">
-              
-                <span itemprop="name">Monkey的7年回忆，也是空杯的开始</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-10-30T00:35:05+08:00"
-              content="2016-10-30" >
-          10-30
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-tags" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/10/27/hexobuildblog/" itemprop="url">
-              
-                <span itemprop="name">Hexo搭建一套属于自己的Blog</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-10-27T23:55:38+08:00"
-              content="2016-10-27" >
-          10-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/10/27/STF3/" itemprop="url">
-              
-                <span itemprop="name">STF修改之三——NodeJS-AngularJS修改传递数据</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-10-27T11:53:25+08:00"
-              content="2016-10-27" >
-          10-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/10/27/dahua2xu/" itemprop="url">
-              
-                <span itemprop="name">首发—大话2专项测试试读</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-10-27T11:53:00+08:00"
-              content="2016-10-27" >
-          10-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/10/27/nginxgor/" itemprop="url">
-              
-                <span itemprop="name">nginx+gor 初心者之旅</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-10-27T02:09:01+08:00"
-              content="2016-10-27" >
-          10-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/10/27/ReactNativeBuiildView/" itemprop="url">
-              
-                <span itemprop="name">ReactNative 大会卖萌 View</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-10-27T02:08:04+08:00"
-              content="2016-10-27" >
-          10-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/10/27/ReactNativeNew/" itemprop="url">
-              
-                <span itemprop="name">ReactNative 扫盲实践</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-10-27T02:07:44+08:00"
-              content="2016-10-27" >
-          10-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-categories" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/10/27/first/" itemprop="url">
-              
-                <span itemprop="name">This is first blood!!!!</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-10-27T02:00:58+08:00"
-              content="2016-10-27" >
-          10-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-tags" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/07/27/dahuaapp2/" itemprop="url">
-              
-                <span itemprop="name">《大话移动App测试2.0》序开放试读</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-07-27T11:52:32+08:00"
-              content="2016-07-27" >
-          07-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/07/16/Api_1/" itemprop="url">
-              
-                <span itemprop="name">接口测试初学者心得——从 0 开始</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-07-16T02:08:31+08:00"
-              content="2016-07-16" >
-          07-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/07/13/apibeginning2/" itemprop="url">
-              
-                <span itemprop="name">接口初心者心得第二版</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-07-13T02:08:49+08:00"
-              content="2016-07-13" >
-          07-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-tags" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/03/27/jenkinsbuzuobusi/" itemprop="url">
-              
-                <span itemprop="name">Jenkins2.0 不作不会死之旅</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-03-27T02:08:17+08:00"
-              content="2016-03-27" >
-          03-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/03/01/GeekTestinginShangHai/" itemprop="url">
-              
-                <span itemprop="name">第一届 Geek Testing in ShangHai 会议总结</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-03-01T21:42:22+08:00"
-              content="2016-03-01" >
-          03-01
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-  </section>
 
   
+  
 
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                ReactNative 大会卖萌 View
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-10-27T02:08:04+08:00" content="2016-10-27">
+              2016-10-27
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/27/ReactNativeBuiildView/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/27/ReactNativeBuiildView/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+          
+            <span>&nbsp; | &nbsp;
+            <span id="busuanzi_value_page_pv" ></span>次阅读
+            </span>    
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天早上看到了FB发的一个关于RN框架开发过程中的故事的文章，真的感觉很好啊。一个开源的项目，很多人参与进来真心是个不错的事情，真不知道TesterHome啥时候能有人来merge代码，😢😢😢。</p>
+<p>根据之前的ReactNative扫盲实践，我们继续来看一些组合View怎么来做。使用RN比Native的实现成本的确低了很多。不过性能方面的话，等以后复杂的应用再来对比了。</p>
+<p>我们下载了一个大会的banner，放到我们的View中。如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;Text style=&#123;&#123;fontSize:16&#125;&#125;&gt;'测试大会来啦'&lt;/Text&gt;</div><div class="line">&lt;Image style=&#123;&#123;flex: 1, height: 300, resizeMode: Image.resizeMode.stretch&#125;&#125; source=&#123; require('./img/meeting.png')&#125; /&gt;</div></pre></td></tr></table></figure>
+<p>然后是选择票的种类，这里选择了picker选择器：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">var AwesomeProject = React.createClass(&#123;</div><div class="line">   getInitialState: function() &#123;</div><div class="line">    return &#123;</div><div class="line">      language: '',</div><div class="line">    &#125;;</div><div class="line">  &#125;,</div><div class="line">  render() &#123;</div><div class="line">    return (</div><div class="line">&lt;View  style=&#123;&#123;marginLeft:10,marginTop:10&#125;&#125;&gt;</div><div class="line"></div><div class="line">        &lt;Text &gt;</div><div class="line">         长的漂亮的都来买票了</div><div class="line">        &lt;/Text&gt;</div><div class="line">        &lt;Picker </div><div class="line">          mode=&#123;'dropdown'&#125;</div><div class="line">          style=&#123;&#123;width:200&#125;&#125;</div><div class="line">          selectedValue=&#123;this.state.language&#125;</div><div class="line">          onValueChange=&#123;(value) =&gt; this.setState(&#123;language: value&#125;)&#125;&gt;</div><div class="line">          &lt;Picker.Item label="个人早鸟无虫吃票" value="个人早鸟无虫吃票" /&gt;</div><div class="line">          &lt;Picker.Item label="个人早鸟有虫吃票" value="个人早鸟有虫吃票" /&gt;</div><div class="line">           &lt;Picker.Item label="组队早鸟被虫吃票" value="组队早鸟被虫吃票" /&gt;</div><div class="line">          &lt;Picker.Item label="长的帅的人的票" value="长的帅的人的票" /&gt;</div><div class="line">        &lt;/Picker&gt;</div><div class="line">        &lt;Text&gt;当前选择的是:&#123;this.state.language&#125;&lt;/Text&gt;</div><div class="line">      &lt;/View&gt;</div></pre></td></tr></table></figure>
+<p>可以见下效果图。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-03%20%E4%B8%8A%E5%8D%8812.50.01.png" alt="reactnative1"></p>
+<p>另外附上图片的一些设置方法：<br>通过Image.resizeMode来适配图片布局，包括contain, cover, stretch<br>默认不设置模式等于cover模式</p>
+<ul>
+<li>contain模式自适应宽高，给出高度值即可</li>
+<li>cover铺满容器，但是会做截取</li>
+<li>stretch铺满容器，拉伸</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/WechatIMG2.jpeg" alt="陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～ wechat" style="width: 200px; max-width: 100%;"/>
+    <div>subscribe to my blog by scanning my public wechat account</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ReactNative/" rel="tag">#ReactNative</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/27/ReactNativeNew/" rel="next" title="ReactNative 扫盲实践">
+                <i class="fa fa-chevron-left"></i> ReactNative 扫盲实践
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/27/nginxgor/" rel="prev" title="nginx+gor 初心者之旅">
+                nginx+gor 初心者之旅 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+ 
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/10/27/ReactNativeBuiildView/"
+     data-title="ReactNative 大会卖萌 View"
+     data-content=""
+     data-url="http://yoursite.com/2016/10/27/ReactNativeBuiildView/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
 
 
           </div>
@@ -879,6 +442,14 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/27/ReactNativeBuiildView/"
+           data-title="ReactNative 大会卖萌 View" data-url="http://yoursite.com/2016/10/27/ReactNativeBuiildView/">
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -898,8 +469,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/UC7.jpg"
@@ -1015,6 +595,17 @@
 
 
       
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+            
+          </div>
+        </section>
+      
 
     </div>
   </aside>
@@ -1121,11 +712,9 @@
 
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
 
 
   

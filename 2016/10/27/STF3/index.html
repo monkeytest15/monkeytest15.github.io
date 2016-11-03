@@ -46,7 +46,7 @@
 <link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="GeekTesting," />
+  <meta name="keywords" content="STF," />
 
 
 
@@ -64,31 +64,26 @@
 
 
 
-<meta name="description" content="本次是我自己发起的第一届GeekTesting活动的总结
-初衷当初想在2016年有一个改变，所以尝试了Geek Testing的活动。本着会议更有质量，有具体的输出，能够真正的帮助到大家的原则。所以会议限制了人数，同时增加了50元的报名费，便于给大家提供更好的活动支持。
-开场神码的总监给我们排了一个下午的桌子椅子，真心辛苦。一早东哥就来准备了，不过依然掩盖不了之后的紧张。。。😓。。。。
-上午——">
+<meta name="description" content="最近我终于明白了AngularJS1.x的模式是MVW，W就是Whatever的意思😂 😂 😂 😂 😂 😂 😂 😂
+接着就需要来进一步修改了，比如我们想新增一个报告界面，但想着复用STF的架构，所以就开始继续啃代码，先来说新增一个标签吧，比如下图:
+device界面解析根据STF的界面来看，我们想着在这个界面新增一个标签然后复用device的界面，device界面主要目录在/res">
 <meta property="og:type" content="article">
-<meta property="og:title" content="第一届 Geek Testing in ShangHai 会议总结">
-<meta property="og:url" content="http://yoursite.com/2016/03/01/GeekTestinginShangHai/index.html">
+<meta property="og:title" content="STF修改之三——NodeJS-AngularJS修改传递数据">
+<meta property="og:url" content="http://yoursite.com/2016/10/27/STF3/index.html">
 <meta property="og:site_name" content="Monkey`s Note">
-<meta property="og:description" content="本次是我自己发起的第一届GeekTesting活动的总结
-初衷当初想在2016年有一个改变，所以尝试了Geek Testing的活动。本着会议更有质量，有具体的输出，能够真正的帮助到大家的原则。所以会议限制了人数，同时增加了50元的报名费，便于给大家提供更好的活动支持。
-开场神码的总监给我们排了一个下午的桌子椅子，真心辛苦。一早东哥就来准备了，不过依然掩盖不了之后的紧张。。。😓。。。。
-上午——">
-<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/ed906906af741c2c57cc23a6f119d5f4.jpg">
-<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/b690a2e631526be06149d9ef5b9e1c0a.jpg">
-<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/5ef9eb7f4905b2ac8446475b72fd0b5c.jpg">
-<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/0e9a19315a30ab91c05e7778ceb5c530.jpg">
-<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-10-30%20%E4%B8%8B%E5%8D%8810.24.46.png">
-<meta property="og:updated_time" content="2016-10-30T14:27:59.000Z">
+<meta property="og:description" content="最近我终于明白了AngularJS1.x的模式是MVW，W就是Whatever的意思😂 😂 😂 😂 😂 😂 😂 😂
+接着就需要来进一步修改了，比如我们想新增一个报告界面，但想着复用STF的架构，所以就开始继续啃代码，先来说新增一个标签吧，比如下图:
+device界面解析根据STF的界面来看，我们想着在这个界面新增一个标签然后复用device的界面，device界面主要目录在/res">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-02%20%E4%B8%8B%E5%8D%8811.35.20.png">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/e7da37b22e74c30fd22cef31a73849a2.jpg">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/6d3335707565a0702cc06d93581e4011.png">
+<meta property="og:updated_time" content="2016-11-02T15:47:34.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="第一届 Geek Testing in ShangHai 会议总结">
-<meta name="twitter:description" content="本次是我自己发起的第一届GeekTesting活动的总结
-初衷当初想在2016年有一个改变，所以尝试了Geek Testing的活动。本着会议更有质量，有具体的输出，能够真正的帮助到大家的原则。所以会议限制了人数，同时增加了50元的报名费，便于给大家提供更好的活动支持。
-开场神码的总监给我们排了一个下午的桌子椅子，真心辛苦。一早东哥就来准备了，不过依然掩盖不了之后的紧张。。。😓。。。。
-上午——">
-<meta name="twitter:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/ed906906af741c2c57cc23a6f119d5f4.jpg">
+<meta name="twitter:title" content="STF修改之三——NodeJS-AngularJS修改传递数据">
+<meta name="twitter:description" content="最近我终于明白了AngularJS1.x的模式是MVW，W就是Whatever的意思😂 😂 😂 😂 😂 😂 😂 😂
+接着就需要来进一步修改了，比如我们想新增一个报告界面，但想着复用STF的架构，所以就开始继续啃代码，先来说新增一个标签吧，比如下图:
+device界面解析根据STF的界面来看，我们想着在这个界面新增一个标签然后复用device的界面，device界面主要目录在/res">
+<meta name="twitter:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-02%20%E4%B8%8B%E5%8D%8811.35.20.png">
 <meta name="twitter:creator" content="@[object Object]">
 
 
@@ -110,10 +105,10 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/03/01/GeekTestinginShangHai/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/10/27/STF3/"/>
 
 
-  <title> 第一届 Geek Testing in ShangHai 会议总结 | Monkey`s Note </title>
+  <title> STF修改之三——NodeJS-AngularJS修改传递数据 | Monkey`s Note </title>
 </head>
 
 <body itemscope itemtype="//schema.org/WebPage" lang="en">
@@ -294,7 +289,7 @@
             
             
               
-                第一届 Geek Testing in ShangHai 会议总结
+                STF修改之三——NodeJS-AngularJS修改传递数据
               
             
           </h1>
@@ -306,8 +301,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-03-01T21:42:22+08:00" content="2016-03-01">
-              2016-03-01
+            <time itemprop="dateCreated" datetime="2016-10-27T11:53:25+08:00" content="2016-10-27">
+              2016-10-27
             </time>
           </span>
 
@@ -317,8 +312,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/03/01/GeekTestinginShangHai/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/01/GeekTestinginShangHai/" itemprop="commentsCount"></span>
+                <a href="/2016/10/27/STF3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/27/STF3/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -346,23 +341,38 @@
       
 
       
-        <p>本次是我自己发起的第一届GeekTesting活动的总结</p>
-<h2 id="初衷"><a href="#初衷" class="headerlink" title="初衷"></a>初衷</h2><p>当初想在2016年有一个改变，所以尝试了Geek Testing的活动。本着会议更有质量，有具体的输出，能够真正的帮助到大家的原则。所以会议限制了人数，同时增加了50元的报名费，便于给大家提供更好的活动支持。</p>
-<h2 id="开场"><a href="#开场" class="headerlink" title="开场"></a>开场</h2><p>神码的总监给我们排了一个下午的桌子椅子，真心辛苦。一早东哥就来准备了，不过依然掩盖不了之后的紧张。。。😓。。。。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/ed906906af741c2c57cc23a6f119d5f4.jpg" alt="活动1"></p>
-<h2 id="上午——性能专题"><a href="#上午——性能专题" class="headerlink" title="上午——性能专题"></a>上午——性能专题</h2><p>上午基本上我开场白之后，就是东哥的性能在移动互联网上的落地的topic。总体来讲东哥紧张了，不过我想说的是，“东哥，你紧张也不要说出来啊。Orz“。<br>东哥的topic总体来讲还是很不错的，但是由于性能本身就是一个很深入的主题，东哥基本上说了下在移动互联网时代性能测试碰见的问题以及一些落地的解决方案，但由于思想太过跳跃，可能很多同学都没有跟上。不过我相信以后会越来越好哒<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/b690a2e631526be06149d9ef5b9e1c0a.jpg" alt="活动2"></p>
-<h2 id="下午——头脑风暴"><a href="#下午——头脑风暴" class="headerlink" title="下午——头脑风暴"></a>下午——头脑风暴</h2><p>首先来讲，头脑风暴的主持的真的很难很累，整个下午的控场控的我MP和HP都没有了。其实这次我主要抛出了这样几个问题</p>
-<p>假设我们的团队有很多是异地的，假设我们的产品都是很细的模块化组成的，假设我们的测试开发比也并没有达到很理想的状态。在移动互联网的快速迭代中，如果你是一家公司的测试总监，让你去安排如下的事情你怎么安排</p>
+        <p><strong>最近我终于明白了AngularJS1.x的模式是MVW，W就是Whatever的意思😂 😂 😂 😂 😂 😂 😂 😂</strong></p>
+<p>接着就需要来进一步修改了，比如我们想新增一个报告界面，但想着复用STF的架构，所以就开始继续啃代码，先来说新增一个标签吧，比如下图:<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-02%20%E4%B8%8B%E5%8D%8811.35.20.png" alt="stf3"></p>
+<h2 id="device界面解析"><a href="#device界面解析" class="headerlink" title="device界面解析"></a><code>device</code>界面解析</h2><p>根据STF的界面来看，我们想着在这个界面新增一个标签然后复用device的界面，device界面主要目录在<code>/res/app/</code>这里，由于STF中主要的界面都是复用这里的模版和文件的，所以先对于这个目录下的文件做一定的解析。</p>
+<p><code>res/app/index.js</code> 这个主要是整个<code>http://localhost:7100/#!/devices</code>对应的界面的主界面代码。这里可以看得出来对应url是/devices，同时引用了<code>./device-list.jade</code>的模版以及<code>DeviceListCtrl</code>的这个<code>Controller</code>。 代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">require(<span class="string">'./device-list.css'</span>)</div><div class="line"></div><div class="line"><span class="keyword">module</span>.<span class="keyword">exports</span> = angular.<span class="keyword">module</span>(<span class="string">'device-list'</span>, [</div><div class="line">require ...</div><div class="line">])</div><div class="line">  .config([<span class="string">'$routeProvider'</span>, function($routeProvider) &#123;</div><div class="line">    $routeProvider</div><div class="line">      .when(<span class="string">'/devices'</span>, &#123;</div><div class="line">        template: require(<span class="string">'./device-list.jade'</span>),</div><div class="line">        controller: <span class="string">'DeviceListCtrl'</span></div><div class="line">      &#125;)</div><div class="line">  &#125;])</div><div class="line">  .run(function(editableOptions) &#123;</div><div class="line">    <span class="comment">// bootstrap3 theme for xeditables</span></div><div class="line">    editableOptions.theme = <span class="string">'bs3'</span></div><div class="line">  &#125;)</div><div class="line">  .controller(<span class="string">'DeviceListCtrl'</span>, require(<span class="string">'./device-list-controller'</span>))</div></pre></td></tr></table></figure>
 <ul>
-<li>整个研发的流程你是会怎么安排，每个时间都做什么</li>
-<li>你觉得从初期，中期，后期来讲测试的关注点分别在什么地方</li>
-<li>如果你的老板认为测试出现的数据并不能真正说明线上用户手上的应用质量的时候，应该怎么办？（测试人数远远少于线上的用户，测试时间也很有限，网络，环境都是模拟的等）</li>
+<li><code>res/app/device-list</code>， 这就是<code>index.js</code>对应模版的样式</li>
+<li><code>res/app/device-list.jade</code>，这里是整个index加载的界面元素模版，我们的标签也是加在这个地方，后面会详细来说的。<br>*<code>res/app/device-list-controller.js</code>，这个文件比较复杂，首先是通过<code>$scope</code>在这个<code>Controller</code>里面去动态获取了所有当前链接的机器，并且创建对应的服务和监听。</li>
 </ul>
-<p>总体来讲大家还是很配合的，现场一共分了四组，每组都有一个代表上来阐述自己team的一些想法。我总结下我的感受，大家目前的想法和做法都感觉差不多，并没有太大的突破。但在我感觉，移动互联网下，现在的模式只是一种过度，也许会有更颠覆式的模式出现。</p>
-<blockquote>
-<p>现场也有一位创业公司的CTO提出了一个point，我觉得值得去思考。是反推式的方法，或者说是自己想达到什么目标，什么效果然后反推去安排人，去安排时间。可能半年，一年的跨度，自己想达到什么样的质量，什么样的覆盖率，什么样的产品，然后去反推去制定这半年，一年的计划和人员安排<br>请不要喷我写的。。。。妹子当天不在。。。</p>
-</blockquote>
-<p><strong>请不要喷我写的。。。。妹子当天不在。。。</strong><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/5ef9eb7f4905b2ac8446475b72fd0b5c.jpg" alt="活动总结1"><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/0e9a19315a30ab91c05e7778ceb5c530.jpg" alt="活动总结1"></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>最后就是使用了亮瞎的方式补了一张合照。geektesting才第一期，路还很长。相信过程中我们能认识更多的专家，更多有技术的同学，更多有想法的同学。让这样一个集体真正的可以互相帮助，互相提升，达到一个新的高度。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-10-30%20%E4%B8%8B%E5%8D%8810.24.46.png" alt="活动总结1"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$scope.tracker = DeviceService.trackAll($scope)</div><div class="line">$scope.control = ControlService.create($scope.tracker.devices, <span class="string">'*ALL'</span>)</div><div class="line"></div><div class="line">$scope.columnDefinitions = DeviceColumnService</div></pre></td></tr></table></figure>
+<p>同时在里面定义了界面列表的元素有哪些并做了绑定以及一些初始化排序的工作，如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">$scope.columns = defaultColumns</div><div class="line"></div><div class="line">SettingsService.bind($scope, &#123;</div><div class="line">  target: <span class="string">'columns'</span></div><div class="line">, source: <span class="string">'deviceListColumns'</span></div><div class="line">&#125;)</div><div class="line"></div><div class="line">var defaultSort = &#123;</div><div class="line">  fixed: [</div><div class="line">    &#123; </div><div class="line">      name: <span class="string">'state'</span></div><div class="line">      , order: <span class="string">'asc'</span></div><div class="line">    &#125;</div><div class="line">  ]</div><div class="line">  , user: [</div><div class="line">    &#123;</div><div class="line">      name: <span class="string">'name'</span></div><div class="line">      , order: <span class="string">'asc'</span></div><div class="line">    &#125;</div><div class="line">  ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在整个结构中还有一个文件夹叫做<code>details</code>，这个文件夹中的界面，页面结构都是复用<code>util</code>下面的这些文件，这个待会儿再会来详细说，我们先继续来讲增加标签的事情。</p>
+<h2 id="增加标签"><a href="#增加标签" class="headerlink" title="增加标签"></a>增加标签</h2><p>如下增加<code>res/app/device-list.jade</code>的代码，<code>jade</code>严格控制锁进，所以要切记</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">uib-tab(active=<span class="string">'activeTabs.monkey'</span>, select=<span class="string">'focusSearch()'</span>, ng-<span class="keyword">if</span>=<span class="string">'!$root.basicMode'</span>)</div><div class="line">  uib-tab-heading</div><div class="line">    i.fa.fa-<span class="function">list</span></div><div class="line">    <span class="title">span</span><span class="params">(translate)</span> monkey</div><div class="line">  div.device-list-monkey-<span class="title">content</span><span class="params">(ng-<span class="keyword">if</span>=<span class="string">'activeTabs.monkey'</span>)</span>.selectable</div><div class="line"></div><div class="line">    device-list-<span class="title">monkey</span><span class="params">(tracker=<span class="string">'tracker'</span>, columns=<span class="string">'columns'</span>, sort=<span class="string">'sort'</span>, filter=<span class="string">'filter'</span>)</span>.selectable</div></pre></td></tr></table></figure>
+<p>这里增加了一个<code>activeTabs.monkey</code>这样一个标签，同时看到了这样一行代码d<code>evice-list-monkey(tracker=&#39;tracker&#39;, columns=&#39;columns&#39;, sort=&#39;sort&#39;, filter=&#39;filter&#39;).selectable，</code>可以先有个印象，待会儿再来说。增加了标签之后，需要在controller里面增加对应的定义和绑定，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$scope.activeTabs = &#123;</div><div class="line">  icons: <span class="keyword">true</span></div><div class="line">, details: <span class="keyword">false</span></div><div class="line">, monkey: <span class="keyword">false</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最后在<code>/res/app/</code>增加对应的<code>monkey</code>文件夹，同时记得在<code>index.js</code>中增加<code>require(&#39;./monkey&#39;).name</code>,引用当然下面文件的名字对应都要修改。Angular本身还是有一定规范的。</p>
+<h2 id="nodejs–-gt-JS"><a href="#nodejs–-gt-JS" class="headerlink" title="nodejs–&gt;JS"></a>nodejs–&gt;JS</h2><p>有了标签之后，那么接下来就说数据怎么传输过去了。那么这里就有两个问题，第一个问题就是怎么传到界面上，第二个问题就是怎么修改STF原有的数据。先来说第一个</p>
+<p>我们可以在<code>lib/units/app/index.js</code>中增加如下代码，这样在STF启动的时候这个服务就会生效。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">app.get(<span class="string">'/monkey/demo'</span>, function(req, res) &#123;</div><div class="line">          var monkey_map = &#123;tips:<span class="string">"this is demo"</span>&#125;</div><div class="line">          res.send(monkey_map)</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>同时我们可以在<code>res/app/device-list</code>中增加一个界面请求数据的方法，这里就要用到<code>$http</code>和<code>$scope</code>，在界面刷新的时候自动会进行对应url的请求。同时需要在jade中有一个ng的标签是等于<code>monkey_demo</code>，比如<code>(ng-model=&#39;sbmonkey&#39;)</code>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$scope.monkey = &#123;</div><div class="line">  monkey: $http.get(<span class="string">'/monkey/demo'</span>).success(function(data,header,config,status)&#123;</div><div class="line">    console.log(data.tips);</div><div class="line">    $scope.monkey.monkey_demo = data.tips</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>对于$scope实在太博大精深，这里share一张图，附上网盘地址：<a href="http://pan.baidu.com/s/1eROs7qM" target="_blank" rel="external">http://pan.baidu.com/s/1eROs7qM</a><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/e7da37b22e74c30fd22cef31a73849a2.jpg" alt="scope"></p>
+<p>在STF中很多实用到$rootScope的方法，这些我们都可以在源码中看到方法的定义，有兴趣的同学可以进一步查看。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="function">function <span class="title">Scope</span><span class="params">()</span> </span>&#123;</div><div class="line">  <span class="comment">// 省略属性定义</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">Scope.prototype = &#123;</div><div class="line">  constructor: Scope,</div><div class="line"></div><div class="line">  $<span class="keyword">new</span>: function(isolate) &#123;...&#125;,</div><div class="line"></div><div class="line">  $watch: function(watchExp, listener, objectEquality) &#123;...&#125;,</div><div class="line"></div><div class="line">  $watchGroup: function(watchExpressions, listener) &#123;...&#125;,</div><div class="line"></div><div class="line">  $watchCollection: function(obj, listener) &#123;...&#125;,</div><div class="line"></div><div class="line">  $digest: function() &#123;...&#125;,</div><div class="line"></div><div class="line">  $destroy: function() &#123;...&#125;,</div><div class="line"></div><div class="line">  $eval: function(expr, locals) &#123;...&#125;,</div><div class="line"></div><div class="line">  $evalAsync: function(expr) &#123;...&#125;,</div><div class="line"></div><div class="line">  $apply: function(expr) &#123;...&#125;,</div><div class="line"></div><div class="line">  $applyAsync: function(expr) &#123;...&#125;,</div><div class="line"></div><div class="line">  $on: function(name, listener) &#123;...&#125;,</div><div class="line"></div><div class="line">  $emit: function(name, args) &#123;...&#125;,</div><div class="line"></div><div class="line">  $broadcast: function(name, args) &#123;...&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h2 id="nodejs–-gt-STF-JS"><a href="#nodejs–-gt-STF-JS" class="headerlink" title="nodejs–&gt;STF JS"></a>nodejs–&gt;STF JS</h2><p>这里为了不破坏STF原本的架构，所以都基于STF原本的代码去修改的，所以还是比较好理解的。按照网上说的，从首先修改了res/app/device-list/column/device-column-service.js这个文件的第一列获取数据的代码，新定义了一个device.monkeytest()</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span>.<span class="keyword">exports</span> = <span class="function">function <span class="title">DeviceColumnService</span><span class="params">($filter, gettext)</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    state: DeviceStatusCell(&#123;</div><div class="line">      title: gettext(<span class="string">'Status'</span>)</div><div class="line">    , value: function(device) &#123;</div><div class="line">        <span class="keyword">return</span> device.monkeytest()</div><div class="line">      &#125;</div><div class="line">    &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接着我们需要修改这个数据来源，在<code>res/app/components/stf/device/enhance-device/enhance-device-service.js</code>，这里也定义了<code>device.monkeytest</code>的值是什么。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">  var monkey_aaa</div><div class="line">  device.monkeytest = function()&#123;$http.get(<span class="string">'/monkey/demo'</span>).success(function(data,header,config,status)&#123;</div><div class="line">    monkey_aaa = data.tips</div><div class="line"></div><div class="line">  &#125;).error(function(data,header,config,status)&#123;</div><div class="line">    console.log(data)</div><div class="line">  &#125;)</div><div class="line">    <span class="keyword">return</span> monkey_aaa</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/6d3335707565a0702cc06d93581e4011.png" alt="stf3-2"></p>
+<p>好吧，所以就是我大概理解了<code>Whatever</code>的意思。to be continue…..</p>
 
       
     </div>
@@ -390,7 +400,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/GeekTesting/" rel="tag">#GeekTesting</a>
+            <a href="/tags/STF/" rel="tag">#STF</a>
           
         </div>
       
@@ -399,12 +409,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/10/27/dahua2xu/" rel="next" title="首发—大话2专项测试试读">
+                <i class="fa fa-chevron-left"></i> 首发—大话2专项测试试读
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/03/27/jenkinsbuzuobusi/" rel="prev" title="Jenkins2.0 不作不会死之旅">
-                Jenkins2.0 不作不会死之旅 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/10/27/hexobuildblog/" rel="prev" title="Hexo搭建一套属于自己的Blog">
+                Hexo搭建一套属于自己的Blog <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -420,10 +434,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/03/01/GeekTestinginShangHai/"
-     data-title="第一届 Geek Testing in ShangHai 会议总结"
+        <div class="ds-share flat" data-thread-key="2016/10/27/STF3/"
+     data-title="STF修改之三——NodeJS-AngularJS修改传递数据"
      data-content=""
-     data-url="http://yoursite.com/2016/03/01/GeekTestinginShangHai/">
+     data-url="http://yoursite.com/2016/10/27/STF3/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -450,8 +464,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/03/01/GeekTestinginShangHai/"
-           data-title="第一届 Geek Testing in ShangHai 会议总结" data-url="http://yoursite.com/2016/03/01/GeekTestinginShangHai/">
+      <div class="ds-thread" data-thread-key="2016/10/27/STF3/"
+           data-title="STF修改之三——NodeJS-AngularJS修改传递数据" data-url="http://yoursite.com/2016/10/27/STF3/">
       </div>
     
   </div>
@@ -607,7 +621,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#初衷"><span class="nav-number">1.</span> <span class="nav-text">初衷</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开场"><span class="nav-number">2.</span> <span class="nav-text">开场</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#上午——性能专题"><span class="nav-number">3.</span> <span class="nav-text">上午——性能专题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下午——头脑风暴"><span class="nav-number">4.</span> <span class="nav-text">下午——头脑风暴</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#device界面解析"><span class="nav-number">1.</span> <span class="nav-text">device界面解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#增加标签"><span class="nav-number">2.</span> <span class="nav-text">增加标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nodejs–-gt-JS"><span class="nav-number">3.</span> <span class="nav-text">nodejs–>JS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nodejs–-gt-STF-JS"><span class="nav-number">4.</span> <span class="nav-text">nodejs–>STF JS</span></a></li></ol></div>
             
           </div>
         </section>
