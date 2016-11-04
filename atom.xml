@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-11-03T07:16:00.000Z</updated>
+  <updated>2016-11-04T07:02:41.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,16 +16,106 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>nineyears</title>
-    <link href="http://yoursite.com/2016/11/03/nineyears/"/>
-    <id>http://yoursite.com/2016/11/03/nineyears/</id>
-    <published>2016-11-03T07:16:00.000Z</published>
-    <updated>2016-11-03T07:16:00.000Z</updated>
+    <title>iOS 逆天框架 FLEX</title>
+    <link href="http://yoursite.com/2016/11/04/ios-flex/"/>
+    <id>http://yoursite.com/2016/11/04/ios-flex/</id>
+    <published>2016-11-04T06:35:40.000Z</published>
+    <updated>2016-11-04T07:02:41.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>今天无意之间看到了一个框架还是很逆天的，从首页的gif看就非常的逆天。<br>github的网站：<a href="https://github.com/Flipboard/FLEX" target="_blank" rel="external">https://github.com/Flipboard/FLEX</a></p>
+<p>FLEX是一个需要注入式的一种框架，从描述来看，功能非常多。主要来讲的话能够对正在运行的应用进行样式的修改和控件的读取。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/9549d16c6a342eeff046b314b24ed06a.gif" alt="gif"></p>
+<p>FLEX会赐予你SuperPower！！！</p>
+<ol>
+<li>可以查看控件的坐标和属性</li>
+<li>看任何一个对象的属性和成员变量</li>
+<li>动态修改属性和成员变量</li>
+<li>动态的调用实例和类方法<br>etc…</li>
+</ol>
+<p>FLEX正因为是注入式的，所以不需要在链接LLDB或者Xocde，或者是远程的调试服务器，它可以在本地随时随地的进行自有的操作和调试</p>
+<p>具体的一些主要功能点我们通过以下几个图来看下：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/120c625da15bc3f6416ffbcce24782da.gif" alt="gif2"></p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gif3.gif" alt="gif3"></p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/git4.gif" alt="gif4"></p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gif5.gif" alt="gif5"></p>
+<p>FLEX的设置也非常简单。在Build Settings中点击“＋”，选择Add User-Defined Settings</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/2d9bbd9b94c89365465d6459d8f615ec.png" alt="flex1"></p>
+<p>根据你打包的debug或者release属性进行相应的FLEX＊设置即可。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/0722ea8935a0d4542610d32979c4e0b1.png" alt="flex2"></p>
+<p>在你的项目中，你想使用FLEX的代码的地方加入#if DEBUG</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/e41310de1e83e9a93e4522a4b3754dce.png" alt="flex3"></p>
+]]></content>
     
     <summary type="html">
     
+      &lt;p&gt;今天无意之间看到了一个框架还是很逆天的，从首页的gif看就非常的逆天。&lt;br&gt;github的网站：&lt;a href=&quot;https://github.com/Flipboard/FLEX&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://githu
+    
     </summary>
     
+    
+      <category term="iOS测试" scheme="http://yoursite.com/tags/iOS%E6%B5%8B%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>九年来，移动互联测试有什么重要进展</title>
+    <link href="http://yoursite.com/2016/11/03/nineyears/"/>
+    <id>http://yoursite.com/2016/11/03/nineyears/</id>
+    <published>2016-11-03T07:16:00.000Z</published>
+    <updated>2016-11-03T09:28:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>看完<a href="http://daily.zhihu.com/story/8662398" target="_blank" rel="external">十年来，编程领域有什么重要进展</a>之后，好多人说还是想看看测试有什么进展。好吧，我就来“临摹”下。虽然我作为88年的老腊肉也没有工作九年，但估计也没有人比我合适来写了。不过总觉得让我这样一个要转行的人来写也不是那么合适了。</p>
+<h2 id="从业人员数量"><a href="#从业人员数量" class="headerlink" title="从业人员数量"></a>从业人员数量</h2><p>好吧，人家都从代码，标准上来讲，测试我能想到的第一个就是人员数量了。在2008年的时候行业内测试人员占比是很少的，更不要说移动互联网了。记得那个时候微软的很多员工说我很看好Android，旁人只当笑话。我在2009年底面试的时候看到了Android G1手机，完全都没有认知，更不要说知道什么移动互联网了。</p>
+<p>但到现在，移动互联网测试越来越多，无论是传统行业，互联网等企业，技术基本上都已经离不开移动互联网。随着时间的推移，每一年也有越来越多的应届生会去选择移动互联网测试岗位。</p>
+<p>明显可以感觉得到现在测试人员的数量越来越多，为了顺应潮流称自己是移动互联网测试的就更多了，但相对水平和素质也越来越层次不齐。不过总体来讲，移动互联网人员的从业数量在9年内几乎是几何倍数的增长，所以我放在了第一位。</p>
+<h2 id="培训机构层出不穷"><a href="#培训机构层出不穷" class="headerlink" title="培训机构层出不穷"></a>培训机构层出不穷</h2><p>其实我真的不想把测试写的那么low，但我还是要实事求是的。在移动互联网之前可能51CTO，51Testing，51xxx都是几家独大的，但在移动互联网时代，尤其是在2014年开始，在线教育，网络直播的兴起，越来越多的草根培训机构层出不穷。相应的，前互联网时代的那些机构却并没有很快的跟上移动互联网的脚步。2013年左右开始私人的培训机构开始越来越多，2015年开始针对测试培训创业的也开始逐渐增多。</p>
+<p>就移动互联网的9年来说，国内的测试培训机构到今天为止的状态可以说是叹为观止。当然这里其实不仅仅只针对测试，前端，后端，编程语言等都是如此。可以说这就是移动互联网本身所带来的一种变革。</p>
+<h2 id="人员要求"><a href="#人员要求" class="headerlink" title="人员要求"></a>人员要求</h2><p>2008年的时候我就不提了，估计公司里都不知道怎么定义移动互联网。<br>​<br>2009年前对于测试的要求就是你好好做功能测试，覆盖功能点，写不写用例等大多数公司都不是很关心，或者不是很懂</p>
+<p>2010年很多大公司还是正规化，需要编写正式的用例。但从业人员要求基本上也是能够会运行Android Monkey的Level</p>
+<p>2011年大家跌爬滚打开始摸索自动化，但总体还是比较关注用例积累和设计的</p>
+<p>2012年是一个分水岭，直接从功能跳跃到了自动化。UI自动化在当时火的不要不要的</p>
+<p>2013年对于自动化的要求更加变本加厉，不但要会使用更要会二次开发</p>
+<p>2014年从点扩展到了面，从自动化的使用扩展到了持续集成的了解和运用</p>
+<p>2015年功能，自动化都告了一个段落，整体开始测试平台化，工具化，技术上开始转移到了无线客户端的专项测试上</p>
+<p>2016年安全元年，全栈也好，敏捷也罢也都到了一个白热化阶段，要求测试不但要懂开发，还要懂业务，还要懂架构等等等。正应了我在2012年的时候说的那句话“应聘测试岗位比CTO都要难”。</p>
+<p>总体来讲，短短9年的时间，移动互联网测试的技能，素质要求简直是升华了好几次，不得不说大家现在对于测试的理解已经远远不是当初那种“门槛低，点点点”那种境界了。虽然很多人平时的工作依然还在点点点，但你们都有CTO的潜质啊喂。</p>
+<p>PS：虽然整体国内的要求在突飞猛进，但大家对于测试的理解依然没有太大的进步。同时测试这个行业整体人员的素质也没有太大的进步。未来还是很令人堪忧的。</p>
+<h2 id="技术"><a href="#技术" class="headerlink" title="技术"></a>技术</h2><p>前几天我还问一位小哥为什么TesterHome大会没有去，小哥回答我说测试大会有啥好去的，技术都是开发这边演进过来的。这话其实本质上也没有错，不过移动互联网技术本身从各个方面上还是进展非常多的。</p>
+<p>早期2009年底我刚开始做的时候，除了Android的官方文档以外，几乎没有任何的社区和博客有记载关于移动互联的测试技术（开发技术倒是蛮多的）</p>
+<p>2011年前基本上都是使用原生工具较多，应用本身复杂程度比较有限，同时开源工具也不是很多</p>
+<p>2011年之后Robotium等一大批UI测试自动化框架开始多了起来，网络上关于测试的技术文章也开始逐步增多。同时一大批测试网站，社区也崭露头角</p>
+<p>2012年之后应用本身复杂程度大幅度提升，移动互联测试很清楚的分成了App和OS两部分。同时开源测试框架，开源测试工具层出不穷。当时很火的并且做的不错的有Emmagee、athrun等等框架。同时测试活动对于代码的依赖和使用开始了一个新的篇章</p>
+<p>2013年过后移动互联所涉及到的技术已经开始有了本质的变化，客户端的内容更多的开始依赖服务端的架构和设计，大家的关注也从一个客户端到了整个一套系统的关注。曾经的Web测试技术，API测试技术，Server测试技术也都慢慢的融入了移动互联。这也是之后为什么测试的关注点会从一个点发展到一个面的根本原因</p>
+<p>截止到现在，技能树可见：<a href="https://zhuanlan.zhihu.com/p/23379241?refer=c_53429125。" target="_blank" rel="external">https://zhuanlan.zhihu.com/p/23379241?refer=c_53429125。</a><br>移动互联网本身的测试工具已经非常多，开源的框架和工具也在github上面遍地开花，另外技术本身已经出现了很多的组合使用。这一切与9年前可以说是天壤之别。现在测试技术可谓遍布各个网站，测试测试栈也几乎可以打通了整个常用的编程语言以及前后端系统。夸张点说现在的移动互联网的测试技术可以说也到了让很多人望而生畏的地步了。</p>
+<h2 id="测试意识"><a href="#测试意识" class="headerlink" title="测试意识"></a>测试意识</h2><p>这点的确是个很有趣的现象，但可能本质上和移动互联网关系并不是非常大，在我看来移动互联网只不过是加速了这一现象的发生。还是需要分成两个方面来讲，学术界和工业界</p>
+<p>早在2009-2012年间吧，整个测试行业可以这两方都有非常明显的活动。</p>
+<ul>
+<li>学术界：办协会，做会刊，登报纸。扩散各种测试用例设计的方法，理念。从国外引入各种新的概念和设计思维等等。当然测试毕竟也是研发过程中的一个环节，所以敏捷、DevOps的一些理论也都不会放过。</li>
+<li>工业界：工业界的同学其实真的忙的都和狗一样，哪里有空去研究别的呀。不过之前几年基本上都是在学习移动互联的新知识，大力研究UI自动化中。（这里对不起狗了，狗其实比我们要轻松多了）</li>
+</ul>
+<p>他们的关注点都在一些通用的方法论上，但这些在2013年之后基本上就消失殆尽了。一来这些在行业中慢慢的很难去赚钱了，二来移动互联网加速了整个国内互联网的各种属性，理论本身也很难去有落地实践的可能性了。但我觉得大家不得不承认一点，学术界在高校中被称之为“未来科学”是有道理的，因为他们在意识层面上的确比工业界的人们要先进的多。</p>
+<p>测试真正意义上的自动化可能是自动化的终极目标，测试本身我们可以简单的分成“测试前”、“测试中”和“测试后”，但现在看来工业界基本上都还在“测试中”这个环节折腾，测试的自动化有通过软件框架实现的，也有通过opencv摄像头＋硬件实现的。但无论是哪一种基本上都还在“测试执行自动化”。</p>
+<p>在早些年工业界很少有人去关心“测试数据，用例设计自动化”以及“测试结果分析，定位，质量自动化”这两个概念，但学术界很多人在研究，甚至国外已经研究了几十年了。近几年才慢慢开始有相关的实践在大公司中落地，比如咸鱼在前年demo的基于脑图的用例生成、遍历技术、线上数据双引擎、大数据质量大盘等等。相信这些在未来都是工业界测试技术可以突破的点。</p>
+<p>总而言之呢，移动互联网在这几年里的测试意识基本上是：<br>功能–&gt;UI自动化–&gt;接口自动化–&gt;Native、WebView、底层分层测试–&gt;持续集成–&gt;专项测试–&gt;平台话、智能化（数据准备、遍历、问题定位）–&gt;质量（贯穿整个系统和整个研发流程）</p>
+<p>其实回过头看看，还是比较可怕的。</p>
+<h2 id="活动"><a href="#活动" class="headerlink" title="活动"></a>活动</h2><p>这的确还是有本质变化的，早几年除了ChinaTest和51XXX的一些活动以外基本上就没有什么针对测试的活动和大会了。经过了这几年洗礼之后，行业我们能够看到不仅仅有很多的测试专属会议以外，BAT也会时不时的有一些技术交流大会，同时开发的各种大会也合入了很多测试的topic在其中。（我都当过讲师，我骄傲我自豪～）</p>
+<p>总体来讲早几年我还苦于没有人交流所以自创了“移动测试会”这样一个沙龙活动来主动和大家交流。现在的同学们就非常幸福了，因为交流的平台和渠道实在太多太多了。</p>
+<h2 id="测试定位"><a href="#测试定位" class="headerlink" title="测试定位"></a>测试定位</h2><p>这里的定位其实在别人眼中的定位，虽然我觉得可能这点上并没有太大的进展，但至少也是从0到1迈出了这样一步——公司里应该要有测试这个岗位和角色。不过国内基本上95%以上的公司和人都分不清楚QA和测试的区别，可悲可叹啊。</p>
+<p>移动互联网中，早期其实大部分公司都是不需要测试的，毕竟测试并不能帮助产品从无到有</p>
+<p>中期的时候呢，为了保证产品质量，引入了一部分传统互联网的测试来做移动互联网，但后来发现不行。一来移动互联网并没有想象中那么赚钱，所以在过程中很多公司其实有过一次测试的裁员。二来发现传统互联网的测试根本就hold不住移动互联网的产品，所以基本上后来就招聘那些有经验的移动互联网测试了</p>
+<p>后期，也就是差不多现在这个时间段。测试和开发、运维等都开始融合了，测试本身的定位也从原本的测试保证到了质量保证。这也算是符合中国国情的一种定位吧。</p>
+<p>简单来讲，这也算是一个很突出的进步了。测试这个角色其实在这几年间就是一个催化剂的作用，让人和企业都慢慢的意识到了测试的重要性，意识到了质量的重要性，意识到了测试并不是想象中的那么简单这样几个点。在我看来这些就足够了。</p>
+<p>话说很多人会问我人员数量上，技术上都有提升了，素质上对应也应该有提升啊。我只想说，不好意思，在我看来人员素质上没有任何提升。9年前测试在抱怨薪资低，qq群里每天水，然后做伸手党，9年后的今天依然如此，没有任何区别。我倒是可以考虑再写写“9年来，测试行业有什么没有任何进展”</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;看完&lt;a href=&quot;http://daily.zhihu.com/story/8662398&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;十年来，编程领域有什么重要进展&lt;/a&gt;之后，好多人说还是想看看测试有什么进展。好吧，我就来“临摹”下。虽然我作为8
+    
+    </summary>
+    
+    
+      <category term="个人回忆录" scheme="http://yoursite.com/tags/%E4%B8%AA%E4%BA%BA%E5%9B%9E%E5%BF%86%E5%BD%95/"/>
     
   </entry>
   
@@ -616,6 +706,42 @@
   </entry>
   
   <entry>
+    <title>你所需要了解的区块链技术</title>
+    <link href="http://yoursite.com/2016/10/03/keychain/"/>
+    <id>http://yoursite.com/2016/10/03/keychain/</id>
+    <published>2016-10-03T09:46:52.000Z</published>
+    <updated>2016-11-03T09:49:52.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近花了大概一周的时间把各个证券，git上关于区块链的文章和论文都看了一遍。我个人的理解已经和之前完全不同了，在这里和大家分享下我的理解吧</p>
+<p>起初知道区块链肯定都是因为比特币(bitcoin)，但对于其本身到底是什么根本不得而知，如果只是和别人交流的话可能最多知道区块链是一种比特币底层使用的加密方式。但真的去看相关文献的时候又会觉得云里雾里。不过可能真的隔行如隔山吧，也许金融行业出身的同学就能够更直接的理解了。</p>
+<p>而这次查看论文和文献我主要的目的是希望去了解区块链的本质，我并不想现在去了解实现，而是思想的本质，这个东西到底是怎么孕育而生的，中本聪又到底是怎么去思考和设计的。</p>
+<p>在我完整的阅读完了我找到的一系列2016年的白皮书和文献之后，我至少领悟到了一点，我之前对于区块链的理解实在太low太low。我相信所有人看完都会有两个很极端的看法：</p>
+<ul>
+<li>这绝对是未来科学，未来可挖掘潜力非常大，可以说是非常前卫的思想</li>
+<li>这就是bullshit，这不仅仅会颠覆金融行业，更会造成很大的恐慌</li>
+</ul>
+<p>从本质上来讲区块链的确会给人这样的感觉。</p>
+<h2 id="区块链1-0"><a href="#区块链1-0" class="headerlink" title="区块链1.0"></a>区块链1.0</h2><p>这是第一阶段的区块链运用，在于可编程货币的时候，目的就是达到全球货币统一化。虽然比特币已经是一个先驱者了，但真的要达到这个远景还是非常难的。但这里的区块链我觉得大部分人是比较好理解的，就是为了大大降低交易成本的一套系统，一套支持货币交易的系统</p>
+<h2 id="区块链2-0"><a href="#区块链2-0" class="headerlink" title="区块链2.0"></a>区块链2.0</h2><p>这是第二阶段，可编程金融，在github上面其实已经有了“智能合约”的项目，而区块链基于python等语言也有适应自己的可编程语言。目前已经在运用的领域有：p2p，登记，确权，智能管理等。不过总体还是基于金融行业.</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/0ac483c7aae1138d5c78e4492ef58a05.png" alt="keychain"><br>(图片来自于兴业证券的深度报告）</p>
+<h2 id="区块链3-0"><a href="#区块链3-0" class="headerlink" title="区块链3.0"></a>区块链3.0</h2><p>这就是我觉得大部分不可接受的阶段了，区块链的各个领域的普及。所以到3.0的时候我才认识到其实区块链和比特币的关系并不是我想的那么强绑定。区块链本身是一种技术，但更是一种思想和模式，如果要普及和应用，人们势必一定要先能理解这个模式和思想。</p>
+<p>为什么说会造成恐慌，原因就在于所谓的“去中心化”，这个前几天我在朋友圈里提到过，这点其实对于现在的整个生态是非常致命的。因为去中心化的思想本身就在于要简单化，将现在行业中过多的参与者，企业，中介等都去除掉。现在是人与人，人与物，将来是物与物。只有物与物的时候才会出现真正的信任制度。</p>
+<p>最后PS下，有人已经用区块链在测试中落地了，待我进一步了解哈</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近花了大概一周的时间把各个证券，git上关于区块链的文章和论文都看了一遍。我个人的理解已经和之前完全不同了，在这里和大家分享下我的理解吧&lt;/p&gt;
+&lt;p&gt;起初知道区块链肯定都是因为比特币(bitcoin)，但对于其本身到底是什么根本不得而知，如果只是和别人交流的话可能最多知
+    
+    </summary>
+    
+    
+      <category term="keychain" scheme="http://yoursite.com/tags/keychain/"/>
+    
+  </entry>
+  
+  <entry>
     <title>《大话移动App测试2.0》序开放试读</title>
     <link href="http://yoursite.com/2016/07/27/dahuaapp2/"/>
     <id>http://yoursite.com/2016/07/27/dahuaapp2/</id>
@@ -823,6 +949,80 @@
     
     
       <category term="GeekTesting" scheme="http://yoursite.com/tags/GeekTesting/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>RASPBERRY PI B+ 升级型 3 代 512m 开发板 初探</title>
+    <link href="http://yoursite.com/2014/11/04/RASPBERRY/"/>
+    <id>http://yoursite.com/2014/11/04/RASPBERRY/</id>
+    <published>2014-11-04T07:15:28.000Z</published>
+    <updated>2016-11-04T07:37:02.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>其实今天对于mac怎么烧raspbian还是很有疑惑的。完全不明白，首先先来看下树莓派。我是在淘宝上买的。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/pi1.jpg" alt="pi1"></p>
+<p>这个是树莓派B＋，四个usb，一个mini tf卡，一个网口，一个mini充电口，一个hdmi口主要是这样。</p>
+<p>先从官网下载raspbian 的img，下载完毕之后，将tf卡挂到mac上面。使用如下命令</p>
+<p><code>df -h</code></p>
+<p>查看当前挂载的disk</p>
+<p>一般默认tf卡这个挂载的就是disk1，接着使用sudo diskutil unmount /dev/disk1s1。<br>然后我们会看到disk1已经unmount了，这样我们就可以继续进行img的烧入。</p>
+<p>接着我们使用sudo dd bs=1m if=/Users/monkey/Downloads/2014-06-20-wheezy-raspbian.img of=/dev/rdisk1这里将img的路径换成自己系统中img所在的路径就ok啦。大概要过10分钟才会烧好。</p>
+<p>初次启动会看到如下界面：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/pi2.jpg" alt="pi2"></p>
+<p>接着就和bios的设置一样了，经过简单的设置之后你就可以进入raspbian系统了。因为我买了hdmi转接VGA的线，所以直接看到显示器上面显示。然后我还买了usb无线网络所以直接就可以链接上wifi了～～</p>
+<p>我补个过程图：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/pi3.png" alt="pi3"></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;其实今天对于mac怎么烧raspbian还是很有疑惑的。完全不明白，首先先来看下树莓派。我是在淘宝上买的。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://cdn.rawgit.com/monkeytest15/BlogPNG/master/pi1.jpg&quot; alt=&quot;p
+    
+    </summary>
+    
+    
+      <category term="RASPBERRY" scheme="http://yoursite.com/tags/RASPBERRY/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>swift开发第一个App</title>
+    <link href="http://yoursite.com/2014/08/04/swiftApp/"/>
+    <id>http://yoursite.com/2014/08/04/swiftApp/</id>
+    <published>2014-08-04T07:38:24.000Z</published>
+    <updated>2016-11-04T09:30:42.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>swift也出来那么多时间了。2048太高大上了，我们可以来看一个简单的app。</p>
+<h2 id="创建project"><a href="#创建project" class="headerlink" title="创建project"></a>创建project</h2><p>我们首先先创建一个新的swift的project</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit1.png" alt="swift1"></p>
+<p>在这里我们选择了single application,输入我们的应用名称，语言默认已经是swift</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swift2.png" alt="swift2"></p>
+<p>新建完毕之后我们看到的是这样的结构</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit3.png" alt="swift3"></p>
+<h2 id="创建我们的控件"><a href="#创建我们的控件" class="headerlink" title="创建我们的控件"></a>创建我们的控件</h2><p>点击左边面板中的Main.storyboard，这个是从object c很早xcode版本中就流传下来的工具。如同Android中的manifest.xml。接着我们看右下角的面板。选择“show the object library”标签之后，我们就可以直接拖拽控件到storyboard上面。</p>
+<p><img src="https://github.com/monkeytest15/BlogPNG/blob/master/swfit4.png" alt="swift4"></p>
+<p>在这里我们分别选择三个控件，一个是button，一个是text field，一个是webview。拖拽完毕之后我们可见如下图：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit5.png" alt="swift5"></p>
+<h2 id="定义我们的控件"><a href="#定义我们的控件" class="headerlink" title="定义我们的控件"></a>定义我们的控件</h2><p>我们接着需要在ViewController.swift中进行我们设置的控件的定义。在class ViewController: UIViewController {中添加如下两行:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@IBOutlet</span> var textField:UITextField!</div><div class="line"> <span class="meta">@IBOutlet</span> var webView:UIWebView!</div></pre></td></tr></table></figure>
+<p>这里的@IBOutlet是告诉swift，我设置的对象是和Interface Builder绑定的。</p>
+<h2 id="定义我们的Action"><a href="#定义我们的Action" class="headerlink" title="定义我们的Action"></a>定义我们的Action</h2><p>我们还有一个button，对。那么我们需要对这个button的行为进行定义。同样的在ViewController.swift中我们添加如下Action方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@IBAction</span> <span class="function">func <span class="title">didClickGo</span><span class="params">(AnyObject)</span> </span>&#123;</div><div class="line">    var text = textField.text</div><div class="line">    var url = NSURL.URLWithString(<span class="string">"http:"</span>+text)</div><div class="line">    var request = NSURLRequest(URL: url)</div><div class="line">    webView.loadRequest(request)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样我们就简单的从textfield的控件中得到text，然后进行一个网址的请求。</p>
+<h2 id="控件与代码的关联"><a href="#控件与代码的关联" class="headerlink" title="控件与代码的关联"></a>控件与代码的关联</h2><p>完成了以上的步骤，关键是我们的代码和控件还没有绑定起来。Android中通过findviewbyid可以和manifest.xml中的控件进行绑定，而在storyboard中我们只需要进行简单的操作就可以完成这一切。如下图我们首先选择storyboard，然后选择右边面板最后一个标签。</p>
+<p>接着我们先关联text和webview，我们只需要拖动下方相应的控件并指定到storyboard上面即可。如下图所示：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit6.png" alt="swift6"><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit7.png" alt="swift7"><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit8.png" alt="swift8"></p>
+<h2 id="来看看我们的成果吧"><a href="#来看看我们的成果吧" class="headerlink" title="来看看我们的成果吧"></a>来看看我们的成果吧</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit9.png" alt="swift9"></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;swift也出来那么多时间了。2048太高大上了，我们可以来看一个简单的app。&lt;/p&gt;
+&lt;h2 id=&quot;创建project&quot;&gt;&lt;a href=&quot;#创建project&quot; class=&quot;headerlink&quot; title=&quot;创建project&quot;&gt;&lt;/a&gt;创建project&lt;/
+    
+    </summary>
+    
+    
+      <category term="Swift" scheme="http://yoursite.com/tags/Swift/"/>
     
   </entry>
   
