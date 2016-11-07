@@ -139,6 +139,69 @@
       <div class="body-wrap">
         
   
+    <article id="post-ReactNativeBuiildView" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/27/ReactNativeBuiildView/">ReactNative 大会卖萌 View</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天早上看到了FB发的一个关于RN框架开发过程中的故事的文章，真的感觉很好啊。一个开源的项目，很多人参与进来真心是个不错的事情，真不知道TesterHome啥时候能有人来merge代码，😢😢😢。</p>
+<p>根据之前的ReactNative扫盲实践，我们继续来看一些组合View怎么来做。使用RN比Native的实现成本的确低了很多。不过性能方面的话，等以后复杂的应用再来对比了。</p>
+<p>我们下载了一个大会的banner，放到我们的View中。如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;Text style=&#123;&#123;fontSize:16&#125;&#125;&gt;'测试大会来啦'&lt;/Text&gt;</div><div class="line">&lt;Image style=&#123;&#123;flex: 1, height: 300, resizeMode: Image.resizeMode.stretch&#125;&#125; source=&#123; require('./img/meeting.png')&#125; /&gt;</div></pre></td></tr></table></figure>
+<p>然后是选择票的种类，这里选择了picker选择器：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">var AwesomeProject = React.createClass(&#123;</div><div class="line">   getInitialState: function() &#123;</div><div class="line">    return &#123;</div><div class="line">      language: '',</div><div class="line">    &#125;;</div><div class="line">  &#125;,</div><div class="line">  render() &#123;</div><div class="line">    return (</div><div class="line">&lt;View  style=&#123;&#123;marginLeft:10,marginTop:10&#125;&#125;&gt;</div><div class="line"></div><div class="line">        &lt;Text &gt;</div><div class="line">         长的漂亮的都来买票了</div><div class="line">        &lt;/Text&gt;</div><div class="line">        &lt;Picker </div><div class="line">          mode=&#123;'dropdown'&#125;</div><div class="line">          style=&#123;&#123;width:200&#125;&#125;</div><div class="line">          selectedValue=&#123;this.state.language&#125;</div><div class="line">          onValueChange=&#123;(value) =&gt; this.setState(&#123;language: value&#125;)&#125;&gt;</div><div class="line">          &lt;Picker.Item label="个人早鸟无虫吃票" value="个人早鸟无虫吃票" /&gt;</div><div class="line">          &lt;Picker.Item label="个人早鸟有虫吃票" value="个人早鸟有虫吃票" /&gt;</div><div class="line">           &lt;Picker.Item label="组队早鸟被虫吃票" value="组队早鸟被虫吃票" /&gt;</div><div class="line">          &lt;Picker.Item label="长的帅的人的票" value="长的帅的人的票" /&gt;</div><div class="line">        &lt;/Picker&gt;</div><div class="line">        &lt;Text&gt;当前选择的是:&#123;this.state.language&#125;&lt;/Text&gt;</div><div class="line">      &lt;/View&gt;</div></pre></td></tr></table></figure>
+<p>可以见下效果图。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-03%20%E4%B8%8A%E5%8D%8812.50.01.png" alt="reactnative1"></p>
+<p>另外附上图片的一些设置方法：<br>通过Image.resizeMode来适配图片布局，包括contain, cover, stretch<br>默认不设置模式等于cover模式</p>
+<ul>
+<li>contain模式自适应宽高，给出高度值即可</li>
+<li>cover铺满容器，但是会做截取</li>
+<li>stretch铺满容器，拉伸</li>
+</ul>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/10/27/ReactNativeBuiildView/" class="archive-article-date">
+  	<time datetime="2016-10-26T18:08:04.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-10-27</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/">ReactNative</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-ReactNativeNew" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -663,7 +726,7 @@
 
 
   
-    <article id="post-RASPBERRY" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-swift2app" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <input type="hidden" class="isFancy" />
@@ -673,7 +736,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2014/11/04/RASPBERRY/">RASPBERRY PI B+ 升级型 3 代 512m 开发板 初探</a>
+      <a class="article-title" href="/2014/11/06/swift2app/">Swift 第二个 app</a>
     </h1>
   
 
@@ -681,99 +744,32 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>其实今天对于mac怎么烧raspbian还是很有疑惑的。完全不明白，首先先来看下树莓派。我是在淘宝上买的。</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/pi1.jpg" alt="pi1"></p>
-<p>这个是树莓派B＋，四个usb，一个mini tf卡，一个网口，一个mini充电口，一个hdmi口主要是这样。</p>
-<p>先从官网下载raspbian 的img，下载完毕之后，将tf卡挂到mac上面。使用如下命令</p>
-<p><code>df -h</code></p>
-<p>查看当前挂载的disk</p>
-<p>一般默认tf卡这个挂载的就是disk1，接着使用sudo diskutil unmount /dev/disk1s1。<br>然后我们会看到disk1已经unmount了，这样我们就可以继续进行img的烧入。</p>
-<p>接着我们使用sudo dd bs=1m if=/Users/monkey/Downloads/2014-06-20-wheezy-raspbian.img of=/dev/rdisk1这里将img的路径换成自己系统中img所在的路径就ok啦。大概要过10分钟才会烧好。</p>
-<p>初次启动会看到如下界面：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/pi2.jpg" alt="pi2"></p>
-<p>接着就和bios的设置一样了，经过简单的设置之后你就可以进入raspbian系统了。因为我买了hdmi转接VGA的线，所以直接看到显示器上面显示。然后我还买了usb无线网络所以直接就可以链接上wifi了～～</p>
-<p>我补个过程图：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/pi3.png" alt="pi3"></p>
+        <p>我们继续第二个app</p>
+<p>我们首先先创建一个新的swift的project<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swift2-1.png" alt="swift1"></p>
+<p>我们在storyboard中增加一个PickerView，然后将PickerView控件和ViewController.swift做绑定，具体操作可以参见第一篇swift文章，同时我们增加这个Picker中的内容列表</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-06%20%E4%B8%8B%E5%8D%8812.42.29.png" alt="swift2"></p>
+<p>我们继续添加应用启动时候需要加载的内容，如下代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function">override func <span class="title">viewDidLoad</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.viewDidLoad()</div><div class="line">    <span class="comment">// Do any additional setup after loading the view, typically from a nib.</span></div><div class="line"></div><div class="line">    MyPickerView.dataSource = self</div><div class="line">    MyPickerView.delegate = self</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在这里，我们看到了左边有两个error，这是因为我们picker的data和delegate都还没有做实现，之后我们会添加的</p>
+<p>接着我们需要对于ViewController文件做一个扩展，我们新增加一个swift文件，该文件中我们需要去实现data和delegate，我们先查看UIPickerViewDataSource这个协议下面有哪些方法。如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">protocol UIPickerViewDataSource : NSObjectProtocol &#123;</div><div class="line"></div><div class="line">    <span class="comment">// returns the number of 'columns' to display.</span></div><div class="line">    <span class="function">func <span class="title">numberOfComponentsInPickerView</span><span class="params">(pickerView: UIPickerView)</span> -&gt; Int</span></div><div class="line"></div><div class="line">    <span class="comment">// returns the # of rows in each component..</span></div><div class="line">    func <span class="title">pickerView</span><span class="params">(pickerView: UIPickerView, numberOfRowsInComponent component: Int)</span> -&gt; Int</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在这里，两个方法都不是可选的，故而我们都需要去重写这两个方法。新文件代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//</span></div><div class="line"><span class="comment">//  ViewControllerExtension.swift</span></div><div class="line"><span class="comment">// </span></div><div class="line"><span class="comment">//</span></div><div class="line"><span class="comment">//  Created by Monkey on 14-10-10.</span></div><div class="line"><span class="comment">//  Copyright (c) 2014年 Monkey. All rights reserved.</span></div><div class="line"><span class="comment">//</span></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">import</span> UIKit</div><div class="line"></div><div class="line">extension ViewController: UIPickerViewDataSource &#123;</div><div class="line">    <span class="comment">// returns the number of 'columns' to display.</span></div><div class="line">    <span class="function">func <span class="title">numberOfComponentsInPickerView</span><span class="params">(pickerView: UIPickerView)</span> -&gt; Int</span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="number">1</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// returns the # of rows in each component..</span></div><div class="line">    <span class="function">func <span class="title">pickerView</span><span class="params">(pickerView: UIPickerView, numberOfRowsInComponent component: Int)</span> -&gt; Int</span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> ListNames.count</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">extension ViewController: UIPickerViewDelegate&#123;</div><div class="line"></div><div class="line">    <span class="function">func <span class="title">pickerView</span><span class="params">(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int)</span> -&gt; String! </span>&#123;</div><div class="line">        <span class="keyword">return</span> ListNames[row]</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们需要新建一个ViewController，然后让第一个View的按钮和第二个View做跳转绑定。我们选择第二项。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swift2-2.png" alt="swift2-2"></p>
+<p>同样的，我们还需要在第二个界面上添加一个labelView，从而来接受第一个界面选择的字符串<br>我们接着需要在第一个ViewController中实现按钮的跳转，并将值去传到第二个界面上面。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line">    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) &#123;</div><div class="line">        if segue.identifier == "GoToSecondView" &#123;</div><div class="line">            let index = MyPickerView.selectedRowInComponent(0)</div><div class="line"></div><div class="line">            var NickName: String?</div><div class="line">            switch index &#123;</div><div class="line">            case 0:</div><div class="line">                NickName = "恒温"</div><div class="line">            case 1:</div><div class="line">                NickName = "Monkey"</div><div class="line">            case 2:</div><div class="line">                NickName = "Kirito"</div><div class="line">            case 3:</div><div class="line">                NickName = "大东"</div><div class="line">            case 4:</div><div class="line">                NickName = "国文"</div><div class="line">            default:</div><div class="line">                NickName = nil</div><div class="line">        &#125;</div><div class="line">            //这里我们需要定义这个动作是要跳转到第二个界面，并且将第一个界面上面的字符串传给第二个界面的一个对象</div><div class="line">            var vc = segue.destinationViewController as SecondViewController</div><div class="line">            vc.NickName = NickName</div><div class="line">    &#125;</div><div class="line"></div><div class="line">同时我们第二个界面也需要实现，如下</div><div class="line"></div><div class="line">```java</div><div class="line">//</div><div class="line">//  SecondViewController.swift</div><div class="line">// </div><div class="line">//</div><div class="line">//  Created by Monkey on 14-10-10.</div><div class="line">//  Copyright (c) 2014年 Monkey. All rights reserved.</div><div class="line">//</div><div class="line"></div><div class="line">import UIKit</div><div class="line"></div><div class="line">class SecondViewController: UIViewController &#123;</div><div class="line"></div><div class="line"></div><div class="line">    @IBOutlet weak var ReslutLabel: UILabel!</div><div class="line"></div><div class="line">    var NickName: String?</div><div class="line">    override func viewDidLoad() &#123;</div><div class="line">        super.viewDidLoad()</div><div class="line"></div><div class="line">        if NickName != nil&#123;</div><div class="line">            ReslutLabel.text = NickName!+"是奇异博士"</div><div class="line">        &#125;</div><div class="line"></div><div class="line"></div><div class="line">        // Do any additional setup after loading the view, typically from a nib.</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    override func didReceiveMemoryWarning() &#123;</div><div class="line">        super.didReceiveMemoryWarning()</div><div class="line">        // Dispose of any resources that can be recreated.</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
       
     </div>
     <div class="article-info article-info-index">
       
-      <a href="/2014/11/04/RASPBERRY/" class="archive-article-date">
-  	<time datetime="2014-11-04T07:15:28.000Z" itemprop="datePublished"><i class="icon-clock"></i>2014-11-04</time>
+      <a href="/2014/11/06/swift2app/" class="archive-article-date">
+  	<time datetime="2014-11-06T04:17:23.000Z" itemprop="datePublished"><i class="icon-clock"></i>2014-11-06</time>
 </a>
       
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RASPBERRY/">RASPBERRY</a></li></ul>
-	</div>
-
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-swiftApp" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/08/04/swiftApp/">swift开发第一个App</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>swift也出来那么多时间了。2048太高大上了，我们可以来看一个简单的app。</p>
-<h2 id="创建project"><a href="#创建project" class="headerlink" title="创建project"></a>创建project</h2><p>我们首先先创建一个新的swift的project</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit1.png" alt="swift1"></p>
-<p>在这里我们选择了single application,输入我们的应用名称，语言默认已经是swift</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swift2.png" alt="swift2"></p>
-<p>新建完毕之后我们看到的是这样的结构</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit3.png" alt="swift3"></p>
-<h2 id="创建我们的控件"><a href="#创建我们的控件" class="headerlink" title="创建我们的控件"></a>创建我们的控件</h2><p>点击左边面板中的Main.storyboard，这个是从object c很早xcode版本中就流传下来的工具。如同Android中的manifest.xml。接着我们看右下角的面板。选择“show the object library”标签之后，我们就可以直接拖拽控件到storyboard上面。</p>
-<p><img src="https://github.com/monkeytest15/BlogPNG/blob/master/swfit4.png" alt="swift4"></p>
-<p>在这里我们分别选择三个控件，一个是button，一个是text field，一个是webview。拖拽完毕之后我们可见如下图：</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit5.png" alt="swift5"></p>
-<h2 id="定义我们的控件"><a href="#定义我们的控件" class="headerlink" title="定义我们的控件"></a>定义我们的控件</h2><p>我们接着需要在ViewController.swift中进行我们设置的控件的定义。在class ViewController: UIViewController {中添加如下两行:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@IBOutlet</span> var textField:UITextField!</div><div class="line"> <span class="meta">@IBOutlet</span> var webView:UIWebView!</div></pre></td></tr></table></figure>
-<p>这里的@IBOutlet是告诉swift，我设置的对象是和Interface Builder绑定的。</p>
-<h2 id="定义我们的Action"><a href="#定义我们的Action" class="headerlink" title="定义我们的Action"></a>定义我们的Action</h2><p>我们还有一个button，对。那么我们需要对这个button的行为进行定义。同样的在ViewController.swift中我们添加如下Action方法。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@IBAction</span> <span class="function">func <span class="title">didClickGo</span><span class="params">(AnyObject)</span> </span>&#123;</div><div class="line">    var text = textField.text</div><div class="line">    var url = NSURL.URLWithString(<span class="string">"http:"</span>+text)</div><div class="line">    var request = NSURLRequest(URL: url)</div><div class="line">    webView.loadRequest(request)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这样我们就简单的从textfield的控件中得到text，然后进行一个网址的请求。</p>
-<h2 id="控件与代码的关联"><a href="#控件与代码的关联" class="headerlink" title="控件与代码的关联"></a>控件与代码的关联</h2><p>完成了以上的步骤，关键是我们的代码和控件还没有绑定起来。Android中通过findviewbyid可以和manifest.xml中的控件进行绑定，而在storyboard中我们只需要进行简单的操作就可以完成这一切。如下图我们首先选择storyboard，然后选择右边面板最后一个标签。</p>
-<p>接着我们先关联text和webview，我们只需要拖动下方相应的控件并指定到storyboard上面即可。如下图所示：</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit6.png" alt="swift6"><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit7.png" alt="swift7"><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit8.png" alt="swift8"></p>
-<h2 id="来看看我们的成果吧"><a href="#来看看我们的成果吧" class="headerlink" title="来看看我们的成果吧"></a>来看看我们的成果吧</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit9.png" alt="swift9"></p>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2014/08/04/swiftApp/" class="archive-article-date">
-  	<time datetime="2014-08-04T07:38:24.000Z" itemprop="datePublished"><i class="icon-clock"></i>2014-08-04</time>
-</a>
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
 	</div>
 
       
@@ -795,7 +791,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 
@@ -856,7 +852,7 @@
     
     	<section class="tools-section tools-section-tag">
     			<div class="widget tagcloud" id="js-tagcloud">
-    				<a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/《大话移动App测试》/" style="font-size: 20px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 20px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 20px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a>
+    				<a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 20px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 20px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 20px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
     			</div>
     	</section>
     

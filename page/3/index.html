@@ -6,17 +6,16 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>标签 | Monkey`s Note</title>
+  <title>Monkey`s Note</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="舍得舍得，有舍才有得">
 <meta property="og:type" content="website">
-<meta property="og:title" content="标签">
-<meta property="og:url" content="http://yoursite.com/tags/index.html">
+<meta property="og:title" content="Monkey`s Note">
+<meta property="og:url" content="http://yoursite.com/page/3/index.html">
 <meta property="og:site_name" content="Monkey`s Note">
 <meta property="og:description" content="舍得舍得，有舍才有得">
-<meta property="og:updated_time" content="2016-10-28T08:59:07.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="标签">
+<meta name="twitter:title" content="Monkey`s Note">
 <meta name="twitter:description" content="舍得舍得，有舍才有得">
   
     <link rel="alternative" href="/atom.xml" title="Monkey`s Note" type="application/atom+xml">
@@ -138,7 +137,9 @@
 </nav>
 
       <div class="body-wrap">
-        <article id="page-undefined" class="article article-type-page" itemscope itemprop="blogPost">
+        
+  
+    <article id="post-RASPBERRY" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <input type="hidden" class="isFancy" />
@@ -147,8 +148,8 @@
       <header class="article-header">
         
   
-    <h1 class="article-title" itemprop="name">
-      标签
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/11/04/RASPBERRY/">RASPBERRY PI B+ 升级型 3 代 512m 开发板 初探</a>
     </h1>
   
 
@@ -156,15 +157,31 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>其实今天对于mac怎么烧raspbian还是很有疑惑的。完全不明白，首先先来看下树莓派。我是在淘宝上买的。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/pi1.jpg" alt="pi1"></p>
+<p>这个是树莓派B＋，四个usb，一个mini tf卡，一个网口，一个mini充电口，一个hdmi口主要是这样。</p>
+<p>先从官网下载raspbian 的img，下载完毕之后，将tf卡挂到mac上面。使用如下命令</p>
+<p><code>df -h</code></p>
+<p>查看当前挂载的disk</p>
+<p>一般默认tf卡这个挂载的就是disk1，接着使用sudo diskutil unmount /dev/disk1s1。<br>然后我们会看到disk1已经unmount了，这样我们就可以继续进行img的烧入。</p>
+<p>接着我们使用sudo dd bs=1m if=/Users/monkey/Downloads/2014-06-20-wheezy-raspbian.img of=/dev/rdisk1这里将img的路径换成自己系统中img所在的路径就ok啦。大概要过10分钟才会烧好。</p>
+<p>初次启动会看到如下界面：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/pi2.jpg" alt="pi2"></p>
+<p>接着就和bios的设置一样了，经过简单的设置之后你就可以进入raspbian系统了。因为我买了hdmi转接VGA的线，所以直接看到显示器上面显示。然后我还买了usb无线网络所以直接就可以链接上wifi了～～</p>
+<p>我补个过程图：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/pi3.png" alt="pi3"></p>
+
       
     </div>
     <div class="article-info article-info-index">
       
-      <a href="/tags/index.html" class="archive-article-date">
-  	<time datetime="2016-10-27T06:45:17.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-10-27</time>
+      <a href="/2014/11/04/RASPBERRY/" class="archive-article-date">
+  	<time datetime="2014-11-04T07:15:28.000Z" itemprop="datePublished"><i class="icon-clock"></i>2014-11-04</time>
 </a>
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RASPBERRY/">RASPBERRY</a></li></ul>
+	</div>
+
       
 
       <div class="clearfix"></div>
@@ -172,27 +189,75 @@
   </div>
 </article>
 
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-swiftApp" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/08/04/swiftApp/">swift开发第一个App</a>
+    </h1>
   
 
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>swift也出来那么多时间了。2048太高大上了，我们可以来看一个简单的app。</p>
+<h2 id="创建project"><a href="#创建project" class="headerlink" title="创建project"></a>创建project</h2><p>我们首先先创建一个新的swift的project</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit1.png" alt="swift1"></p>
+<p>在这里我们选择了single application,输入我们的应用名称，语言默认已经是swift</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swift2.png" alt="swift2"></p>
+<p>新建完毕之后我们看到的是这样的结构</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit3.png" alt="swift3"></p>
+<h2 id="创建我们的控件"><a href="#创建我们的控件" class="headerlink" title="创建我们的控件"></a>创建我们的控件</h2><p>点击左边面板中的Main.storyboard，这个是从object c很早xcode版本中就流传下来的工具。如同Android中的manifest.xml。接着我们看右下角的面板。选择“show the object library”标签之后，我们就可以直接拖拽控件到storyboard上面。</p>
+<p><img src="https://github.com/monkeytest15/BlogPNG/blob/master/swfit4.png" alt="swift4"></p>
+<p>在这里我们分别选择三个控件，一个是button，一个是text field，一个是webview。拖拽完毕之后我们可见如下图：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit5.png" alt="swift5"></p>
+<h2 id="定义我们的控件"><a href="#定义我们的控件" class="headerlink" title="定义我们的控件"></a>定义我们的控件</h2><p>我们接着需要在ViewController.swift中进行我们设置的控件的定义。在class ViewController: UIViewController {中添加如下两行:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@IBOutlet</span> var textField:UITextField!</div><div class="line"> <span class="meta">@IBOutlet</span> var webView:UIWebView!</div></pre></td></tr></table></figure>
+<p>这里的@IBOutlet是告诉swift，我设置的对象是和Interface Builder绑定的。</p>
+<h2 id="定义我们的Action"><a href="#定义我们的Action" class="headerlink" title="定义我们的Action"></a>定义我们的Action</h2><p>我们还有一个button，对。那么我们需要对这个button的行为进行定义。同样的在ViewController.swift中我们添加如下Action方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@IBAction</span> <span class="function">func <span class="title">didClickGo</span><span class="params">(AnyObject)</span> </span>&#123;</div><div class="line">    var text = textField.text</div><div class="line">    var url = NSURL.URLWithString(<span class="string">"http:"</span>+text)</div><div class="line">    var request = NSURLRequest(URL: url)</div><div class="line">    webView.loadRequest(request)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样我们就简单的从textfield的控件中得到text，然后进行一个网址的请求。</p>
+<h2 id="控件与代码的关联"><a href="#控件与代码的关联" class="headerlink" title="控件与代码的关联"></a>控件与代码的关联</h2><p>完成了以上的步骤，关键是我们的代码和控件还没有绑定起来。Android中通过findviewbyid可以和manifest.xml中的控件进行绑定，而在storyboard中我们只需要进行简单的操作就可以完成这一切。如下图我们首先选择storyboard，然后选择右边面板最后一个标签。</p>
+<p>接着我们先关联text和webview，我们只需要拖动下方相应的控件并指定到storyboard上面即可。如下图所示：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit6.png" alt="swift6"><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit7.png" alt="swift7"><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit8.png" alt="swift8"></p>
+<h2 id="来看看我们的成果吧"><a href="#来看看我们的成果吧" class="headerlink" title="来看看我们的成果吧"></a>来看看我们的成果吧</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit9.png" alt="swift9"></p>
 
-
-<div class="share_jia">
-	<!-- JiaThis Button BEGIN -->
-	<div class="jiathis_style">
-		<span class="jiathis_txt">Share to: &nbsp; </span>
-		<a class="jiathis_button_facebook"></a> 
-	    <a class="jiathis_button_twitter"></a>
-	    <a class="jiathis_button_plus"></a> 
-	    <a class="jiathis_button_tsina"></a>
-		<a class="jiathis_button_cqq"></a>
-		<a class="jiathis_button_douban"></a>
-		<a class="jiathis_button_weixin"></a>
-		<a class="jiathis_button_tumblr"></a>
-    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2014/08/04/swiftApp/" class="archive-article-date">
+  	<time datetime="2014-08-04T07:38:24.000Z" itemprop="datePublished"><i class="icon-clock"></i>2014-08-04</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
 	</div>
-	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
-	<!-- JiaThis Button END -->
-</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
 
 
 
@@ -200,6 +265,15 @@
 
 
 
+
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    </nav>
+  
 
 
       </div>
@@ -221,7 +295,7 @@
 		fancybox: true,
 		mathjax: false,
 		animate: true,
-		isHome: false,
+		isHome: true,
 		isPost: false,
 		isArchive: false,
 		isTag: false,

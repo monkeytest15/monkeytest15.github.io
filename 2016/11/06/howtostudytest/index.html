@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://yoursite.com">
+  <title>如何做好移动互联网应用测试 | Monkey`s Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="首先很高兴的是移动测试会第八期在ucloud的赞助下非常非常圆满的成功了。人真的越来越多，妹子也越来越漂亮了。同时感谢小A和永达以及小马试驾创业公司的支持。移动测试会虽然最早是我个人创立的，但是一个人的能力毕竟有限，所以这第八期说明了团结就是力量：），也希望之后大家更多的来支持我们，本次活动的链接：http://www.douban.com/event/22861768/
+11月8号支付宝上海要开">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何做好移动互联网应用测试">
+<meta property="og:url" content="http://yoursite.com/2016/11/06/howtostudytest/index.html">
+<meta property="og:site_name" content="Monkey`s Note">
+<meta property="og:description" content="首先很高兴的是移动测试会第八期在ucloud的赞助下非常非常圆满的成功了。人真的越来越多，妹子也越来越漂亮了。同时感谢小A和永达以及小马试驾创业公司的支持。移动测试会虽然最早是我个人创立的，但是一个人的能力毕竟有限，所以这第八期说明了团结就是力量：），也希望之后大家更多的来支持我们，本次活动的链接：http://www.douban.com/event/22861768/
+11月8号支付宝上海要开">
+<meta property="og:updated_time" content="2016-11-06T04:55:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何做好移动互联网应用测试">
+<meta name="twitter:description" content="首先很高兴的是移动测试会第八期在ucloud的赞助下非常非常圆满的成功了。人真的越来越多，妹子也越来越漂亮了。同时感谢小A和永达以及小马试驾创业公司的支持。移动测试会虽然最早是我个人创立的，但是一个人的能力毕竟有限，所以这第八期说明了团结就是力量：），也希望之后大家更多的来支持我们，本次活动的链接：http://www.douban.com/event/22861768/
+11月8号支付宝上海要开">
+  
+    <link rel="alternative" href="/atom.xml" title="Monkey`s Note" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/assets/img/favicon.ico">
+  
+  <link rel="stylesheet" href="/main.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/blogImg/litten.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/photos">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">标签</a>
+    			
+    			
+            
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+		        
+					<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+		        
+					<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/blogImg/litten.png" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/photos">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-howtostudytest" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      如何做好移动互联网应用测试
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>首先很高兴的是移动测试会第八期在ucloud的赞助下非常非常圆满的成功了。人真的越来越多，妹子也越来越漂亮了。同时感谢小A和永达以及小马试驾创业公司的支持。移动测试会虽然最早是我个人创立的，但是一个人的能力毕竟有限，所以这第八期说明了团结就是力量：），也希望之后大家更多的来支持我们，本次活动的链接：<a href="http://www.douban.com/event/22861768/" target="_blank" rel="external">http://www.douban.com/event/22861768/</a></p>
+<p>11月8号支付宝上海要开始一天的专场招聘，所以最近我面试也非常的频繁。今天的活动我也碰见了一些朋友来咨询我，所以在这里我想小小的谈论下如何进行移动无线应用的测试学习。</p>
+<p>为什么我定位移动无线互联网的测试，还是应用的测试呢，因为我个人就是做应用测试的，所以我系统测试也做过，不过不深入，所以我就不想去讨论自己不熟悉的领域了。其实在很久前我画过一张技能树的图，也许比较粗糙，但是也还是有价值的。blog链接见：<a href="http://blog.sina.com.cn/s/blog_7022adbf0101b31w.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_7022adbf0101b31w.html</a></p>
+<p>在之前的文章中也已经提到过了行业中的几类人，那么我们应该怎么如何客观的学习呢？请不要觉得自己已经工作很多时间就不愿意往下看了，反正看了你也不少块肉。请跟着以下的文字慢慢阅读，问问自己达到几点，不要自欺欺人就好。</p>
+<p>现在不会做测试的拼命到处问怎么做测试，现在在手动测试的拼命问怎么做自动化，现在做自动化的拼命问怎么写测试框架，现在写测试框架的拼命让团队使用，现在写框架并且让团队使用的拼命问除了维护框架还有什么别的可以做，现在没有事情做的拼命在问到底测试做什么呢？</p>
+<p>不知道每天会有多少人，每秒钟会有多少人会去问怎么做自动化，多少人会去问自己发展方向是什么，学习方向又是什么。我很明确的说，你没有方向原因在于你的无知，人最大的敌人就是恐惧和无知，两者相辅相成，最终就是一事无成。你问那么多有什么用，踏踏实实的先开始学有什么不好。<br>比如你要学习移动互联网的无线应用测试了，比如你要开始学习Android的应用测试了。那么首先第一步你先看google 提供的文档吧，sdk文档不说详细，先浏览一遍吧。然后既然你是一个做测试的，我们就说正常的道路，你至少先将文档中与test这个关键字相关的工具也好，框架也好看一下吧。不懂的可以随时google或者百度来帮助我们阅读完sdk的docs。什么？你从来不看官方文档？android是谁生的？你连亲爹妈都不看，那么你看啥？看后妈？然后抱怨怎么看不懂？你怪谁？</p>
+<p>ok，假设你老老实实的看完了，然后你说你了解你们产品的业务了，你就可以做应用的功能测试了吗？非也，试问大部分测试真的觉得自己够资格去做功能测试吗？觉得功能测试很简单吗？问起来很多人都很自信满满的说自己非常了解业务。ok，试问，你的app中每个功能对应哪些接口你知道吗？这些接口会有什么核心参数知道吗？试问，你的产品的核心代码你有阅读过吗？你的产品前端app对应的后台服务的代码你有阅读过吗？你说你测试的产品有视频是吧，视频格式有哪些？常见分辨率有哪几种？常见码流有哪些？如果这些你都不知道并不代表你不回做功能测试或者业务测试，而是你根本无法深层次的去设计测试用例，那么请问你这算会功能测试了吗？还有的同学和我说用户体验测试，ok，继续问，请问你看过google提供的android的UI Design Guide吗？也许你没有看过，也许你根本不知道，不管是哪条，那么还谈什么用户体验呢？简单来讲，我们做一个测试很简单，要深入做很困难，就如同今天移动测试会上茉莉说的wifi测试，也许让也许人去测试wifi测试也会测试，但是深入呢？我们做测试要踏踏实实，不要浮躁，浮躁只会让你继续sb，但是不会阻止别人nb。</p>
+<p>ok，假设功能测试的点你都清楚了，然后你说你技术多多少少知道点，然后你就可以去做应用的自动化测试了吗？非也。我们一个一个来看。大部分先来做的是UI Automation，ok，appium我在这边就不说了，也许2w字都吐槽吐不完，我就说robotium。那么你第一步是先看下robotium官方网站的sample和wiki，不要到处问例子或者直接上来就导入jar包去做。了解完毕之后，那么可以继续深入的去了解junit 和instrumentation，了解这两者能够让你对robotium更了解并且在写用例的时候更得心应手。然后你会写了sample，能够跑通就算ok了么？非也，那么接着碰见的问题就是如何管理suite，如何管理数据，比如testng，如何做参数配置，比如config.xml，如何进行用例的架构的维护，使用op等。接着如何将其集成到持续集成中？如果你仔细看过instrumentationtestrunner的官方文档你就不会问了。接着除了native的，也许会碰见自定义控件的自动化，最后还有webview和h5的自动化等。那么这些前提是你要先去了解这个自定义控件以及webview到底是什么吧，而不是直接拿robotium自定义的api直接食用，然后抱怨说，啊呀这个怎么跑不通。最后记得一定要结合业务去做设计和断言。<br>接着很多人还会觉得很牛逼的去找到BDD的框架，gem安装，套用cucumber和robotium。但是又会发现各种问题，在做这个事情之前继续试问，ruby gem管理你去学习了么？cucumber是啥知道了么？BDD框架源码结构有看过吗？step怎么封装知道吗？官方的github的wiki和issue有过一遍吗？都没有？那么你还问啥，先去看再做讨论。</p>
+<p>为什么我那么强调学习能力和态度，因为移动互联网的测试已经不是一个工具或者平台能够制霸的时代了。移动互联网现在更多的是注重实用开源框架，注重灵活的使用工具和代码来提升自己的效率，而不是拿来一个工具学会怎么用，然后就给你一个结果告诉你缺陷在什么地方。故而不是再去想什么“怎么做性能自动化测试”这种问题。无论你用360这种app也好，或者别的工具也罢，首先你拿到的数据并非是你公司团队想要的，其次请问这个数据你知道是怎么获取的吗？这个工具告诉你，cpu，内存，电量，流量，GPU绘制消耗，或者crash信息你就信啊？那么请问要你有啥用？你说你连数据怎么来的如果都不知道这个信息你敢用来作为测试报告吗？我们至少得自己去学习一下怎么获取这些数据吧，然后你编写service也好，使用shell也罢将这些做成自动化工具，那么也是有理有据。否则请问你真的会做自动化测试吗？最后记得一定要结合业务，那么势必要详细的了解业务，请看上面。可详见：<a href="https://github.com/monkeytest15/AndroidPerformanceTest_Python" target="_blank" rel="external">https://github.com/monkeytest15/AndroidPerformanceTest_Python</a></p>
+<p>接着来说安全测试也是一样。不要去想“有什么工具能够做安全测试啊？”。好了，这个问题我就不展开讨论了额，否则很多人肯定会觉得我在鄙视他们的智商。安全的测试和大部分人知道的测试根本就是两个领域，不要妄想你连上面几点都不知道的情况下就去做安全测试，真的不是我看不起你们。</p>
+<p>其实我们需要想象我们掌握的知识点是一个一个积木，而现在你先去看哪些积木你还没有，你先去获得。就比如java都不怎么会，然后就说自己要去做自动化，android都不了解就说要做自动化。没有太大必要。积木一个一个去搭，然后方向自然而然的就有了。目前学习移动无线的应用测试没有什么一定的路，每个人所在公司不同，所处业务不同，不要去问别人，最重要的是自己静下心来，记住，是静下心来问自己，自己真的不懂，如果自己是什么都不懂，那么就踏踏实实的从语言的学习，android本身的文档，工具等一个一个去学，不要浮躁。只要踏实了，不会没有方向，方向永远在你的心中。</p>
+<p>最后想强调一点的是，请眼光放长远，站在更高的高度看问题，不要做了10年还在做UI自动化，而且还根本做的不深入。记住，UI只不过是自动化中的冰山一角，你要去看的还有很多。不要局限自己，不要让公司局限你，除非你一辈子就打算在这个公司养老了。如果你不赞同我，那么随意，本来我就不指望所有人都点赞。</p>
+<p>by monkey</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/06/howtostudytest/" class="archive-article-date">
+  	<time datetime="2016-11-06T04:54:14.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-06</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/移动无线测试/">移动无线测试</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2016/11/04/ios-flex/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">iOS 逆天框架 FLEX</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+	    <a class="jiathis_button_twitter"></a>
+	    <a class="jiathis_button_plus"></a> 
+	    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="howtostudytest" data-title="如何做好移动互联网应用测试" data-url="http://yoursite.com/2016/11/06/howtostudytest/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"litten-hexo"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 20px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 20px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 20px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
+    			</div>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Litten，&lt;br&gt;毕业于华科，就职于鹅厂&lt;br&gt;&lt;br&gt;热爱大海与冷笑话，&lt;br/&gt;目前是一枚前端&lt;br/&gt;&lt;br/&gt;胆小认生，不易相处，&lt;br&gt;年轻无为，卖马为生。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>
