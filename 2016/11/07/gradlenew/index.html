@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://yoursite.com">
+  <title>Gradle 编译交互小技巧 | Monkey`s Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="今天偶然在网上看到这样的小技巧，不过其实按照中Groovy的介绍，这个也是理所当然的，不过这个例子能够打开脑洞，其实啥都可以做。
+首先工程已经在个人开源中：https://github.com/monkeytest15/Gradle_multi_apks/tree/master/monkeyApplication
+如果看到之前的Gradle文章的话其实可以了解到groovy是个什么语言，其次之前其">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gradle 编译交互小技巧">
+<meta property="og:url" content="http://yoursite.com/2016/11/07/gradlenew/index.html">
+<meta property="og:site_name" content="Monkey`s Note">
+<meta property="og:description" content="今天偶然在网上看到这样的小技巧，不过其实按照中Groovy的介绍，这个也是理所当然的，不过这个例子能够打开脑洞，其实啥都可以做。
+首先工程已经在个人开源中：https://github.com/monkeytest15/Gradle_multi_apks/tree/master/monkeyApplication
+如果看到之前的Gradle文章的话其实可以了解到groovy是个什么语言，其次之前其">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gradle1.png">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gradle2.png">
+<meta property="og:updated_time" content="2016-11-07T03:44:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gradle 编译交互小技巧">
+<meta name="twitter:description" content="今天偶然在网上看到这样的小技巧，不过其实按照中Groovy的介绍，这个也是理所当然的，不过这个例子能够打开脑洞，其实啥都可以做。
+首先工程已经在个人开源中：https://github.com/monkeytest15/Gradle_multi_apks/tree/master/monkeyApplication
+如果看到之前的Gradle文章的话其实可以了解到groovy是个什么语言，其次之前其">
+<meta name="twitter:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gradle1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Monkey`s Note" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/assets/img/favicon.ico">
+  
+  <link rel="stylesheet" href="/main.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/blogImg/litten.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/photos">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">标签</a>
+    			
+    			
+            
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+		        
+					<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+		        
+					<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/blogImg/litten.png" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/photos">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-gradlenew" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Gradle 编译交互小技巧
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天偶然在网上看到这样的小技巧，不过其实按照中Groovy的介绍，这个也是理所当然的，不过这个例子能够打开脑洞，其实啥都可以做。</p>
+<p>首先工程已经在个人开源中：<a href="https://github.com/monkeytest15/Gradle_multi_apks/tree/master/monkeyApplication" target="_blank" rel="external">https://github.com/monkeytest15/Gradle_multi_apks/tree/master/monkeyApplication</a></p>
+<p>如果看到之前的Gradle文章的话其实可以了解到groovy是个什么语言，其次之前其实也都看到gradle的编译是运行之后可以直接产出应用的，这次我们来看下交互的模式。</p>
+<p>这个例子是为了在使用gradle编译的时候能够进行签名的定制化，我们需要在app的目录下，注意不是root project。在app的目录下的build.gradle做如下编写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line">apply plugin: <span class="string">'com.android.application'</span></div><div class="line"></div><div class="line">android &#123;</div><div class="line">    compileSdkVersion <span class="number">21</span></div><div class="line">    buildToolsVersion <span class="string">"20.0.0"</span></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">    defaultConfig &#123;</div><div class="line">        applicationId <span class="string">"com.example.monkey.myapplication"</span></div><div class="line">        minSdkVersion <span class="number">10</span></div><div class="line">        targetSdkVersion <span class="number">21</span></div><div class="line">        versionCode <span class="number">1</span></div><div class="line">        versionName <span class="string">"1.0"</span></div><div class="line">    &#125;</div><div class="line">    buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">            <span class="function">minifyEnabled <span class="keyword">false</span></span></div><div class="line">            proguardFiles <span class="title">getDefaultProguardFile</span><span class="params">(<span class="string">'proguard-android.txt'</span>)</span>, 'proguard-rules.pro'</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//这个是解决lint报错的代码</span></div><div class="line">    lintOptions &#123;</div><div class="line">        abortOnError <span class="keyword">false</span></div><div class="line">    &#125;</div><div class="line">    signingConfigs &#123;</div><div class="line">        myConfigs &#123;</div><div class="line">            <span class="function">storeFile     <span class="title">file</span><span class="params">( System.console()</span>.<span class="title">readLine</span><span class="params">(<span class="string">"\n\$ Enter keystore path: "</span>)</span>)</span></div><div class="line">            storePassword       System.<span class="title">console</span><span class="params">()</span>.<span class="title">readPassword</span><span class="params">(<span class="string">"\n\$ Enter keystore password: "</span>)</span></div><div class="line">            keyAlias            System.<span class="title">console</span><span class="params">()</span>.<span class="title">readLine</span><span class="params">(<span class="string">"\n\$ Enter key alias: "</span>)</span></div><div class="line">            keyPassword         System.<span class="title">console</span><span class="params">()</span>.<span class="title">readPassword</span><span class="params">(<span class="string">"\n\$ Enter key password: "</span>)</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    productFlavors &#123;</div><div class="line">        qqqq &#123;</div><div class="line">            applicationId = <span class="string">'com.monkey.qqq'</span></div><div class="line">        &#125;</div><div class="line">        hhhhh &#123;</div><div class="line">            applicationId=<span class="string">'com.monkey.hhh'</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    <span class="function">compile <span class="title">fileTree</span><span class="params">(dir: <span class="string">'libs'</span>, include: [<span class="string">'*.jar'</span>])</span></span></div><div class="line">    compile 'com.android.support:appcompat-v7:21.0.3'</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在这中间，关键代码如下：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gradle1.png" alt="gradle1"></p>
+<p>我们可以在编译的时候看到出现了签名的选择：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gradle2.png" alt="gradle2"></p>
+<p>到此我们脑洞可以大开啦～～</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/07/gradlenew/" class="archive-article-date">
+  	<time datetime="2016-11-07T03:40:55.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-07</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gradle/">gradle</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/11/07/2014summary/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          2014年 年终总结
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/07/gradle-Androidmanifest/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">gradle 集成修改 Android Manifest.xml 打多个包实践</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+	    <a class="jiathis_button_twitter"></a>
+	    <a class="jiathis_button_plus"></a> 
+	    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="gradlenew" data-title="Gradle 编译交互小技巧" data-url="http://yoursite.com/2016/11/07/gradlenew/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"litten-hexo"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/android性能测试/" style="font-size: 10px;">android性能测试</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 20px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 20px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 20px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
+    			</div>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Litten，&lt;br&gt;毕业于华科，就职于鹅厂&lt;br&gt;&lt;br&gt;热爱大海与冷笑话，&lt;br/&gt;目前是一枚前端&lt;br/&gt;&lt;br/&gt;胆小认生，不易相处，&lt;br&gt;年轻无为，卖马为生。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

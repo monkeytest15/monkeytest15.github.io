@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://yoursite.com">
+  <title>iOS 微信 信息都是明文的！！！ | Monkey`s Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="微信版本iOS上面的weixin 6.1.1，其实这个问题很早就有了
+问题所在不需要越狱，不需要用户名密码，微信DB的message没有加密
+过程我们首先链接手机，打开如下界面，选择到微信，找到DB
+接着我们打开这个MM.sqlite，可以看到如下界面
+
+chat开头的这些表都是我们的聊天的分类
+
+接着我们随便打开一个chat就能够看到如下信息
+
+总结但是不管怎么样，加密总比不加密的好，另外这样的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 微信 信息都是明文的！！！">
+<meta property="og:url" content="http://yoursite.com/2016/11/08/iOS-anquan/index.html">
+<meta property="og:site_name" content="Monkey`s Note">
+<meta property="og:description" content="微信版本iOS上面的weixin 6.1.1，其实这个问题很早就有了
+问题所在不需要越狱，不需要用户名密码，微信DB的message没有加密
+过程我们首先链接手机，打开如下界面，选择到微信，找到DB
+接着我们打开这个MM.sqlite，可以看到如下界面
+
+chat开头的这些表都是我们的聊天的分类
+
+接着我们随便打开一个chat就能够看到如下信息
+
+总结但是不管怎么样，加密总比不加密的好，另外这样的">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/iOSanquan1.png">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/iOSanquan2.png">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/iOSanquan3.png">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/iOSanquan4.png">
+<meta property="og:updated_time" content="2016-11-08T06:08:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS 微信 信息都是明文的！！！">
+<meta name="twitter:description" content="微信版本iOS上面的weixin 6.1.1，其实这个问题很早就有了
+问题所在不需要越狱，不需要用户名密码，微信DB的message没有加密
+过程我们首先链接手机，打开如下界面，选择到微信，找到DB
+接着我们打开这个MM.sqlite，可以看到如下界面
+
+chat开头的这些表都是我们的聊天的分类
+
+接着我们随便打开一个chat就能够看到如下信息
+
+总结但是不管怎么样，加密总比不加密的好，另外这样的">
+<meta name="twitter:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/iOSanquan1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Monkey`s Note" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/assets/img/favicon.ico">
+  
+  <link rel="stylesheet" href="/main.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/blogImg/litten.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/photos">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">标签</a>
+    			
+    			
+            
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+		        
+					<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+		        
+					<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/blogImg/litten.png" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/photos">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-iOS-anquan" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS 微信 信息都是明文的！！！
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="微信版本"><a href="#微信版本" class="headerlink" title="微信版本"></a>微信版本</h2><p>iOS上面的weixin 6.1.1，其实这个问题很早就有了</p>
+<h2 id="问题所在"><a href="#问题所在" class="headerlink" title="问题所在"></a>问题所在</h2><p>不需要越狱，不需要用户名密码，微信DB的message没有加密</p>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>我们首先链接手机，打开如下界面，选择到微信，找到DB<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/iOSanquan1.png" alt="iOSanquan"></p>
+<p>接着我们打开这个MM.sqlite，可以看到如下界面</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/iOSanquan2.png" alt="iOSanquan2"></p>
+<p>chat开头的这些表都是我们的聊天的分类</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/iOSanquan3.png" alt="iOSanquan3"></p>
+<p>接着我们随便打开一个chat就能够看到如下信息</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/iOSanquan4.png" alt="iOSanquan4"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>但是不管怎么样，加密总比不加密的好，另外这样的话，等于我拿到任何一个手机都可以直接看到聊天记录，或者在越狱之后，我通过alpine到任何一台手机上，然后拿到里面的这个文件。不知道除了聊天记录以外，红包记录有没有呢。。＝ ＝。。银行卡记录。。。</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/08/iOS-anquan/" class="archive-article-date">
+  	<time datetime="2016-11-08T05:27:25.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-08</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2016/11/08/noway/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">我只是没有退路，所以才做到这个程度</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+	    <a class="jiathis_button_twitter"></a>
+	    <a class="jiathis_button_plus"></a> 
+	    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="iOS-anquan" data-title="iOS 微信 信息都是明文的！！！" data-url="http://yoursite.com/2016/11/08/iOS-anquan/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"litten-hexo"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/android性能测试/" style="font-size: 10px;">android性能测试</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 20px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 20px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 20px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
+    			</div>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Litten，&lt;br&gt;毕业于华科，就职于鹅厂&lt;br&gt;&lt;br&gt;热爱大海与冷笑话，&lt;br/&gt;目前是一枚前端&lt;br/&gt;&lt;br/&gt;胆小认生，不易相处，&lt;br&gt;年轻无为，卖马为生。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

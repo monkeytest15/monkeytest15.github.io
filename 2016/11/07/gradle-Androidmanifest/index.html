@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://yoursite.com">
+  <title>gradle 集成修改 Android Manifest.xml 打多个包实践 | Monkey`s Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="其实这次我想好好把gradle 构建android工程生成的文件好好看看的，但是实在太多了，而且网络上资料有限，故而就放在下次吧。
+这次做了一些新的尝试，然后也看了下一些之前没有关心的文件是啥用。
+gradle-wrapper.jar首先其实之前就看到有这个jar包，但是还没有去关心过到底是啥用。Gradle Wrapper 是一种更加方便的使用gradle的方法，他包括了为支持windows的批">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gradle 集成修改 Android Manifest.xml 打多个包实践">
+<meta property="og:url" content="http://yoursite.com/2016/11/07/gradle-Androidmanifest/index.html">
+<meta property="og:site_name" content="Monkey`s Note">
+<meta property="og:description" content="其实这次我想好好把gradle 构建android工程生成的文件好好看看的，但是实在太多了，而且网络上资料有限，故而就放在下次吧。
+这次做了一些新的尝试，然后也看了下一些之前没有关心的文件是啥用。
+gradle-wrapper.jar首先其实之前就看到有这个jar包，但是还没有去关心过到底是啥用。Gradle Wrapper 是一种更加方便的使用gradle的方法，他包括了为支持windows的批">
+<meta property="og:updated_time" content="2016-11-07T03:38:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="gradle 集成修改 Android Manifest.xml 打多个包实践">
+<meta name="twitter:description" content="其实这次我想好好把gradle 构建android工程生成的文件好好看看的，但是实在太多了，而且网络上资料有限，故而就放在下次吧。
+这次做了一些新的尝试，然后也看了下一些之前没有关心的文件是啥用。
+gradle-wrapper.jar首先其实之前就看到有这个jar包，但是还没有去关心过到底是啥用。Gradle Wrapper 是一种更加方便的使用gradle的方法，他包括了为支持windows的批">
+  
+    <link rel="alternative" href="/atom.xml" title="Monkey`s Note" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/assets/img/favicon.ico">
+  
+  <link rel="stylesheet" href="/main.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/blogImg/litten.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/photos">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">标签</a>
+    			
+    			
+            
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+		        
+					<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+		        
+					<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/blogImg/litten.png" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/photos">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-gradle-Androidmanifest" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      gradle 集成修改 Android Manifest.xml 打多个包实践
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>其实这次我想好好把gradle 构建android工程生成的文件好好看看的，但是实在太多了，而且网络上资料有限，故而就放在下次吧。</p>
+<p>这次做了一些新的尝试，然后也看了下一些之前没有关心的文件是啥用。</p>
+<h2 id="gradle-wrapper-jar"><a href="#gradle-wrapper-jar" class="headerlink" title="gradle-wrapper.jar"></a>gradle-wrapper.jar</h2><p>首先其实之前就看到有这个jar包，但是还没有去关心过到底是啥用。<br>Gradle Wrapper 是一种更加方便的使用gradle的方法，他包括了为支持windows的批处理脚本和支持类unix的shell脚本。这些脚本是你，在不安装gradle时候，也可以用gradle。安装wrapper只需要在你的build.gradle文件中添加如果下代码。<br>我们来看下结构</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">└── initial</div><div class="line">    └── gradlew</div><div class="line">    └──gradlew.bat</div><div class="line">    └── gradle</div><div class="line">       └── wrapper</div><div class="line">           └── gradle-wrapper.jar</div><div class="line">           └── gradle-wrapper.properties</div></pre></td></tr></table></figure>
+<p>现在已经可以用Wrapper构建你的工程了。你将和之前一样，运行gradle build命令构建工程。<br>./gradlew build<br>第一行执行Gradle的版，他讲下载和缓存执行版本gradle的二进制文件。 Gradle Wrapper 文件将和代码一样提交给版本控制器，这样任何人，获取代码后，不用安装gradle，就可以构建工程。</p>
+<p>这个的确会非常方便，总体感觉以后再也不用编写什么打包脚本了。直接checkout，运行指定gradle命令即可。</p>
+<h2 id="多个项目"><a href="#多个项目" class="headerlink" title="多个项目"></a>多个项目</h2><p>在gradle项目根目录下面我们也可以看到有一个settings.gradle的文件，默认是有<br>include ‘:app’<br>假设我们有三个项目，分别是</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">  MyProject/</div><div class="line"></div><div class="line">| settings.gradle</div><div class="line"></div><div class="line">app/</div><div class="line">| build.gradle</div><div class="line"></div><div class="line">app2/</div><div class="line">| build.gradle</div><div class="line"></div><div class="line">app3/</div><div class="line">| build.gradle</div></pre></td></tr></table></figure>
+<p>那么我们需要修改settings.gradle，变成include ‘:app’, ‘:app2′, ‘:app3′</p>
+<h2 id="1-0-rc的坑（转）"><a href="#1-0-rc的坑（转）" class="headerlink" title="1.0 rc的坑（转）"></a>1.0 rc的坑（转）</h2><ul>
+<li><p>Error:(26, 0) Gradle DSL method not found: ‘runProguard()’问题，这里是runProguard()方法被替换了，把runProguard改为minifyEnabled即可，<a href="http://stackoverflow.com/questions/27016385/error26-0-gradle-dsl-method-not-found-runproguard" target="_blank" rel="external">http://stackoverflow.com/questions/27016385/error26-0-gradle-dsl-method-not-found-runproguard</a></p>
+</li>
+<li><p>“Could not find property ‘packageApplication’ on com.android.build.gradle.internal.api.ApplicationVariantImpl_Decorated”问题，这个属性被取消了，这里是替换要输出的APK的名称，<a href="http://stackoverflow.com/questions/27209188/could-not-find-property-packageapplication-on-com-android-build-gradle-interna" target="_blank" rel="external">http://stackoverflow.com/questions/27209188/could-not-find-property-packageapplication-on-com-android-build-gradle-interna</a></p>
+</li>
+<li><p>“Could not find property ‘processManifest’ on com.android.build.gradle.internal.api.ApplicationVariantImpl”问题，这里是由于manifest merger改动了，解决方法如下：<a href="http://stackoverflow.com/questions/27302965/could-not-find-property-processmanifest-on-com-android-build-gradle-internal-a" target="_blank" rel="external">http://stackoverflow.com/questions/27302965/could-not-find-property-processmanifest-on-com-android-build-gradle-internal-a</a></p>
+</li>
+<li><p>android studio中的plugin也发生了改变，将”apply plugin: ‘android’”改为”apply plugin: ‘com.android.application’”</p>
+</li>
+</ul>
+<p>monkey：不过1.0坑真的很多，大家自己去尝试就知道了。主要是stackoverflow上面的东西太旧。</p>
+<h2 id="修改app和root-project中两个build-gradle"><a href="#修改app和root-project中两个build-gradle" class="headerlink" title="修改app和root project中两个build.gradle"></a>修改app和root project中两个build.gradle</h2><p>我们创建好Android application之后，可以在app目录和根目录下都看到build.gradle文件，这两个文件分别会从app层面和多个project层面进行build的管控。<br>我们先来看下根目录的gradle.build文件。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//其实这里已经有了标识，告诉大家这个是可以管控多个模块的</span></div><div class="line"><span class="comment">// Top-level build file where you can add configuration options common to all sub-projects/modules.</span></div><div class="line"></div><div class="line"><span class="comment">//编译脚本</span></div><div class="line">buildscript &#123;</div><div class="line">    repositories &#123;</div><div class="line"><span class="comment">//这里可以是maven，jcenter等</span></div><div class="line">        jcenter()</div><div class="line">    &#125;</div><div class="line">    dependencies &#123;</div><div class="line">        classpath <span class="string">'com.android.tools.build:gradle:1.0.0'</span></div><div class="line"></div><div class="line">        <span class="comment">// <span class="doctag">NOTE:</span> Do not place your application dependencies here; they belong</span></div><div class="line">        <span class="comment">// in the individual module build.gradle files</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"><span class="comment">// 1.0 rc之后这个需要修改</span></div><div class="line">apply plugin: <span class="string">'com.android.application'</span></div><div class="line"></div><div class="line"></div><div class="line">android &#123;</div><div class="line">    compileSdkVersion <span class="number">21</span></div><div class="line">    buildToolsVersion <span class="string">"20.0.0"</span></div><div class="line"></div><div class="line"><span class="comment">//这里需要设置资源文件，否则会报错，文件找不到</span></div><div class="line">    sourceSets &#123;</div><div class="line">        main &#123;</div><div class="line">            manifest.srcFile <span class="string">'AndroidManifest.xml'</span></div><div class="line">            java.srcDirs = [<span class="string">'src'</span>]</div><div class="line">            resources.srcDirs = [<span class="string">'src/main/res'</span>]</div><div class="line">            aidl.srcDirs = [<span class="string">'src'</span>]</div><div class="line">            renderscript.srcDirs = [<span class="string">'src'</span>]</div><div class="line">            res.srcDirs = [<span class="string">'res/main/res'</span>]</div><div class="line">            assets.srcDirs = [<span class="string">'assets'</span>]</div><div class="line">        &#125;</div><div class="line">        instrumentTest.setRoot(<span class="string">'tests'</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    defaultConfig &#123;</div><div class="line">        applicationId <span class="string">"com.example.monkey.myapplication"</span></div><div class="line">        minSdkVersion <span class="number">10</span></div><div class="line">        targetSdkVersion <span class="number">21</span></div><div class="line">        versionCode <span class="number">1</span></div><div class="line">        versionName <span class="string">"1.0"</span></div><div class="line">    &#125;</div><div class="line"><span class="comment">//增加混淆</span></div><div class="line">    buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">            <span class="function">minifyEnabled <span class="keyword">false</span></span></div><div class="line">            proguardFiles <span class="title">getDefaultProguardFile</span><span class="params">(<span class="string">'proguard-android.txt'</span>)</span>, 'proguard-rules.pro'</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="comment">//这个是解决lint报错的代码</span></div><div class="line">    lintOptions &#123;</div><div class="line">        abortOnError <span class="keyword">false</span></div><div class="line">    &#125;</div><div class="line">  <span class="comment">// 增加签名</span></div><div class="line">    signingConfigs &#123;</div><div class="line">        myConfigs &#123;</div><div class="line">            <span class="function">storeFile <span class="title">file</span><span class="params">(<span class="string">"/Users/monkey/.android/debug.keystore"</span>)</span></span></div><div class="line">            keyAlias "..."</div><div class="line">            keyPassword "..."</div><div class="line">            storePassword "..."</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">allprojects &#123;</div><div class="line">    repositories &#123;</div><div class="line">        jcenter()</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">//替换AndroidManifest.xml的REPLACE_KEY字符串为渠道名称</span></div><div class="line">android.applicationVariants.all &#123; variant -&gt;</div><div class="line">    variant.outputs.each &#123; output -&gt;</div><div class="line">        output.processManifest.doLast &#123;</div><div class="line">            <span class="comment">//v1.11之前这里用的copy&#123;&#125;，我换成了文件操作，这样可以在v1.11版本正常运行，并保持文件夹整洁</span></div><div class="line">            <span class="comment">//$&#123;buildDir&#125;是指build文件夹</span></div><div class="line">            <span class="comment">//$&#123;variant.dirName&#125;是flavor/buildtype，例如GooglePlay/release，运行时会自动生成</span></div><div class="line">            <span class="comment">//下面的路径是类似这样：build/intermediates/manifests/GooglePlay/release/AndroidManifest.xml</span></div><div class="line">            def manifestFile = <span class="string">"$&#123;buildDir&#125;/intermediates/manifests/full/$&#123;variant.dirName&#125;/AndroidManifest.xml"</span></div><div class="line"></div><div class="line">            <span class="comment">//将字符串REPLACE_KEY替换成flavor的名字</span></div><div class="line">            def updatedContent = <span class="keyword">new</span> File(manifestFile).getText(<span class="string">'UTF-8'</span>).replaceAll(<span class="string">"REPLACE_KEY"</span>, <span class="string">"$&#123;variant.productFlavors[0].name&#125;"</span>)</div><div class="line">            <span class="keyword">new</span> File(manifestFile).write(updatedContent, <span class="string">'UTF-8'</span>)</div><div class="line"></div><div class="line">            <span class="comment">//将此次flavor的AndroidManifest.xml文件指定为我们修改过的这个文件</span></div><div class="line">            variant.processResources.manifestFile = file(<span class="string">"$&#123;buildDir&#125;/intermediates/manifests/full/$&#123;variant.dirName&#125;/AndroidManifest.xml"</span>)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接着看下app下面的build.gradle<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//增加application的apply</span></div><div class="line">apply plugin: <span class="string">'com.android.application'</span></div><div class="line"></div><div class="line">android &#123;</div><div class="line"><span class="comment">//配置sdk版本</span></div><div class="line">    compileSdkVersion <span class="number">21</span></div><div class="line">    buildToolsVersion <span class="string">"20.0.0"</span></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">    defaultConfig &#123;</div><div class="line">        applicationId <span class="string">"com.example.monkey.myapplication"</span></div><div class="line">        minSdkVersion <span class="number">10</span></div><div class="line">        targetSdkVersion <span class="number">21</span></div><div class="line">        versionCode <span class="number">1</span></div><div class="line">        versionName <span class="string">"1.0"</span></div><div class="line">    &#125;</div><div class="line">    buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">            <span class="function">minifyEnabled <span class="keyword">false</span></span></div><div class="line">            proguardFiles <span class="title">getDefaultProguardFile</span><span class="params">(<span class="string">'proguard-android.txt'</span>)</span>, 'proguard-rules.pro'</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//这个是解决lint报错的代码</span></div><div class="line">    lintOptions &#123;</div><div class="line">        abortOnError <span class="keyword">false</span></div><div class="line">    &#125;</div><div class="line">    signingConfigs &#123;</div><div class="line">        myConfigs &#123;</div><div class="line">            <span class="function">storeFile <span class="title">file</span><span class="params">(<span class="string">"/Users/monkey/.android/debug.keystore"</span>)</span></span></div><div class="line">            keyAlias "..."</div><div class="line">            keyPassword "..."</div><div class="line">            storePassword "..."</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"><span class="comment">//增加多个打包渠道配置</span></div><div class="line">    productFlavors &#123;</div><div class="line">        qqqq &#123;</div><div class="line">            applicationId = <span class="string">'com.monkey.qqq'</span></div><div class="line">        &#125;</div><div class="line">        hhhhh &#123;</div><div class="line">            applicationId=<span class="string">'com.monkey.hhh'</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    <span class="function">compile <span class="title">fileTree</span><span class="params">(dir: <span class="string">'libs'</span>, include: [<span class="string">'*.jar'</span>])</span></span></div><div class="line">    compile 'com.android.support:appcompat-v7:21.0.3'</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我们使用gradlew进行编译之后，我们可以在如下目录下中找到分别为了打不同包所用的Android Manifest.xml文件。</p>
+<p>同时我们也可以在outputs中的apk看到我们编译出的多个apk，但这里只是package name不同，渠道的meta data并没有修改，但是方法是一样的。</p>
+<p>最后的给个编译report。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line">ec2-<span class="number">54</span>-<span class="number">67</span>-<span class="number">1</span>-<span class="number">101</span>:monkeyApplication monkey$ ./gradlew app:assembleDebug</div><div class="line">:app:preBuild</div><div class="line">:app:compileHhhhhDebugNdk UP-TO-DATE</div><div class="line">:app:preHhhhhDebugBuild</div><div class="line">:app:checkHhhhhDebugManifest</div><div class="line">:app:preHhhhhReleaseBuild</div><div class="line">:app:preQqqqDebugBuild</div><div class="line">:app:preQqqqReleaseBuild</div><div class="line">:app:prepareComAndroidSupportAppcompatV72103Library UP-TO-DATE</div><div class="line">:app:prepareComAndroidSupportSupportV42103Library UP-TO-DATE</div><div class="line">:app:prepareHhhhhDebugDependencies</div><div class="line">:app:compileHhhhhDebugAidl UP-TO-DATE</div><div class="line">:app:compileHhhhhDebugRenderscript UP-TO-DATE</div><div class="line">:app:generateHhhhhDebugBuildConfig UP-TO-DATE</div><div class="line">:app:generateHhhhhDebugAssets UP-TO-DATE</div><div class="line">:app:mergeHhhhhDebugAssets UP-TO-DATE</div><div class="line">:app:generateHhhhhDebugResValues UP-TO-DATE</div><div class="line">:app:generateHhhhhDebugResources UP-TO-DATE</div><div class="line">:app:mergeHhhhhDebugResources UP-TO-DATE</div><div class="line">:app:processHhhhhDebugManifest UP-TO-DATE</div><div class="line">:app:processHhhhhDebugResources UP-TO-DATE</div><div class="line">:app:generateHhhhhDebugSources UP-TO-DATE</div><div class="line">:app:compileHhhhhDebugJava UP-TO-DATE</div><div class="line">:app:preDexHhhhhDebug UP-TO-DATE</div><div class="line">:app:dexHhhhhDebug UP-TO-DATE</div><div class="line">:app:processHhhhhDebugJavaRes UP-TO-DATE</div><div class="line">:app:validateDebugSigning</div><div class="line">:app:packageHhhhhDebug UP-TO-DATE</div><div class="line">:app:zipalignHhhhhDebug UP-TO-DATE</div><div class="line">:app:assembleHhhhhDebug UP-TO-DATE</div><div class="line">:app:compileQqqqDebugNdk UP-TO-DATE</div><div class="line">:app:checkQqqqDebugManifest</div><div class="line">:app:prepareQqqqDebugDependencies</div><div class="line">:app:compileQqqqDebugAidl UP-TO-DATE</div><div class="line">:app:compileQqqqDebugRenderscript UP-TO-DATE</div><div class="line">:app:generateQqqqDebugBuildConfig UP-TO-DATE</div><div class="line">:app:generateQqqqDebugAssets UP-TO-DATE</div><div class="line">:app:mergeQqqqDebugAssets UP-TO-DATE</div><div class="line">:app:generateQqqqDebugResValues UP-TO-DATE</div><div class="line">:app:generateQqqqDebugResources UP-TO-DATE</div><div class="line">:app:mergeQqqqDebugResources UP-TO-DATE</div><div class="line">:app:processQqqqDebugManifest UP-TO-DATE</div><div class="line">:app:processQqqqDebugResources UP-TO-DATE</div><div class="line">:app:generateQqqqDebugSources UP-TO-DATE</div><div class="line">:app:compileQqqqDebugJava UP-TO-DATE</div><div class="line">:app:preDexQqqqDebug UP-TO-DATE</div><div class="line">:app:dexQqqqDebug UP-TO-DATE</div><div class="line">:app:processQqqqDebugJavaRes UP-TO-DATE</div><div class="line">:app:packageQqqqDebug UP-TO-DATE</div><div class="line">:app:zipalignQqqqDebug UP-TO-DATE</div><div class="line">:app:assembleQqqqDebug UP-TO-DATE</div><div class="line">:app:assembleDebug UP-TO-DATE</div><div class="line"></div><div class="line">BUILD SUCCESSFUL</div><div class="line"></div><div class="line">Total time: <span class="number">8.73</span> secs</div></pre></td></tr></table></figure>
+<p>总体来讲，gradle的编译会比以往的mvn的pom配置文件来的更灵活，可配置性更强。关于更多的配置见之后的文章吧</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/07/gradle-Androidmanifest/" class="archive-article-date">
+  	<time datetime="2016-11-07T03:33:31.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-07</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Gradle/">Gradle</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/11/07/gradlenew/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Gradle 编译交互小技巧
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/06/howtostudytest/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">如何做好移动互联网应用测试</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+	    <a class="jiathis_button_twitter"></a>
+	    <a class="jiathis_button_plus"></a> 
+	    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="gradle-Androidmanifest" data-title="gradle 集成修改 Android Manifest.xml 打多个包实践" data-url="http://yoursite.com/2016/11/07/gradle-Androidmanifest/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"litten-hexo"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/android性能测试/" style="font-size: 10px;">android性能测试</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 20px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 20px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 20px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
+    			</div>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Litten，&lt;br&gt;毕业于华科，就职于鹅厂&lt;br&gt;&lt;br&gt;热爱大海与冷笑话，&lt;br/&gt;目前是一枚前端&lt;br/&gt;&lt;br/&gt;胆小认生，不易相处，&lt;br&gt;年轻无为，卖马为生。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>
