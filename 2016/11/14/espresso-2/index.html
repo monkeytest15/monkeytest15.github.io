@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://yoursite.com">
+  <title>Gradle Project With Espresso2.0 | Monkey`s Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言就最近Google进行了SDK的更新，同样的提供了部分框架的更新以及合入了部分的框架。这里的Espresso就是其中的一个。详细的我们可以查看这次support library的更新：http://developer.android.com/tools/testing-support-library/index.html
+既然Espresso被合入的话，那么是不是和以前的使用方式不同呢，就进行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gradle Project With Espresso2.0">
+<meta property="og:url" content="http://yoursite.com/2016/11/14/espresso-2/index.html">
+<meta property="og:site_name" content="Monkey`s Note">
+<meta property="og:description" content="前言就最近Google进行了SDK的更新，同样的提供了部分框架的更新以及合入了部分的框架。这里的Espresso就是其中的一个。详细的我们可以查看这次support library的更新：http://developer.android.com/tools/testing-support-library/index.html
+既然Espresso被合入的话，那么是不是和以前的使用方式不同呢，就进行">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espress1.png">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espresso2.png">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espresso3.png">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espresso4.png">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espresso5.png">
+<meta property="og:updated_time" content="2016-11-14T05:38:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gradle Project With Espresso2.0">
+<meta name="twitter:description" content="前言就最近Google进行了SDK的更新，同样的提供了部分框架的更新以及合入了部分的框架。这里的Espresso就是其中的一个。详细的我们可以查看这次support library的更新：http://developer.android.com/tools/testing-support-library/index.html
+既然Espresso被合入的话，那么是不是和以前的使用方式不同呢，就进行">
+<meta name="twitter:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espress1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Monkey`s Note" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/assets/img/favicon.ico">
+  
+  <link rel="stylesheet" href="/main.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/blogImg/litten.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/photos">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">标签</a>
+    			
+    			
+            
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+		        
+					<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+		        
+					<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/blogImg/litten.png" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/photos">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-espresso-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Gradle Project With Espresso2.0
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>就最近Google进行了SDK的更新，同样的提供了部分框架的更新以及合入了部分的框架。这里的Espresso就是其中的一个。详细的我们可以查看这次support library的更新：<a href="http://developer.android.com/tools/testing-support-library/index.html" target="_blank" rel="external">http://developer.android.com/tools/testing-support-library/index.html</a></p>
+<p>既然Espresso被合入的话，那么是不是和以前的使用方式不同呢，就进行一下新的尝试。不过令人高兴的是在code.google上面2天前也对于Espresso2.0进行了相对应的doc更新，真的非常贴心，详细可见：<a href="https://code.google.com/p/android-test-kit/wiki/EspressoSetupInstructions" target="_blank" rel="external">https://code.google.com/p/android-test-kit/wiki/EspressoSetupInstructions</a></p>
+<p>例子的代码见：<a href="https://github.com/monkeytest15/Espresso2.0-demo/tree/master" target="_blank" rel="external">https://github.com/monkeytest15/Espresso2.0-demo/tree/master</a></p>
+<p>这里也再一张2.0更新的总结图<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espress1.png" alt="espresso1"></p>
+<h2 id="尝试"><a href="#尝试" class="headerlink" title="尝试"></a>尝试</h2><p>那么我们接下来同样的使用AS新建一个Gradle的工程，在这个例子中我起名是Espress_V2</p>
+<p>——–我是分割线君——–<br>详细设置如下<br>App目录下的build.gradle文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">apply plugin: <span class="string">'com.android.application'</span></div><div class="line"></div><div class="line">android &#123;</div><div class="line">    compileSdkVersion <span class="number">21</span></div><div class="line">    buildToolsVersion <span class="string">"21.1.2"</span></div><div class="line"></div><div class="line">    defaultConfig &#123;</div><div class="line">        applicationId <span class="string">"com.example.monkey.espresso_v2"</span></div><div class="line">        minSdkVersion <span class="number">16</span></div><div class="line">        targetSdkVersion <span class="number">21</span></div><div class="line">        versionCode <span class="number">1</span></div><div class="line">        versionName <span class="string">"1.0"</span></div><div class="line">        testInstrumentationRunner <span class="string">"android.support.test.runner.AndroidJUnitRunner"</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">    buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">            <span class="function">minifyEnabled <span class="keyword">false</span></span></div><div class="line">            proguardFiles <span class="title">getDefaultProguardFile</span><span class="params">(<span class="string">'proguard-android.txt'</span>)</span>, 'proguard-rules.pro'</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    packagingOptions&#123;</div><div class="line">        exclude <span class="string">'LICENSE.txt'</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    <span class="comment">// App's dependencies, including test</span></div><div class="line">    compile <span class="string">'com.android.support:support-annotations:21.0.3'</span></div><div class="line">    <span class="function">compile <span class="title">fileTree</span><span class="params">(dir: <span class="string">'libs'</span>, include: [<span class="string">'*.jar'</span>])</span></span></div><div class="line">    compile 'com.android.support:appcompat-v7:21.0.3'</div><div class="line">    <span class="comment">//Espresso Testing-only dependencies</span></div><div class="line">    androidTestCompile <span class="title">files</span><span class="params">(<span class="string">'libs/espresso-1.1-bundled.jar'</span>)</span></div><div class="line">    androidTestCompile <span class="title">files</span><span class="params">(<span class="string">'libs/testrunner-1.1*.jar'</span>)</span></div><div class="line">    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'</div><div class="line">    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'</div><div class="line">    androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.3.1'</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>这里要注意的是新的这个testrunner的更新，否则会报出各种错误，而且这个设置的确和以前不同。android.support.test.runner.AndroidJUnitRunner</strong></p>
+<p><strong>test class的编写</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.example.monkey.espresso_v2;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">import</span> android.test.ActivityInstrumentationTestCase2;</div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> android.support.test.espresso.Espresso.onView;</div><div class="line"></div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> android.support.test.espresso.assertion.ViewAssertions.matches;</div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> android.support.test.espresso.matcher.ViewMatchers.isDisplayed;</div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> android.support.test.espresso.matcher.ViewMatchers.withText;</div><div class="line"><span class="keyword">import</span> com.robotium.solo.Solo;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * &lt;a href="http://d.android.com/tools/testing/testing_android.html"&gt;Testing Fundamentals&lt;/a&gt;</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ApplicationTest</span> <span class="keyword">extends</span> <span class="title">ActivityInstrumentationTestCase2</span>&lt;<span class="title">MainActivity</span>&gt; </span>&#123;</div><div class="line"></div><div class="line"></div><div class="line">    Solo solo;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ApplicationTest</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>(MainActivity.class);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUp</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        <span class="keyword">super</span>.setUp();</div><div class="line">        solo = <span class="keyword">new</span> Solo(getInstrumentation(), getActivity());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testHelloWorld</span><span class="params">()</span> </span>&#123;</div><div class="line">        String TextViewString = getActivity().getString(R.string.hello_world);</div><div class="line"></div><div class="line">        onView(withText(TextViewString)).check(matches(isDisplayed()));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里可以看出来已经可以直接引用SDK中的包了。</p>
+<h2 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h2><p><strong>第一个就是我上面提到的TestRunner的更新</strong><br><strong>第二个就是如下的设置</strong><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espresso2.png" alt="espresso2"></p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>AS其实还是非常贴心的，尤其在测试方面。来一张直接通过AS进行执行测试的结果图：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espresso3.png" alt="espresso2"></p>
+<p>AS也支持结果的report输出，包括各种我们需要的格式，多贴心。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espresso4.png" alt="espresso2"></p>
+<p>另外最后我也通过了终端的方式进行了再次的测试，如下结果（这个也是自动化必须的），同时我们的报告可以在这个路径下找到<br>~/app/build/outputs/reports。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espresso5.png" alt="espresso2"></p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/14/espresso-2/" class="archive-article-date">
+  	<time datetime="2016-11-14T05:20:41.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-14</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/espresso/">espresso</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/11/14/appium-python/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Appium Python Client 简单解析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/09/AndroidAppSize/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Android 获取应用的大小</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+	    <a class="jiathis_button_twitter"></a>
+	    <a class="jiathis_button_plus"></a> 
+	    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="espresso-2" data-title="Gradle Project With Espresso2.0" data-url="http://yoursite.com/2016/11/14/espresso-2/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"litten-hexo"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/Android性能/" style="font-size: 10px;">Android性能</a> <a href="/tags/Appium/" style="font-size: 10px;">Appium</a> <a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/android性能测试/" style="font-size: 10px;">android性能测试</a> <a href="/tags/espresso/" style="font-size: 10px;">espresso</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 20px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 20px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 20px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
+    			</div>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Litten，&lt;br&gt;毕业于华科，就职于鹅厂&lt;br&gt;&lt;br&gt;热爱大海与冷笑话，&lt;br/&gt;目前是一枚前端&lt;br/&gt;&lt;br/&gt;胆小认生，不易相处，&lt;br&gt;年轻无为，卖马为生。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

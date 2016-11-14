@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://yoursite.com">
+  <title>Appium Python Client 简单解析 | Monkey`s Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="目录
+我们clone下来之后，能够在Appium目录下看到如下的结构
+12345678910111213141516171819.├── __init__.py├── common│   ├── __init__.py│   └── exceptions.py├── saucetestcase.py└── webdriver    ├── __init__.py    ├── common">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Appium Python Client 简单解析">
+<meta property="og:url" content="http://yoursite.com/2016/11/14/appium-python/index.html">
+<meta property="og:site_name" content="Monkey`s Note">
+<meta property="og:description" content="目录
+我们clone下来之后，能够在Appium目录下看到如下的结构
+12345678910111213141516171819.├── __init__.py├── common│   ├── __init__.py│   └── exceptions.py├── saucetestcase.py└── webdriver    ├── __init__.py    ├── common">
+<meta property="og:updated_time" content="2016-11-14T07:13:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Appium Python Client 简单解析">
+<meta name="twitter:description" content="目录
+我们clone下来之后，能够在Appium目录下看到如下的结构
+12345678910111213141516171819.├── __init__.py├── common│   ├── __init__.py│   └── exceptions.py├── saucetestcase.py└── webdriver    ├── __init__.py    ├── common">
+  
+    <link rel="alternative" href="/atom.xml" title="Monkey`s Note" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/assets/img/favicon.ico">
+  
+  <link rel="stylesheet" href="/main.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/blogImg/litten.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/photos">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">标签</a>
+    			
+    			
+            
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+		        
+					<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+		        
+					<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/blogImg/litten.png" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/photos">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-appium-python" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Appium Python Client 简单解析
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>目录</p>
+<p>我们clone下来之后，能够在Appium目录下看到如下的结构</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">├── __init__.py</div><div class="line">├── common</div><div class="line">│   ├── __init__.py</div><div class="line">│   └── exceptions.py</div><div class="line">├── saucetestcase.py</div><div class="line">└── webdriver</div><div class="line">    ├── __init__.py</div><div class="line">    ├── common</div><div class="line">    │   ├── __init__.py</div><div class="line">    │   ├── mobileby.py</div><div class="line">    │   ├── multi_action.py</div><div class="line">    │   └── touch_action.py</div><div class="line">    ├── connectiontype.py</div><div class="line">    ├── errorhandler.py</div><div class="line">    ├── mobilecommand.py</div><div class="line">    ├── switch_to.py</div><div class="line">    ├── webdriver.py</div><div class="line">    └── webelement.py</div></pre></td></tr></table></figure>
+<p>就如python本身语言一样还是比较清晰的，其中一层common目录以及saucetestcase我就不多说了，这个自己理解下就很简单了，其实大部分的篇幅还是注释，对作者表示致敬。</p>
+<p>文件查看</p>
+<p>那么自然我们就来详细看下webdrvier下面的文件了。一个一个来看吧。</p>
+<blockquote>
+<p>init.py<br>嗯，python工程、模块运行安装基础文件，该文件为空，但必须存在</p>
+<p>mobileby.py</p>
+</blockquote>
+<p>部分代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">from selenium.webdriver.common.<span class="function">by <span class="keyword">import</span> By</span></div><div class="line"></div><div class="line"></div><div class="line">class <span class="title">MobileBy</span><span class="params">(By)</span>:</div><div class="line">    IOS_UIAUTOMATION = <span class="string">'-ios uiautomation'</span></div><div class="line">    ANDROID_UIAUTOMATOR = <span class="string">'-android uiautomator'</span></div><div class="line">    ACCESSIBILITY_ID = <span class="string">'accessibility id'</span></div></pre></td></tr></table></figure>
+<p>这个文件在这里就是对寻找控件的方式做了一个定义，当然其实看到这里，我不知道有没有同学就有疑问了，你能看懂这个是一个类，但这个类的参数By到底是个啥。好吧，其实我也不懂，但是我求助了webdriver的docs，By的定义如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">These are the attributes which can be used to locate elements. See the Locating Elements chapter <span class="keyword">for</span> example usages.</div><div class="line"></div><div class="line">The By implementation.</div></pre></td></tr></table></figure>
+<p>我初步理解了下，就是定位元素的一种方式，但是到底有哪些方式呢，其实还是没有看懂，所以进一步的看了下扩展。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class selenium.webdriver.common.by.By</div><div class="line">Bases: object</div><div class="line"></div><div class="line">Set of supported locator strategies.</div><div class="line"></div><div class="line">classmethod is_valid(by)</div><div class="line">CLASS_NAME = 'class name'</div><div class="line">CSS_SELECTOR = 'css selector'</div><div class="line">ID = 'id'</div><div class="line">LINK_TEXT = 'link text'</div><div class="line">NAME = 'name'</div><div class="line">PARTIAL_LINK_TEXT = 'partial link text'</div><div class="line">TAG_NAME = 'tag name'</div><div class="line">XPATH = 'xpath'</div></pre></td></tr></table></figure>
+<p>定义的方式还是很多的，当然这个大家会在后面感觉到更熟悉的，我们接着往下看。</p>
+<p>部分代码</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">import copy</div><div class="line"></div><div class="line">from appium.webdriver.mobilecommand import MobileCommand as Command</div><div class="line"></div><div class="line"></div><div class="line">class MultiAction(object):</div><div class="line">    def __init__(self, driver, element=None):</div><div class="line">        self._driver = driver</div><div class="line">        self._element = element</div><div class="line">        self._touch_actions = []</div><div class="line"></div><div class="line">    def add(self, *touch_actions):</div><div class="line">        """Add TouchAction objects to the MultiAction, to be performed later.</div><div class="line"></div><div class="line">        :Args:</div><div class="line">         - touch_actions - one or more TouchAction objects describing a chain of actions to be performed by one finger</div><div class="line"></div><div class="line">        :Usage:</div><div class="line">            a1 = TouchAction(driver)</div><div class="line">            a1.press(el1).move_to(el2).release()</div><div class="line">            a2 = TouchAction(driver)</div><div class="line">            a2.press(el2).move_to(el1).release()</div><div class="line"></div><div class="line">            MultiAction(driver).add(a1, a2)</div><div class="line">        """</div><div class="line">        for touch_action in touch_actions:</div><div class="line">            if self._touch_actions is None:</div><div class="line">                self._touch_actions = []</div><div class="line"></div><div class="line">            # deep copy, so that once they are in here, the user can't muck about</div><div class="line">            self._touch_actions.append(copy.deepcopy(touch_action))</div><div class="line"></div><div class="line">    def perform(self):</div><div class="line">        """Perform the actions stored in the object.</div><div class="line"></div><div class="line">        :Usage:</div><div class="line">            a1 = TouchAction(driver)</div><div class="line">            a1.press(el1).move_to(el2).release()</div><div class="line">            a2 = TouchAction(driver)</div><div class="line">            a2.press(el2).move_to(el1).release()</div><div class="line"></div><div class="line">            MultiAction(driver).add(a1, a2).perform()</div><div class="line">        """</div><div class="line">        self._driver.execute(Command.MULTI_ACTION, self.json_wire_gestures)</div><div class="line"></div><div class="line">        # clean up and be ready for the next batch</div><div class="line">        self._touch_actions = []</div><div class="line"></div><div class="line">        return self</div></pre></td></tr></table></figure>
+<p>其实这边其实第一个我表示我就没有理解，这个copy的模块有啥用，查看了下代码，其中使用到了深度复制deepcopy，从官方文档的解释来看像是连带着对象的属性也都会全部复制过来，并且开一个新的内存进行存放，应该是更有效率。从文件名字我们可以知道这是一个定义多操作的文件，然后从类的初始化我们能够看到很熟悉的参数，appium一个操作通常的参数，driver、element、action，首先定义了一个添加的方法，为了让单一的步骤肯定进行叠加，然后出现了perform这个重要的方法，这个方法是让用户去定义一个操作链，这个也就是这个所谓的多操作。那么其实看到这里我表示我又不是很这个_drvier.execute到底是个什么方法呢，继续查看了webdriver官方文档。如下解释</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">execute(driver_command, params=None)</div><div class="line">Sends a command to be executed by a command.CommandExecutor.</div><div class="line"></div><div class="line">Args:   </div><div class="line">driver_command: The name of the command to execute as a string.</div><div class="line">params: A dictionary of named parameters to send with the command.</div><div class="line">Returns:    </div><div class="line">The command’s JSON response loaded into a dictionary object.</div></pre></td></tr></table></figure>
+<p>那么就解释通了，两个参数，一个命令一个参数列表。同时也知道了原来返回的是一个字典，怪不得我看别的代码的时候不是很明白这个语法，接着看之后的文件分析就知道了，后面很多的操作封装都会用到这个方法的返回。</p>
+<p>既然这个文件中引入了<br><code>from appium.webdriver.mobilecommand import MobileCommand as Command</code></p>
+<p>那么我们就随着这个来讲下MobileCommand。<br>部分源码</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">class MobileCommand(object):</div><div class="line">    CONTEXTS = 'getContexts',</div><div class="line">    GET_CURRENT_CONTEXT = 'getCurrentContext',</div><div class="line">    SWITCH_TO_CONTEXT = 'switchToContext'</div><div class="line">    TOUCH_ACTION = 'touchAction'</div><div class="line">    MULTI_ACTION = 'multiAction'</div><div class="line">    OPEN_NOTIFICATIONS = 'openNotifications'</div><div class="line">    GET_NETWORK_CONNECTION = 'getNetworkConnection'</div><div class="line">    SET_NETWORK_CONNECTION = 'setNetworkConnection'</div><div class="line">    GET_AVAILABLE_IME_ENGINES = 'getAvailableIMEEngines'</div><div class="line">    IS_IME_ACTIVE = 'isIMEActive'</div><div class="line">    ACTIVATE_IME_ENGINE = 'activateIMEEngine'</div><div class="line">    DEACTIVATE_IME_ENGINE = 'deactivateIMEEngine'</div><div class="line">    GET_ACTIVE_IME_ENGINE = 'getActiveEngine'</div><div class="line">    TOGGLE_LOCATION_SERVICES = 'toggleLocationServices'</div></pre></td></tr></table></figure>
+<p>这个文件我不想讲了。。太过简单，没有东西可讲了。。。。。</p>
+<p>switch_to.py<br>部分代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">from selenium.webdriver.remote.switch_to <span class="keyword">import</span> SwitchTo</div><div class="line"></div><div class="line">from .<span class="function">mobilecommand <span class="keyword">import</span> MobileCommand</span></div><div class="line"></div><div class="line"></div><div class="line">class <span class="title">MobileSwitchTo</span><span class="params">(SwitchTo)</span>:</div><div class="line">    def <span class="title">context</span><span class="params">(self, context_name)</span>:</div><div class="line">        """</div><div class="line">        Sets the context <span class="keyword">for</span> the current session.</div><div class="line"></div><div class="line">        :Args:</div><div class="line">         - context_name: The name of the context to <span class="keyword">switch</span> to.</div><div class="line"></div><div class="line">        :Usage:</div><div class="line">            driver.switch_to.<span class="title">context</span><span class="params">(<span class="string">'WEBVIEW_1'</span>)</span></div><div class="line">        """</div><div class="line">        self._driver.<span class="title">execute</span><span class="params">(MobileCommand.SWITCH_TO_CONTEXT, &#123;<span class="string">'name'</span>: context_name&#125;)</span></div></pre></td></tr></table></figure>
+<p>其实我先是去查了switch_to，但是我不是很明白为啥文档里啥都没有写。然后我看了下Appium的文档，虽然明白这个是native和webview的一种切换，并且现在已经放入了Selenium3的规范中，但是还是不是很明白这个类的作用，直到我看到了下面的Sample</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function">def <span class="title">test_move_back_to_native_context</span><span class="params">(self)</span>:</span></div><div class="line">    self.<span class="title">_enter_webview</span><span class="params">()</span></div><div class="line">    self.driver.switch_to.<span class="title">context</span><span class="params">(None)</span></div><div class="line">    self.<span class="title">assertEqual</span><span class="params">(<span class="string">'NATIVE_APP'</span>, self.driver.current_context)</span></div><div class="line"></div><div class="line">def <span class="title">_enter_webview</span><span class="params">(self)</span>:</div><div class="line">    btn = self.driver.find_element_by_name(<span class="string">'buttonStartWebviewCD'</span>)</div><div class="line">    btn.click()</div><div class="line">    self.driver.switch_to.context(<span class="string">'WEBVIEW'</span>)</div></pre></td></tr></table></figure>
+<p>但是这个是不是可以自定义我还没有研究过，从例子看应该是可以的。</p>
+<p>webdriver.py<br>其实到这个文件了已经是个集合了，我们回过头来看self.execute这个方法，其实现在就能够明白了，只要返回值的后面会有[‘value’]，因为一个字典嘛。不查文档果然是看不懂的，当然也有很多方法直接返回一个字典的。具体我就不贴了，大家自己看了。</p>
+<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>其实结构还是蛮清晰的，但是就是流程，代码层面一步一步怎么走还不是很清晰，需要进一步看Sample再来理解了。不过总体我感觉比其他语言好理解点。因为其实就是一个Client嘛。哈哈</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/14/appium-python/" class="archive-article-date">
+  	<time datetime="2016-11-14T06:00:18.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-14</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Appium/">Appium</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2016/11/14/espresso-2/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Gradle Project With Espresso2.0</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+	    <a class="jiathis_button_twitter"></a>
+	    <a class="jiathis_button_plus"></a> 
+	    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="appium-python" data-title="Appium Python Client 简单解析" data-url="http://yoursite.com/2016/11/14/appium-python/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"litten-hexo"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/Android性能/" style="font-size: 10px;">Android性能</a> <a href="/tags/Appium/" style="font-size: 10px;">Appium</a> <a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/android性能测试/" style="font-size: 10px;">android性能测试</a> <a href="/tags/espresso/" style="font-size: 10px;">espresso</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 20px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 20px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 20px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
+    			</div>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Litten，&lt;br&gt;毕业于华科，就职于鹅厂&lt;br&gt;&lt;br&gt;热爱大海与冷笑话，&lt;br/&gt;目前是一枚前端&lt;br/&gt;&lt;br/&gt;胆小认生，不易相处，&lt;br&gt;年轻无为，卖马为生。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

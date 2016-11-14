@@ -139,6 +139,209 @@
       <div class="body-wrap">
         
   
+    <article id="post-appium-python" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/14/appium-python/">Appium Python Client 简单解析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>目录</p>
+<p>我们clone下来之后，能够在Appium目录下看到如下的结构</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">├── __init__.py</div><div class="line">├── common</div><div class="line">│   ├── __init__.py</div><div class="line">│   └── exceptions.py</div><div class="line">├── saucetestcase.py</div><div class="line">└── webdriver</div><div class="line">    ├── __init__.py</div><div class="line">    ├── common</div><div class="line">    │   ├── __init__.py</div><div class="line">    │   ├── mobileby.py</div><div class="line">    │   ├── multi_action.py</div><div class="line">    │   └── touch_action.py</div><div class="line">    ├── connectiontype.py</div><div class="line">    ├── errorhandler.py</div><div class="line">    ├── mobilecommand.py</div><div class="line">    ├── switch_to.py</div><div class="line">    ├── webdriver.py</div><div class="line">    └── webelement.py</div></pre></td></tr></table></figure>
+<p>就如python本身语言一样还是比较清晰的，其中一层common目录以及saucetestcase我就不多说了，这个自己理解下就很简单了，其实大部分的篇幅还是注释，对作者表示致敬。</p>
+<p>文件查看</p>
+<p>那么自然我们就来详细看下webdrvier下面的文件了。一个一个来看吧。</p>
+<blockquote>
+<p>init.py<br>嗯，python工程、模块运行安装基础文件，该文件为空，但必须存在</p>
+<p>mobileby.py</p>
+</blockquote>
+<p>部分代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">from selenium.webdriver.common.<span class="function">by <span class="keyword">import</span> By</span></div><div class="line"></div><div class="line"></div><div class="line">class <span class="title">MobileBy</span><span class="params">(By)</span>:</div><div class="line">    IOS_UIAUTOMATION = <span class="string">'-ios uiautomation'</span></div><div class="line">    ANDROID_UIAUTOMATOR = <span class="string">'-android uiautomator'</span></div><div class="line">    ACCESSIBILITY_ID = <span class="string">'accessibility id'</span></div></pre></td></tr></table></figure>
+<p>这个文件在这里就是对寻找控件的方式做了一个定义，当然其实看到这里，我不知道有没有同学就有疑问了，你能看懂这个是一个类，但这个类的参数By到底是个啥。好吧，其实我也不懂，但是我求助了webdriver的docs，By的定义如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">These are the attributes which can be used to locate elements. See the Locating Elements chapter <span class="keyword">for</span> example usages.</div><div class="line"></div><div class="line">The By implementation.</div></pre></td></tr></table></figure>
+<p>我初步理解了下，就是定位元素的一种方式，但是到底有哪些方式呢，其实还是没有看懂，所以进一步的看了下扩展。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class selenium.webdriver.common.by.By</div><div class="line">Bases: object</div><div class="line"></div><div class="line">Set of supported locator strategies.</div><div class="line"></div><div class="line">classmethod is_valid(by)</div><div class="line">CLASS_NAME = 'class name'</div><div class="line">CSS_SELECTOR = 'css selector'</div><div class="line">ID = 'id'</div><div class="line">LINK_TEXT = 'link text'</div><div class="line">NAME = 'name'</div><div class="line">PARTIAL_LINK_TEXT = 'partial link text'</div><div class="line">TAG_NAME = 'tag name'</div><div class="line">XPATH = 'xpath'</div></pre></td></tr></table></figure>
+<p>定义的方式还是很多的，当然这个大家会在后面感觉到更熟悉的，我们接着往下看。</p>
+<p>部分代码</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">import copy</div><div class="line"></div><div class="line">from appium.webdriver.mobilecommand import MobileCommand as Command</div><div class="line"></div><div class="line"></div><div class="line">class MultiAction(object):</div><div class="line">    def __init__(self, driver, element=None):</div><div class="line">        self._driver = driver</div><div class="line">        self._element = element</div><div class="line">        self._touch_actions = []</div><div class="line"></div><div class="line">    def add(self, *touch_actions):</div><div class="line">        """Add TouchAction objects to the MultiAction, to be performed later.</div><div class="line"></div><div class="line">        :Args:</div><div class="line">         - touch_actions - one or more TouchAction objects describing a chain of actions to be performed by one finger</div><div class="line"></div><div class="line">        :Usage:</div><div class="line">            a1 = TouchAction(driver)</div><div class="line">            a1.press(el1).move_to(el2).release()</div><div class="line">            a2 = TouchAction(driver)</div><div class="line">            a2.press(el2).move_to(el1).release()</div><div class="line"></div><div class="line">            MultiAction(driver).add(a1, a2)</div><div class="line">        """</div><div class="line">        for touch_action in touch_actions:</div><div class="line">            if self._touch_actions is None:</div><div class="line">                self._touch_actions = []</div><div class="line"></div><div class="line">            # deep copy, so that once they are in here, the user can't muck about</div><div class="line">            self._touch_actions.append(copy.deepcopy(touch_action))</div><div class="line"></div><div class="line">    def perform(self):</div><div class="line">        """Perform the actions stored in the object.</div><div class="line"></div><div class="line">        :Usage:</div><div class="line">            a1 = TouchAction(driver)</div><div class="line">            a1.press(el1).move_to(el2).release()</div><div class="line">            a2 = TouchAction(driver)</div><div class="line">            a2.press(el2).move_to(el1).release()</div><div class="line"></div><div class="line">            MultiAction(driver).add(a1, a2).perform()</div><div class="line">        """</div><div class="line">        self._driver.execute(Command.MULTI_ACTION, self.json_wire_gestures)</div><div class="line"></div><div class="line">        # clean up and be ready for the next batch</div><div class="line">        self._touch_actions = []</div><div class="line"></div><div class="line">        return self</div></pre></td></tr></table></figure>
+<p>其实这边其实第一个我表示我就没有理解，这个copy的模块有啥用，查看了下代码，其中使用到了深度复制deepcopy，从官方文档的解释来看像是连带着对象的属性也都会全部复制过来，并且开一个新的内存进行存放，应该是更有效率。从文件名字我们可以知道这是一个定义多操作的文件，然后从类的初始化我们能够看到很熟悉的参数，appium一个操作通常的参数，driver、element、action，首先定义了一个添加的方法，为了让单一的步骤肯定进行叠加，然后出现了perform这个重要的方法，这个方法是让用户去定义一个操作链，这个也就是这个所谓的多操作。那么其实看到这里我表示我又不是很这个_drvier.execute到底是个什么方法呢，继续查看了webdriver官方文档。如下解释</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">execute(driver_command, params=None)</div><div class="line">Sends a command to be executed by a command.CommandExecutor.</div><div class="line"></div><div class="line">Args:   </div><div class="line">driver_command: The name of the command to execute as a string.</div><div class="line">params: A dictionary of named parameters to send with the command.</div><div class="line">Returns:    </div><div class="line">The command’s JSON response loaded into a dictionary object.</div></pre></td></tr></table></figure>
+<p>那么就解释通了，两个参数，一个命令一个参数列表。同时也知道了原来返回的是一个字典，怪不得我看别的代码的时候不是很明白这个语法，接着看之后的文件分析就知道了，后面很多的操作封装都会用到这个方法的返回。</p>
+<p>既然这个文件中引入了<br><code>from appium.webdriver.mobilecommand import MobileCommand as Command</code></p>
+<p>那么我们就随着这个来讲下MobileCommand。<br>部分源码</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">class MobileCommand(object):</div><div class="line">    CONTEXTS = 'getContexts',</div><div class="line">    GET_CURRENT_CONTEXT = 'getCurrentContext',</div><div class="line">    SWITCH_TO_CONTEXT = 'switchToContext'</div><div class="line">    TOUCH_ACTION = 'touchAction'</div><div class="line">    MULTI_ACTION = 'multiAction'</div><div class="line">    OPEN_NOTIFICATIONS = 'openNotifications'</div><div class="line">    GET_NETWORK_CONNECTION = 'getNetworkConnection'</div><div class="line">    SET_NETWORK_CONNECTION = 'setNetworkConnection'</div><div class="line">    GET_AVAILABLE_IME_ENGINES = 'getAvailableIMEEngines'</div><div class="line">    IS_IME_ACTIVE = 'isIMEActive'</div><div class="line">    ACTIVATE_IME_ENGINE = 'activateIMEEngine'</div><div class="line">    DEACTIVATE_IME_ENGINE = 'deactivateIMEEngine'</div><div class="line">    GET_ACTIVE_IME_ENGINE = 'getActiveEngine'</div><div class="line">    TOGGLE_LOCATION_SERVICES = 'toggleLocationServices'</div></pre></td></tr></table></figure>
+<p>这个文件我不想讲了。。太过简单，没有东西可讲了。。。。。</p>
+<p>switch_to.py<br>部分代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">from selenium.webdriver.remote.switch_to <span class="keyword">import</span> SwitchTo</div><div class="line"></div><div class="line">from .<span class="function">mobilecommand <span class="keyword">import</span> MobileCommand</span></div><div class="line"></div><div class="line"></div><div class="line">class <span class="title">MobileSwitchTo</span><span class="params">(SwitchTo)</span>:</div><div class="line">    def <span class="title">context</span><span class="params">(self, context_name)</span>:</div><div class="line">        """</div><div class="line">        Sets the context <span class="keyword">for</span> the current session.</div><div class="line"></div><div class="line">        :Args:</div><div class="line">         - context_name: The name of the context to <span class="keyword">switch</span> to.</div><div class="line"></div><div class="line">        :Usage:</div><div class="line">            driver.switch_to.<span class="title">context</span><span class="params">(<span class="string">'WEBVIEW_1'</span>)</span></div><div class="line">        """</div><div class="line">        self._driver.<span class="title">execute</span><span class="params">(MobileCommand.SWITCH_TO_CONTEXT, &#123;<span class="string">'name'</span>: context_name&#125;)</span></div></pre></td></tr></table></figure>
+<p>其实我先是去查了switch_to，但是我不是很明白为啥文档里啥都没有写。然后我看了下Appium的文档，虽然明白这个是native和webview的一种切换，并且现在已经放入了Selenium3的规范中，但是还是不是很明白这个类的作用，直到我看到了下面的Sample</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function">def <span class="title">test_move_back_to_native_context</span><span class="params">(self)</span>:</span></div><div class="line">    self.<span class="title">_enter_webview</span><span class="params">()</span></div><div class="line">    self.driver.switch_to.<span class="title">context</span><span class="params">(None)</span></div><div class="line">    self.<span class="title">assertEqual</span><span class="params">(<span class="string">'NATIVE_APP'</span>, self.driver.current_context)</span></div><div class="line"></div><div class="line">def <span class="title">_enter_webview</span><span class="params">(self)</span>:</div><div class="line">    btn = self.driver.find_element_by_name(<span class="string">'buttonStartWebviewCD'</span>)</div><div class="line">    btn.click()</div><div class="line">    self.driver.switch_to.context(<span class="string">'WEBVIEW'</span>)</div></pre></td></tr></table></figure>
+<p>但是这个是不是可以自定义我还没有研究过，从例子看应该是可以的。</p>
+<p>webdriver.py<br>其实到这个文件了已经是个集合了，我们回过头来看self.execute这个方法，其实现在就能够明白了，只要返回值的后面会有[‘value’]，因为一个字典嘛。不查文档果然是看不懂的，当然也有很多方法直接返回一个字典的。具体我就不贴了，大家自己看了。</p>
+<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>其实结构还是蛮清晰的，但是就是流程，代码层面一步一步怎么走还不是很清晰，需要进一步看Sample再来理解了。不过总体我感觉比其他语言好理解点。因为其实就是一个Client嘛。哈哈</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/14/appium-python/" class="archive-article-date">
+  	<time datetime="2016-11-14T06:00:18.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-14</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Appium/">Appium</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-espresso-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/14/espresso-2/">Gradle Project With Espresso2.0</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>就最近Google进行了SDK的更新，同样的提供了部分框架的更新以及合入了部分的框架。这里的Espresso就是其中的一个。详细的我们可以查看这次support library的更新：<a href="http://developer.android.com/tools/testing-support-library/index.html" target="_blank" rel="external">http://developer.android.com/tools/testing-support-library/index.html</a></p>
+<p>既然Espresso被合入的话，那么是不是和以前的使用方式不同呢，就进行一下新的尝试。不过令人高兴的是在code.google上面2天前也对于Espresso2.0进行了相对应的doc更新，真的非常贴心，详细可见：<a href="https://code.google.com/p/android-test-kit/wiki/EspressoSetupInstructions" target="_blank" rel="external">https://code.google.com/p/android-test-kit/wiki/EspressoSetupInstructions</a></p>
+<p>例子的代码见：<a href="https://github.com/monkeytest15/Espresso2.0-demo/tree/master" target="_blank" rel="external">https://github.com/monkeytest15/Espresso2.0-demo/tree/master</a></p>
+<p>这里也再一张2.0更新的总结图<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espress1.png" alt="espresso1"></p>
+<h2 id="尝试"><a href="#尝试" class="headerlink" title="尝试"></a>尝试</h2><p>那么我们接下来同样的使用AS新建一个Gradle的工程，在这个例子中我起名是Espress_V2</p>
+<p>——–我是分割线君——–<br>详细设置如下<br>App目录下的build.gradle文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">apply plugin: <span class="string">'com.android.application'</span></div><div class="line"></div><div class="line">android &#123;</div><div class="line">    compileSdkVersion <span class="number">21</span></div><div class="line">    buildToolsVersion <span class="string">"21.1.2"</span></div><div class="line"></div><div class="line">    defaultConfig &#123;</div><div class="line">        applicationId <span class="string">"com.example.monkey.espresso_v2"</span></div><div class="line">        minSdkVersion <span class="number">16</span></div><div class="line">        targetSdkVersion <span class="number">21</span></div><div class="line">        versionCode <span class="number">1</span></div><div class="line">        versionName <span class="string">"1.0"</span></div><div class="line">        testInstrumentationRunner <span class="string">"android.support.test.runner.AndroidJUnitRunner"</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">    buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">            <span class="function">minifyEnabled <span class="keyword">false</span></span></div><div class="line">            proguardFiles <span class="title">getDefaultProguardFile</span><span class="params">(<span class="string">'proguard-android.txt'</span>)</span>, 'proguard-rules.pro'</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    packagingOptions&#123;</div><div class="line">        exclude <span class="string">'LICENSE.txt'</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    <span class="comment">// App's dependencies, including test</span></div><div class="line">    compile <span class="string">'com.android.support:support-annotations:21.0.3'</span></div><div class="line">    <span class="function">compile <span class="title">fileTree</span><span class="params">(dir: <span class="string">'libs'</span>, include: [<span class="string">'*.jar'</span>])</span></span></div><div class="line">    compile 'com.android.support:appcompat-v7:21.0.3'</div><div class="line">    <span class="comment">//Espresso Testing-only dependencies</span></div><div class="line">    androidTestCompile <span class="title">files</span><span class="params">(<span class="string">'libs/espresso-1.1-bundled.jar'</span>)</span></div><div class="line">    androidTestCompile <span class="title">files</span><span class="params">(<span class="string">'libs/testrunner-1.1*.jar'</span>)</span></div><div class="line">    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'</div><div class="line">    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'</div><div class="line">    androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.3.1'</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>这里要注意的是新的这个testrunner的更新，否则会报出各种错误，而且这个设置的确和以前不同。android.support.test.runner.AndroidJUnitRunner</strong></p>
+<p><strong>test class的编写</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.example.monkey.espresso_v2;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">import</span> android.test.ActivityInstrumentationTestCase2;</div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> android.support.test.espresso.Espresso.onView;</div><div class="line"></div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> android.support.test.espresso.assertion.ViewAssertions.matches;</div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> android.support.test.espresso.matcher.ViewMatchers.isDisplayed;</div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> android.support.test.espresso.matcher.ViewMatchers.withText;</div><div class="line"><span class="keyword">import</span> com.robotium.solo.Solo;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * &lt;a href="http://d.android.com/tools/testing/testing_android.html"&gt;Testing Fundamentals&lt;/a&gt;</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ApplicationTest</span> <span class="keyword">extends</span> <span class="title">ActivityInstrumentationTestCase2</span>&lt;<span class="title">MainActivity</span>&gt; </span>&#123;</div><div class="line"></div><div class="line"></div><div class="line">    Solo solo;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ApplicationTest</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>(MainActivity.class);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUp</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        <span class="keyword">super</span>.setUp();</div><div class="line">        solo = <span class="keyword">new</span> Solo(getInstrumentation(), getActivity());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testHelloWorld</span><span class="params">()</span> </span>&#123;</div><div class="line">        String TextViewString = getActivity().getString(R.string.hello_world);</div><div class="line"></div><div class="line">        onView(withText(TextViewString)).check(matches(isDisplayed()));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里可以看出来已经可以直接引用SDK中的包了。</p>
+<h2 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h2><p><strong>第一个就是我上面提到的TestRunner的更新</strong><br><strong>第二个就是如下的设置</strong><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espresso2.png" alt="espresso2"></p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>AS其实还是非常贴心的，尤其在测试方面。来一张直接通过AS进行执行测试的结果图：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espresso3.png" alt="espresso2"></p>
+<p>AS也支持结果的report输出，包括各种我们需要的格式，多贴心。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espresso4.png" alt="espresso2"></p>
+<p>另外最后我也通过了终端的方式进行了再次的测试，如下结果（这个也是自动化必须的），同时我们的报告可以在这个路径下找到<br>~/app/build/outputs/reports。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espresso5.png" alt="espresso2"></p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/14/espresso-2/" class="archive-article-date">
+  	<time datetime="2016-11-14T05:20:41.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-14</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/espresso/">espresso</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-AndroidAppSize" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/09/AndroidAppSize/">Android 获取应用的大小</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近在搭建兼容性性能平台，目前架构图还是内部才能够看到，具体之后做完我会开放出来。<br>其中一个就是需要去获取Android应用的大小，我们现在自身的apk还是会做的尽量小，但是用了一段时间之后apk的占用量就会越来越大，自然这个也是性能测试需要监控的数据之一。</p>
+<p>在这里我们用到了如下的：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/android1.png" alt="android1"></p>
+<p>核心代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PkgSizeObserver</span> <span class="keyword">extends</span> <span class="title">IPackageStatsObserver</span>.<span class="title">Stub</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onGetStatsCompleted</span><span class="params">(PackageStats pStats, <span class="keyword">boolean</span> succeeded)</span></span></div><div class="line">            <span class="keyword">throws</span> RemoteException &#123;</div><div class="line">        <span class="comment">// TODO Auto-generated method stub</span></div><div class="line">        cachesize = pStats.cacheSize;</div><div class="line">        datasize = pStats.dataSize;</div><div class="line">        codesize = pStats.codeSize;</div><div class="line">        totalsize = cachesize + datasize + codesize;</div><div class="line">        Log.i(TAG, <span class="string">"cachesize---&gt;"</span> + cachesize + <span class="string">" datasize----&gt;"</span></div><div class="line">                + datasize + <span class="string">" codeSize----&gt;"</span> + codesize);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以及</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">queryPacakgeSize</span><span class="params">(String pkgName)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">    <span class="keyword">if</span> (pkgName != <span class="keyword">null</span>) &#123;</div><div class="line">        PackageManager pm = getPackageManager();</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            Method getPackageSizeInfo = pm.getClass().getDeclaredMethod(</div><div class="line">                    <span class="string">"getPackageSizeInfo"</span>, String.class, </div><div class="line">                    IPackageStatsObserver.class);</div><div class="line"></div><div class="line">            getPackageSizeInfo.invoke(pm, pkgName,</div><div class="line">                    , <span class="keyword">new</span> PkgSizeObserver());</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception ex) &#123;</div><div class="line">            Log.e(TAG, <span class="string">"NoSuchMethodException"</span>);</div><div class="line">            ex.printStackTrace();</div><div class="line">            <span class="keyword">throw</span> ex;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接着就发现一个问题，2.3的版本的确可以用。但是4.2以及以上版本就报错了。经过调查发现 PackageManager.getPackageSizeInfo(String packageName, IPackageStatsObserver observer)不可用，改为PackageManager.getPackageSizeInfo(String packageName, int userHandle, IPackageStatsObserver observer)。<br>所以我们代码需要做如下的修改：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">queryPacakgeSize</span><span class="params">(String pkgName)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        <span class="keyword">if</span> (pkgName != <span class="keyword">null</span>) &#123;</div><div class="line">            PackageManager pm = getPackageManager();</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                Method getPackageSizeInfo = pm.getClass().getDeclaredMethod(</div><div class="line">-                       <span class="string">"getPackageSizeInfo"</span>, String.class, </div><div class="line">+                       <span class="string">"getPackageSizeInfo"</span>, String.class, <span class="keyword">int</span>.class,</div><div class="line">                        IPackageStatsObserver.class);</div><div class="line"></div><div class="line">                getPackageSizeInfo.invoke(pm, pkgName,</div><div class="line">-                       , <span class="keyword">new</span> PkgSizeObserver());</div><div class="line">+                       Process.myUid() / <span class="number">100000</span>, <span class="keyword">new</span> PkgSizeObserver());</div><div class="line"></div><div class="line">            &#125; <span class="keyword">catch</span> (Exception ex) &#123;</div><div class="line">                Log.e(TAG, <span class="string">"NoSuchMethodException"</span>);</div><div class="line">                ex.printStackTrace();</div><div class="line">                <span class="keyword">throw</span> ex;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>然后我install到了Nexus5 Android5.0上面，点击一个应用之后看到如下Log，说明成功了～～～<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/android2.png" alt="android2"><br>这个会作为我监听apk中的一个模块存在～～～</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/09/AndroidAppSize/" class="archive-article-date">
+  	<time datetime="2016-11-09T05:58:01.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-09</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android性能/">Android性能</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-iOS-anquan" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -591,244 +794,9 @@
 
 
   
-    <article id="post-ios-flex" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/04/ios-flex/">iOS 逆天框架 FLEX</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>今天无意之间看到了一个框架还是很逆天的，从首页的gif看就非常的逆天。<br>github的网站：<a href="https://github.com/Flipboard/FLEX" target="_blank" rel="external">https://github.com/Flipboard/FLEX</a></p>
-<p>FLEX是一个需要注入式的一种框架，从描述来看，功能非常多。主要来讲的话能够对正在运行的应用进行样式的修改和控件的读取。</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/9549d16c6a342eeff046b314b24ed06a.gif" alt="gif"></p>
-<p>FLEX会赐予你SuperPower！！！</p>
-<ol>
-<li>可以查看控件的坐标和属性</li>
-<li>看任何一个对象的属性和成员变量</li>
-<li>动态修改属性和成员变量</li>
-<li>动态的调用实例和类方法<br>etc…</li>
-</ol>
-<p>FLEX正因为是注入式的，所以不需要在链接LLDB或者Xocde，或者是远程的调试服务器，它可以在本地随时随地的进行自有的操作和调试</p>
-<p>具体的一些主要功能点我们通过以下几个图来看下：</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/120c625da15bc3f6416ffbcce24782da.gif" alt="gif2"></p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gif3.gif" alt="gif3"></p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/git4.gif" alt="gif4"></p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gif5.gif" alt="gif5"></p>
-<p>FLEX的设置也非常简单。在Build Settings中点击“＋”，选择Add User-Defined Settings</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/2d9bbd9b94c89365465d6459d8f615ec.png" alt="flex1"></p>
-<p>根据你打包的debug或者release属性进行相应的FLEX＊设置即可。</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/0722ea8935a0d4542610d32979c4e0b1.png" alt="flex2"></p>
-<p>在你的项目中，你想使用FLEX的代码的地方加入#if DEBUG</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/e41310de1e83e9a93e4522a4b3754dce.png" alt="flex3"></p>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2016/11/04/ios-flex/" class="archive-article-date">
-  	<time datetime="2016-11-04T06:35:40.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-04</time>
-</a>
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS测试/">iOS测试</a></li></ul>
-	</div>
-
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-nineyears" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/03/nineyears/">九年来，移动互联测试有什么重要进展</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>看完<a href="http://daily.zhihu.com/story/8662398" target="_blank" rel="external">十年来，编程领域有什么重要进展</a>之后，好多人说还是想看看测试有什么进展。好吧，我就来“临摹”下。虽然我作为88年的老腊肉也没有工作九年，但估计也没有人比我合适来写了。不过总觉得让我这样一个要转行的人来写也不是那么合适了。</p>
-<h2 id="从业人员数量"><a href="#从业人员数量" class="headerlink" title="从业人员数量"></a>从业人员数量</h2><p>好吧，人家都从代码，标准上来讲，测试我能想到的第一个就是人员数量了。在2008年的时候行业内测试人员占比是很少的，更不要说移动互联网了。记得那个时候微软的很多员工说我很看好Android，旁人只当笑话。我在2009年底面试的时候看到了Android G1手机，完全都没有认知，更不要说知道什么移动互联网了。</p>
-<p>但到现在，移动互联网测试越来越多，无论是传统行业，互联网等企业，技术基本上都已经离不开移动互联网。随着时间的推移，每一年也有越来越多的应届生会去选择移动互联网测试岗位。</p>
-<p>明显可以感觉得到现在测试人员的数量越来越多，为了顺应潮流称自己是移动互联网测试的就更多了，但相对水平和素质也越来越层次不齐。不过总体来讲，移动互联网人员的从业数量在9年内几乎是几何倍数的增长，所以我放在了第一位。</p>
-<h2 id="培训机构层出不穷"><a href="#培训机构层出不穷" class="headerlink" title="培训机构层出不穷"></a>培训机构层出不穷</h2><p>其实我真的不想把测试写的那么low，但我还是要实事求是的。在移动互联网之前可能51CTO，51Testing，51xxx都是几家独大的，但在移动互联网时代，尤其是在2014年开始，在线教育，网络直播的兴起，越来越多的草根培训机构层出不穷。相应的，前互联网时代的那些机构却并没有很快的跟上移动互联网的脚步。2013年左右开始私人的培训机构开始越来越多，2015年开始针对测试培训创业的也开始逐渐增多。</p>
-<p>就移动互联网的9年来说，国内的测试培训机构到今天为止的状态可以说是叹为观止。当然这里其实不仅仅只针对测试，前端，后端，编程语言等都是如此。可以说这就是移动互联网本身所带来的一种变革。</p>
-<h2 id="人员要求"><a href="#人员要求" class="headerlink" title="人员要求"></a>人员要求</h2><p>2008年的时候我就不提了，估计公司里都不知道怎么定义移动互联网。<br>​<br>2009年前对于测试的要求就是你好好做功能测试，覆盖功能点，写不写用例等大多数公司都不是很关心，或者不是很懂</p>
-<p>2010年很多大公司还是正规化，需要编写正式的用例。但从业人员要求基本上也是能够会运行Android Monkey的Level</p>
-<p>2011年大家跌爬滚打开始摸索自动化，但总体还是比较关注用例积累和设计的</p>
-<p>2012年是一个分水岭，直接从功能跳跃到了自动化。UI自动化在当时火的不要不要的</p>
-<p>2013年对于自动化的要求更加变本加厉，不但要会使用更要会二次开发</p>
-<p>2014年从点扩展到了面，从自动化的使用扩展到了持续集成的了解和运用</p>
-<p>2015年功能，自动化都告了一个段落，整体开始测试平台化，工具化，技术上开始转移到了无线客户端的专项测试上</p>
-<p>2016年安全元年，全栈也好，敏捷也罢也都到了一个白热化阶段，要求测试不但要懂开发，还要懂业务，还要懂架构等等等。正应了我在2012年的时候说的那句话“应聘测试岗位比CTO都要难”。</p>
-<p>总体来讲，短短9年的时间，移动互联网测试的技能，素质要求简直是升华了好几次，不得不说大家现在对于测试的理解已经远远不是当初那种“门槛低，点点点”那种境界了。虽然很多人平时的工作依然还在点点点，但你们都有CTO的潜质啊喂。</p>
-<p>PS：虽然整体国内的要求在突飞猛进，但大家对于测试的理解依然没有太大的进步。同时测试这个行业整体人员的素质也没有太大的进步。未来还是很令人堪忧的。</p>
-<h2 id="技术"><a href="#技术" class="headerlink" title="技术"></a>技术</h2><p>前几天我还问一位小哥为什么测试大会没有去，小哥回答我说测试大会有啥好去的，技术都是开发这边演进过来的。这话其实本质上也没有错，不过移动互联网技术本身从各个方面上还是进展非常多的。</p>
-<p>早期2009年底我刚开始做的时候，除了Android的官方文档以外，几乎没有任何的社区和博客有记载关于移动互联的测试技术（开发技术倒是蛮多的）</p>
-<p>2011年前基本上都是使用原生工具较多，应用本身复杂程度比较有限，同时开源工具也不是很多</p>
-<p>2011年之后Robotium等一大批UI测试自动化框架开始多了起来，网络上关于测试的技术文章也开始逐步增多。同时一大批测试网站，社区也崭露头角</p>
-<p>2012年之后应用本身复杂程度大幅度提升，移动互联测试很清楚的分成了App和OS两部分。同时开源测试框架，开源测试工具层出不穷。当时很火的并且做的不错的有Emmagee、athrun等等框架。同时测试活动对于代码的依赖和使用开始了一个新的篇章</p>
-<p>2013年过后移动互联所涉及到的技术已经开始有了本质的变化，客户端的内容更多的开始依赖服务端的架构和设计，大家的关注也从一个客户端到了整个一套系统的关注。曾经的Web测试技术，API测试技术，Server测试技术也都慢慢的融入了移动互联。这也是之后为什么测试的关注点会从一个点发展到一个面的根本原因</p>
-<p>截止到现在，技能树可见：<a href="https://zhuanlan.zhihu.com/p/23379241?refer=c_53429125。" target="_blank" rel="external">https://zhuanlan.zhihu.com/p/23379241?refer=c_53429125。</a><br>移动互联网本身的测试工具已经非常多，开源的框架和工具也在github上面遍地开花，另外技术本身已经出现了很多的组合使用。这一切与9年前可以说是天壤之别。现在测试技术可谓遍布各个网站，测试测试栈也几乎可以打通了整个常用的编程语言以及前后端系统。夸张点说现在的移动互联网的测试技术可以说也到了让很多人望而生畏的地步了。</p>
-<h2 id="测试意识"><a href="#测试意识" class="headerlink" title="测试意识"></a>测试意识</h2><p>这点的确是个很有趣的现象，但可能本质上和移动互联网关系并不是非常大，在我看来移动互联网只不过是加速了这一现象的发生。还是需要分成两个方面来讲，学术界和工业界</p>
-<p>早在2009-2012年间吧，整个测试行业可以这两方都有非常明显的活动。</p>
-<ul>
-<li>学术界：办协会，做会刊，登报纸。扩散各种测试用例设计的方法，理念。从国外引入各种新的概念和设计思维等等。当然测试毕竟也是研发过程中的一个环节，所以敏捷、DevOps的一些理论也都不会放过。</li>
-<li>工业界：工业界的同学其实真的忙的都和狗一样，哪里有空去研究别的呀。不过之前几年基本上都是在学习移动互联的新知识，大力研究UI自动化中。（这里对不起狗了，狗其实比我们要轻松多了）</li>
-</ul>
-<p>他们的关注点都在一些通用的方法论上，但这些在2013年之后基本上就消失殆尽了。一来这些在行业中慢慢的很难去赚钱了，二来移动互联网加速了整个国内互联网的各种属性，理论本身也很难去有落地实践的可能性了。但我觉得大家不得不承认一点，学术界在高校中被称之为“未来科学”是有道理的，因为他们在意识层面上的确比工业界的人们要先进的多。</p>
-<p>测试真正意义上的自动化可能是自动化的终极目标，测试本身我们可以简单的分成“测试前”、“测试中”和“测试后”，但现在看来工业界基本上都还在“测试中”这个环节折腾，测试的自动化有通过软件框架实现的，也有通过opencv摄像头＋硬件实现的。但无论是哪一种基本上都还在“测试执行自动化”。</p>
-<p>在早些年工业界很少有人去关心“测试数据，用例设计自动化”以及“测试结果分析，定位，质量自动化”这两个概念，但学术界很多人在研究，甚至国外已经研究了几十年了。近几年才慢慢开始有相关的实践在大公司中落地，比如咸鱼在前年demo的基于脑图的用例生成、遍历技术、线上数据双引擎、大数据质量大盘等等。相信这些在未来都是工业界测试技术可以突破的点。</p>
-<p>总而言之呢，移动互联网在这几年里的测试意识基本上是：<br>功能–&gt;UI自动化–&gt;接口自动化–&gt;Native、WebView、底层分层测试–&gt;持续集成–&gt;专项测试–&gt;平台话、智能化（数据准备、遍历、问题定位）–&gt;质量（贯穿整个系统和整个研发流程）</p>
-<p>其实回过头看看，还是比较可怕的。</p>
-<h2 id="活动"><a href="#活动" class="headerlink" title="活动"></a>活动</h2><p>这的确还是有本质变化的，早几年除了ChinaTest和51XXX的一些活动以外基本上就没有什么针对测试的活动和大会了。经过了这几年洗礼之后，行业我们能够看到不仅仅有很多的测试专属会议以外，BAT也会时不时的有一些技术交流大会，同时开发的各种大会也合入了很多测试的topic在其中。（我都当过讲师，我骄傲我自豪～）</p>
-<p>总体来讲早几年我还苦于没有人交流所以自创了“移动测试会”这样一个沙龙活动来主动和大家交流。现在的同学们就非常幸福了，因为交流的平台和渠道实在太多太多了。</p>
-<h2 id="测试定位"><a href="#测试定位" class="headerlink" title="测试定位"></a>测试定位</h2><p>这里的定位其实在别人眼中的定位，虽然我觉得可能这点上并没有太大的进展，但至少也是从0到1迈出了这样一步——公司里应该要有测试这个岗位和角色。不过国内基本上95%以上的公司和人都分不清楚QA和测试的区别，可悲可叹啊。</p>
-<p>移动互联网中，早期其实大部分公司都是不需要测试的，毕竟测试并不能帮助产品从无到有</p>
-<p>中期的时候呢，为了保证产品质量，引入了一部分传统互联网的测试来做移动互联网，但后来发现不行。一来移动互联网并没有想象中那么赚钱，所以在过程中很多公司其实有过一次测试的裁员。二来发现传统互联网的测试根本就hold不住移动互联网的产品，所以基本上后来就招聘那些有经验的移动互联网测试了</p>
-<p>后期，也就是差不多现在这个时间段。测试和开发、运维等都开始融合了，测试本身的定位也从原本的测试保证到了质量保证。这也算是符合中国国情的一种定位吧。</p>
-<p>简单来讲，这也算是一个很突出的进步了。测试这个角色其实在这几年间就是一个催化剂的作用，让人和企业都慢慢的意识到了测试的重要性，意识到了质量的重要性，意识到了测试并不是想象中的那么简单这样几个点。在我看来这些就足够了。</p>
-<p>话说很多人会问我人员数量上，技术上都有提升了，素质上对应也应该有提升啊。我只想说，不好意思，在我看来人员素质上没有任何提升。9年前测试在抱怨薪资低，qq群里每天水，然后做伸手党，9年后的今天依然如此，没有任何区别。我倒是可以考虑再写写“9年来，测试行业有什么没有任何进展”</p>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2016/11/03/nineyears/" class="archive-article-date">
-  	<time datetime="2016-11-03T07:16:00.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-03</time>
-</a>
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/个人回忆录/">个人回忆录</a></li></ul>
-	</div>
-
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-testtoquilty" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/03/testtoquilty/">测试到质量转变</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>今年我也不知道为什么会突发奇想来讲这个topic，这与我前几年风格非常不符。但也许这正是我觉得2016年应该说的东西吧，事实证明三场大会讲完之后，很多人第一次私下来找我要PPT，同时也觉得这个topic并不是几个小时能讲完的，所以我在这里还是浓缩的写篇文章说明下吧。</p>
-<h2 id="移动互联网测试常见问题"><a href="#移动互联网测试常见问题" class="headerlink" title="移动互联网测试常见问题"></a>移动互联网测试常见问题</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/d5258e61993c68112dc35118c3a9596d.png" alt="test1"></p>
-<p>这基本上就是我今年去别的公司的时候别人问我的问题。其实总体来讲大家现在还是有很大进步的，既关注了整体策略也关注了技术细节。但让我奇怪的是其实大部分人关注的还是别人怎么做，但缺少的就是从自己公司的产品业务和团队情况去思考问题。这不得不让我想到“别人家的xxx”这样一个场景。当初做这个ppt的时候我就是希望贴近主题尽量从全面的去阐述测试到质量的变化。</p>
-<p>反正总体来讲，还是觉得大家太过焦躁，我们总是偶尔的很积极的想去了解，想去学习，但这不可持续发展，这就好像我们会去存很多pdf和网站，但从来不看是一个道理。</p>
-<h2 id="关于测试人员"><a href="#关于测试人员" class="headerlink" title="关于测试人员"></a>关于测试人员</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/7199fe8b43aa452371f32ad198a167f4.png" alt="test2"></p>
-<p>关于人员我想从图中的四个方面进行阐述。毕竟现在整个行业对于测试的要求其实已经不仅仅停留在“你会什么”，“你懂什么”，“你有多少能力”这个level了。取而代之的更多的是“你潜力多少”，“你是否拥有持续学习的能力”等等。所以在关于测试人员中我也顺便提到了“KPI”和“招聘”</p>
-<p>但我在这里不得不强调的就还是所谓的“测试技术”，因为现在基本上行业风气就是大家追求“开发技术”，而不是“测试技术”，我们需要有测试思想和质量意识的去做事儿，而不是仅仅像开发一样去开发某些产品。所以这一切的前提还是需要我们从测试跳出来到质量来思考问题才会有答案。</p>
-<h2 id="一专多能"><a href="#一专多能" class="headerlink" title="一专多能"></a>一专多能</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/8159752a051b3d37b41bc282cbaf1c06.png" alt="test3"></p>
-<p>之前有很多文章讨论过所谓的“全栈”，其实至少从现在来看，“全栈”真正的意义随着时间的推移也开始浮出水面——快速学习的能力和驱动持续学习的兴趣。<br>第二点其实想表述的就是如果我们走出测试来看质量的话，几乎所有事情都不是单纯的测试个体或团队能够完成的。我们需要走出那个“你提需求，别人实现”的时代，取而代之的是“你提需求，你牵头来实现”。我们需要去利用合适的资源去做合适的事情，而不是什么都自己来做。</p>
-<p>在大会上有很多人会问，一个团队是否都应该是这样一专多能，全栈的人。在我的理解里，一个团队中其实肯定不能全栈的人，也不可能都是全栈的工程师。但这里其实特别的去强调了“定位问题”。举个例子来讲，我们在平时测试的过程中发现了一个问题，我们需要有能力去判断这个问题是前端还是后端的，如果是后端的，那么通过各个系统日志和调用关系需要去明白问题出在什么系统上。如果是前端，那么我们需要去发现是框架层的，还是组建层的，还是业务方等等。也就是说其实无论你是功能测试、自动化测试或者其他更牛逼的测试类型，定位问题都是通用的要求。</p>
-<h2 id="KPI"><a href="#KPI" class="headerlink" title="KPI"></a>KPI</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/bd6b69ad672b08c8ce2735f374834ae7.png" alt="test4"></p>
-<p>KPI这边的问题其实就是老生常谈了。但基本上现在都从那么几个点。</p>
-<ul>
-<li>业务占比最大。首先还是要保证产品业务的质量。这个在KPI上可以量化，但在移动互联网大多关注P0的缺陷会比较多，剩下的功能问题，小问题漏测等其实都是比较常见的。</li>
-<li>技术提升。唯一强调的就是技术提升本身需要落地，同时需要给出来使用某技术前后的具体效果的数据对比，一定也是可量化的。一切不落地的技术提升都是耍流氓啊亲</li>
-<li>团队协作。指主动分享、能否主动的牵头解决问题等等。</li>
-</ul>
-<p>基本上也会有细节的不同，但大方向是差不多的</p>
-<h2 id="人员招聘"><a href="#人员招聘" class="headerlink" title="人员招聘"></a>人员招聘</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/2747eb6d71db43c5368b584e9c0f5fbc.png" alt="test5"></p>
-<p>其实这是我理想状态下的招聘，现在行业中虽然是有这样的趋势，但还是有点偏差的。不过现在一些大公司的确更看重看问题的角度和解决问题的方式。而不像前几年比较死板的去考验技术。这点我相信今年只要跳槽的同学都深有体会的。</p>
-<h2 id="测试技术"><a href="#测试技术" class="headerlink" title="测试技术"></a>测试技术</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/f3c1c1ff817949981b27eabc26d63717.png" alt="test6"></p>
-<p>这个就是留给大家思考吧。大家在追求所谓的技术的同时，也关注关注测试吧。测试的一些基础，理念，方法等。我不希望若干年之后说起技术大家都是开发技术，对测试技术却浑然不知，届时到底自己是测试还是开发也许就谁都分不清楚了。</p>
-<h2 id="质量"><a href="#质量" class="headerlink" title="质量"></a>质量</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/7a7ec87c29be866979b568016e6b1257.png" alt="test7"></p>
-<p>其实我知道大部分人还是需要这张图的。后面的PPT我也实在写不动了。<a href="https://pan.baidu.com/s/1jIAUQua" target="_blank" rel="external">ppt链接</a>。接下来自己看吧，有啥问题在这里留言就好。相信这个话题还是值得大家来讨论的。</p>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2016/11/03/testtoquilty/" class="archive-article-date">
-  	<time datetime="2016-11-03T06:39:40.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-03</time>
-</a>
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/测试到质量/">测试到质量</a></li></ul>
-	</div>
-
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 
@@ -889,7 +857,7 @@
     
     	<section class="tools-section tools-section-tag">
     			<div class="widget tagcloud" id="js-tagcloud">
-    				<a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/android性能测试/" style="font-size: 10px;">android性能测试</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 20px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 20px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 20px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
+    				<a href="/tags/Android性能/" style="font-size: 10px;">Android性能</a> <a href="/tags/Appium/" style="font-size: 10px;">Appium</a> <a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/android性能测试/" style="font-size: 10px;">android性能测试</a> <a href="/tags/espresso/" style="font-size: 10px;">espresso</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 20px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 20px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 20px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
     			</div>
     	</section>
     
