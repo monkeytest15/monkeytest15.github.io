@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://yoursite.com">
+  <title>Espresso 2.0 源码解析 （一） | Monkey`s Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="源代码之前其实我已经写过了Espresso2.0使用AS和Gradle执行用例的Sample，详细可以见Testerhome之前的帖子。其实接着我还是想看看Espresso的实现。所以就有了这篇文章，但是代码量太大，也来不及看，所以其实想一边写这篇文章一边看的。嗯。下载之后导入即可看到下面的图示，证明你已经拿到了游戏中的第一个item。 
+
+慢慢看接着我们先来看testrunner，单纯从名字来看">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Espresso 2.0 源码解析 （一）">
+<meta property="og:url" content="http://yoursite.com/2016/11/16/espresso-code1/index.html">
+<meta property="og:site_name" content="Monkey`s Note">
+<meta property="og:description" content="源代码之前其实我已经写过了Espresso2.0使用AS和Gradle执行用例的Sample，详细可以见Testerhome之前的帖子。其实接着我还是想看看Espresso的实现。所以就有了这篇文章，但是代码量太大，也来不及看，所以其实想一边写这篇文章一边看的。嗯。下载之后导入即可看到下面的图示，证明你已经拿到了游戏中的第一个item。 
+
+慢慢看接着我们先来看testrunner，单纯从名字来看">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espresso11.png">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espresso22.png">
+<meta property="og:updated_time" content="2016-11-16T02:12:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Espresso 2.0 源码解析 （一）">
+<meta name="twitter:description" content="源代码之前其实我已经写过了Espresso2.0使用AS和Gradle执行用例的Sample，详细可以见Testerhome之前的帖子。其实接着我还是想看看Espresso的实现。所以就有了这篇文章，但是代码量太大，也来不及看，所以其实想一边写这篇文章一边看的。嗯。下载之后导入即可看到下面的图示，证明你已经拿到了游戏中的第一个item。 
+
+慢慢看接着我们先来看testrunner，单纯从名字来看">
+<meta name="twitter:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espresso11.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Monkey`s Note" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/assets/img/favicon.ico">
+  
+  <link rel="stylesheet" href="/main.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/blogImg/litten.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/photos">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">标签</a>
+    			
+    			
+            
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+		        
+					<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+		        
+					<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/blogImg/litten.png" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/photos">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-espresso-code1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Espresso 2.0 源码解析 （一）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h2><p>之前其实我已经写过了Espresso2.0使用AS和Gradle执行用例的Sample，详细可以见Testerhome之前的帖子。其实接着我还是想看看Espresso的实现。所以就有了这篇文章，但是代码量太大，也来不及看，所以其实想一边写这篇文章一边看的。嗯。<br>下载之后导入即可看到下面的图示，证明你已经拿到了游戏中的第一个item。 </p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espresso11.png" alt="espresso1"></p>
+<h2 id="慢慢看"><a href="#慢慢看" class="headerlink" title="慢慢看"></a>慢慢看</h2><p>接着我们先来看testrunner，单纯从名字来看其实感觉是不是Espresso自己的runner呢，现在还不知道，我们打开所有的目录大概浏览下。如下<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espresso22.png" alt="espresso2"></p>
+<p>这个时候我们眼前一亮，看到了一个熟悉的名字GoogleInstrumentation，点击进去一看</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span></span></div><div class="line"><span class="title">GoogleInstrumentation</span></div><div class="line"><span class="keyword">extends</span> <span class="title">ExposedInstrumentationApi</span></div></pre></td></tr></table></figure>
+<p>那么好吧，我表示不明白extends这个东西有啥用，那么继续去看了ExposedInstrumentationApi。整个代码还是很简单的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.google.android.apps.common.testing.testrunner;</div><div class="line"></div><div class="line"><span class="keyword">import</span> android.app.Activity;</div><div class="line"><span class="keyword">import</span> android.app.Fragment;</div><div class="line"><span class="keyword">import</span> android.app.Instrumentation;</div><div class="line"><span class="keyword">import</span> android.content.Context;</div><div class="line"><span class="keyword">import</span> android.content.Intent;</div><div class="line"><span class="keyword">import</span> android.os.Bundle;</div><div class="line"><span class="keyword">import</span> android.os.IBinder;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Exposes select hidden android apis to the compiler.</div><div class="line"> * These methods are stripped from the android.jar sdk compile time jar, however</div><div class="line"> * are called at runtime (and exist in the android.jar on the device).</div><div class="line"> *</div><div class="line"> * This class is built with neverlink=1 to ensure it is never actually included in</div><div class="line"> * our apk.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">ExposedInstrumentationApi</span> <span class="keyword">extends</span> <span class="title">Instrumentation</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> ActivityResult <span class="title">execStartActivity</span><span class="params">(</span></span></div><div class="line">            Context who, IBinder contextThread, IBinder token, Activity target,</div><div class="line">            Intent intent, <span class="keyword">int</span> requestCode, Bundle options) &#123;</div><div class="line">          <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execStartActivities</span><span class="params">(Context who, IBinder contextThread,</span></span></div><div class="line">            IBinder token, Activity target, Intent[] intents, Bundle options) &#123;</div><div class="line">          <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> ActivityResult <span class="title">execStartActivity</span><span class="params">(</span></span></div><div class="line">        Context who, IBinder contextThread, IBinder token, Fragment target,</div><div class="line">        Intent intent, <span class="keyword">int</span> requestCode, Bundle options) &#123;</div><div class="line">          <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> ActivityResult <span class="title">execStartActivity</span><span class="params">(</span></span></div><div class="line">      Context who, IBinder contextThread, IBinder token, Activity target,</div><div class="line">      Intent intent, <span class="keyword">int</span> requestCode) &#123;</div><div class="line">          <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException();</div><div class="line">  &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>那么这里我们看到了其实应该使用了Instrumentation下面的方法，所以继续调查了execStartActivity这个方法，发现该方法其实在MonitoringInstrumentation下面，这个类我们可以认为是Instrumentation的一个扩展，那么在下面我们找到了这里使用的几个方法。</p>
+<p>但是在Android文档中并没有对该方法有什么描述，我表示就很焦虑了。接着我继续Google了这个方法到底要干嘛。突然发现了如下的知识，嗯<br>以下是StartActivity方法的将Activity调起来的部分过程</p>
+<blockquote>
+<p>从Activity类的startActivity()方法开始，这个方法会调用Activity类中的public void startActivityForResult()方法 startActivityForResult()方法会调用Instrumentation类中的public ActivityResult execStartActivity()方法，这个方法加上了{@hide}对外是不可见的</p>
+</blockquote>
+<p>这里眼前又一亮，因为我们看到了在启动Activity的过程中第二步就会去调用这个execStartActivity方法，而且这个方法本身是hide的。那么到这里，我们终于明白了，为什么ExposedInstrumentationApi文件夹目录叫做hidden了。然后我们也理解了源码中的第一句话。</p>
+<ul>
+<li>Exposes select hidden android apis to the compiler. 由于该方法本身是隐藏的，所以我们需要暴露出来以之后被使用。<br>到这里，我们差不多知道ExposedInstrumentationApi是干什么的了，那么接着我们继续来看GoogleInstrumentation。</li>
+</ul>
+<h2 id="继续一步一步"><a href="#继续一步一步" class="headerlink" title="继续一步一步"></a>继续一步一步</h2><p>Instrumentation方法下原本就有onCreate方法，而在这里Espresso重写了该方法。如下<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle arguments)</span> </span>&#123;</div><div class="line">  Log.i(LOG_TAG, <span class="string">"Instrumentation Started!"</span>);</div><div class="line">  tryLoadingIntentSpy();</div><div class="line">  InstrumentationRegistry.registerInstance(<span class="keyword">this</span>);</div><div class="line">  ActivityLifecycleMonitorRegistry.registerInstance(lifecycleMonitor);</div><div class="line"></div><div class="line">  handlerForMainLooper = <span class="keyword">new</span> Handler(Looper.getMainLooper());</div><div class="line">  mainThread = Thread.currentThread();</div><div class="line">  executorService = Executors.newCachedThreadPool();</div><div class="line">  Looper.myQueue().addIdleHandler(idleHandler);</div><div class="line">  <span class="keyword">super</span>.onCreate(arguments);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个方法开始我看着还是觉得很奥妙的。比如这里的tryLoadingIntentSpy();,当然这个方法还是很重的，我们继续来看实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">tryLoadingIntentSpy</span><span class="params">()</span> </span>&#123;</div><div class="line">  <span class="comment">// Wouldn't it be easier to call IntentSpyImpl.getInstance() and be done with it? We don't do</span></div><div class="line">  <span class="comment">// this to avoid bringing in common lib dependencies (which cause painful conflicts with some</span></div><div class="line">  <span class="comment">// android projects) into G3ITR. Instead, we try to load IntentSpyImpl via reflection. Projects</span></div><div class="line">  <span class="comment">// that don't have intento in deps will not have IntentSpyImpl included at runtime (i.e. we</span></div><div class="line">  <span class="comment">// proceed as normally) and leave intentSpy as null (to be checked later). However, if it is</span></div><div class="line">  <span class="comment">// loaded, we can call any method of IntentSpy.</span></div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">    Class&lt;?&gt; c = Class.forName(<span class="string">"com.google.android.apps.common.testing.intento.IntentSpyImpl"</span>);</div><div class="line">    intentSpy = (IntentSpy) c.getMethod(</div><div class="line">        <span class="string">"load"</span>, Context.class, Context.class).invoke(<span class="keyword">null</span>, getTargetContext(), getContext());</div><div class="line">    Log.i(LOG_TAG, <span class="string">"IntentSpyImpl loaded"</span>);</div><div class="line">  &#125; <span class="keyword">catch</span> (ClassNotFoundException cnfe) &#123;</div><div class="line">    Log.i(LOG_TAG, <span class="string">"IntentSpyImpl not loaded: "</span> + cnfe.getMessage());</div><div class="line">  &#125; <span class="keyword">catch</span> (NoSuchMethodException nsme) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(</div><div class="line">        <span class="string">"IntentSpyImpl is available at runtime, but getInstance method was not found"</span>, nsme);</div><div class="line">  &#125; <span class="keyword">catch</span> (SecurityException se) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(</div><div class="line">        <span class="string">"IntentSpyImpl is available at runtime, but calling it failed."</span>, se);</div><div class="line">  &#125; <span class="keyword">catch</span> (IllegalAccessException iae) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(</div><div class="line">        <span class="string">"IntentSpyImpl is available at runtime, but calling it failed."</span>, iae);</div><div class="line">  &#125; <span class="keyword">catch</span> (IllegalArgumentException iare) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(</div><div class="line">        <span class="string">"IntentSpyImpl is available at runtime, but calling it failed."</span>, iare);</div><div class="line">  &#125; <span class="keyword">catch</span> (InvocationTargetException ite) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(</div><div class="line">        <span class="string">"IntentSpyImpl is available at runtime, but calling it failed."</span>, ite);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其实注释已经写的很清楚了，我不知道我理解的对不对。从实现上其实就是为了避免各种错误所以使用了反射的机制来获取这个运行的Intent，拿到这个intentSpy之后，我们就可以使用下面的方法了，不过稍等，这个intentSpy又是个什么鬼。我们看上面的目录结构，其实可以看到有两个interface。</p>
+<p>其实简单看了下这个interface，就是实现了若干方法，也是为了拿到Activity的一些东西，先不管了。继续往下看。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">InstrumentationRegistry.registerInstance(<span class="keyword">this</span>);</div><div class="line">ActivityLifecycleMonitorRegistry.registerInstance(lifecycleMonitor);</div></pre></td></tr></table></figure>
+<p>这两个其实查了下Android文档，其实就是两个监听的方法。描述类似</p>
+<blockquote>
+<p>Records/exposes the instrumentation currently running and stores a copy of the instrumentation arguments Bundle in the registry.<br>那么在onCreate中调用也是可以理解，肯定后续会使用到。</p>
+</blockquote>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/16/espresso-code1/" class="archive-article-date">
+  	<time datetime="2016-11-16T02:06:18.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-16</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/espresso/">espresso</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/11/16/multi-app/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Android Studio 简单配置多渠道包案例
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/14/GradleDIY/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Android Gradle 自定义效果控件案例</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+	    <a class="jiathis_button_twitter"></a>
+	    <a class="jiathis_button_plus"></a> 
+	    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="espresso-code1" data-title="Espresso 2.0 源码解析 （一）" data-url="http://yoursite.com/2016/11/16/espresso-code1/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"litten-hexo"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/Android性能/" style="font-size: 10px;">Android性能</a> <a href="/tags/Appium/" style="font-size: 10px;">Appium</a> <a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Gradle/" style="font-size: 15px;">Gradle</a> <a href="/tags/Groovy/" style="font-size: 10px;">Groovy</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 15px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/android性能测试/" style="font-size: 10px;">android性能测试</a> <a href="/tags/espresso/" style="font-size: 15px;">espresso</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 15px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 15px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 15px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
+    			</div>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Litten，&lt;br&gt;毕业于华科，就职于鹅厂&lt;br&gt;&lt;br&gt;热爱大海与冷笑话，&lt;br/&gt;目前是一枚前端&lt;br/&gt;&lt;br/&gt;胆小认生，不易相处，&lt;br&gt;年轻无为，卖马为生。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

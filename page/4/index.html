@@ -139,6 +139,333 @@
       <div class="body-wrap">
         
   
+    <article id="post-apibeginning2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/13/apibeginning2/">接口初心者心得第二版</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>好吧，持续做了几天，我继续来做分享了，也希望各位前辈多多指教。我表示我还不是很懂。</p>
+<p>目前使用的testng和rest-assured。这几天增加了DataProvider和rest-assured的方法。</p>
+<p>testng这里是支持新建数据驱动的xml，比如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;data&gt;</div><div class="line">    &lt;testmethod1&gt;</div><div class="line">        &lt;abc&gt;123&lt;/abc&gt;</div><div class="line">        &lt;def&gt;456&lt;/def&gt;</div><div class="line">    &lt;/testmethod1&gt;</div></pre></td></tr></table></figure>
+<p>接着可以通过在类中定义DataProvider来实现xml的解析实现，假设dataprovider对应的方法在A类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@DataProvider</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Object[][] providerMethod(Method method) &#123;</div><div class="line">...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在接下来的要使用到数据的时候就可以直接去添加dataprovider对应的的标签，同时testng会根据test method的方法名去找xml中对应的数据，如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">    <span class="meta">@Test</span>(dataProvider = <span class="string">"providerMethod"</span>, dataProviderClass = A.class)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testmethod1</span><span class="params">(Map&lt;?, ?&gt; param)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line">...</div><div class="line"></div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>这样就可以直接一对多的进行数据驱动了。</p>
+<p><strong>这里我有个问题，一般非testng.xml的准备数据的xml里面，很多数据都是不同类型的，但现在我这边读取出来都是String，这个数据类型的设置在xml里面能够直接设置么？或者还有什么好的方式？欢迎大家来告诉我哈</strong></p>
+<p>接着再来看下rest-assured吧，Google了相关信息，相比其它框架少了不少。我就用下来的情况说下心得吧。rest-assured也是结合了BDD风格的一个框架。通过given，when，then的结合更方便的进行了API的验证。虽然我个人还是不是很习惯这个语法。我们来看几个例子。<br>比如这样的Json：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line"><span class="string">"lotto"</span>:&#123;</div><div class="line"> <span class="string">"lottoId"</span>:<span class="number">5</span>,</div><div class="line"> <span class="string">"winning-numbers"</span>:[<span class="number">2</span>,<span class="number">45</span>,<span class="number">34</span>,<span class="number">23</span>,<span class="number">7</span>,<span class="number">5</span>,<span class="number">3</span>],</div><div class="line"> <span class="string">"winners"</span>:[&#123;</div><div class="line">   <span class="string">"winnerId"</span>:<span class="number">23</span>,</div><div class="line">   <span class="string">"numbers"</span>:[<span class="number">2</span>,<span class="number">45</span>,<span class="number">34</span>,<span class="number">23</span>,<span class="number">3</span>,<span class="number">5</span>]</div><div class="line"> &#125;,&#123;</div><div class="line">   <span class="string">"winnerId"</span>:<span class="number">54</span>,</div><div class="line">   <span class="string">"numbers"</span>:[<span class="number">52</span>,<span class="number">3</span>,<span class="number">12</span>,<span class="number">11</span>,<span class="number">18</span>,<span class="number">22</span>]</div><div class="line"> &#125;]</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>那么我们的验证就可以这样写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">expect().</div><div class="line">         body(<span class="string">"lotto.lottoId"</span>, equalTo(<span class="number">5</span>)).</div><div class="line">         body(<span class="string">"lotto.winners.winnderId"</span>, hasItems(<span class="number">23</span>, <span class="number">54</span>)).</div><div class="line">when().</div><div class="line">       get(<span class="string">"/lotto"</span>);</div></pre></td></tr></table></figure>
+<p>当然我们其实在使用mvn跑的时候我们希望能够看到更多的req，res的日志的话我们可以这样增加，这就是rest-assured style了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">expect().</div><div class="line">         log().all().</div><div class="line">         body(<span class="string">"lotto.lottoId"</span>, equalTo(<span class="number">5</span>)).</div><div class="line">         body(<span class="string">"lotto.winners.winnderId"</span>, hasItems(<span class="number">23</span>, <span class="number">54</span>)).</div><div class="line">when().</div><div class="line">         get(<span class="string">"/lotto"</span>);</div></pre></td></tr></table></figure>
+<p>我们也可以看一个比较复杂点的语句吧。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">given().log().all().contentType(<span class="string">"application/json"</span>)</div><div class="line">              .header(<span class="string">"cookie"</span>,</div><div class="line">                      <span class="string">"abcdefghijkl"</span>)</div><div class="line">              .request().body(jsonbody).expect().statusCode(<span class="number">200</span>).body(<span class="string">"result"</span>, equalTo(<span class="keyword">true</span>)).when()</div><div class="line">              .post(<span class="string">"/xxxxx"</span>);</div></pre></td></tr></table></figure>
+<p>所以其实一条语句中将请求，返回，断言，包括url_param等都包括在内了。看个人喜好了。不过从rest assured框架的支持上来讲，断言支持的类型很多，有兴趣的也可以试试看。我目前先按照这个架构往下尝试了，大家可以继续等我的心得。</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/07/13/apibeginning2/" class="archive-article-date">
+  	<time datetime="2016-07-12T18:08:49.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-07-13</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/接口测试/">接口测试</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-jenkinsbuzuobusi" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/27/jenkinsbuzuobusi/">Jenkins2.0 不作不会死之旅</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Jenkins2.0出来有些时间了，我也是一直没空来尝鲜，今天终于有机会了。最终导致我晚饭都没有吃，故事是这样的。</p>
+<h2 id="first-blood"><a href="#first-blood" class="headerlink" title="first blood"></a>first blood</h2><p>兴冲冲的前往jenkins2.0的下载网站，和以前一样，提供了.war、.pkg还有docker下载。看着新页面表示希望能有一个好的开始。我这里使用的是mac的osx，然后使用了我最喜欢最傻瓜的<code>java -jar jenkins.war</code>开始了我的傻逼之旅。</p>
+<p>正常运行之后看到了如下界面，好感度＋＋😄😄😄<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/4762ed644166b3e9db0dc20df12f263f.jpg" alt="jenkins2.0"></p>
+<p>接着就是VPN全开，全部下载完毕之后我们可以看到和Jenkins老版本一样的界面，那么第一步我自然先进入设置进行member安全的设置。按照惯例我勾选了如下两个选项</p>
+<ul>
+<li>设置安全矩阵</li>
+<li>允许注册</li>
+</ul>
+<p>接着我把自己添加了所有root的权限，设置了匿名有read的权限，一切总是那么的美好，一切总是来的那么突然。我点击保存之后，<strong>出现了jenkins crash，说是匿名必须要设置admin权限，卧槽，我简直震惊了。不过无所谓，我选择了先使用我自己的账号进行登陆。稍等，我看到了不该看到的界面，what，jenkins跳出了404界面</strong></p>
+<h2 id="second-blood"><a href="#second-blood" class="headerlink" title="second blood"></a>second blood</h2><p>天了鲁了。404怎办呢，我通过了各种Google确定了一种解决方案——放弃了我傻逼的启动方式，换成了tomcat，我没有想到的是这又是一个更傻逼的旅程</p>
+<p>经过了一番配置之后，我表示jenkins正常启动了，但是jenkins2.0相比老版本多出来了一个admin初始化密码，在使用java -jar的启动方式的情况下，我们可以在~/.jenkins/secrets下面找到这个密码，然而然而，jenkins2.0无论我们使用什么方式，都提示在同样的路径下，那么问题来了，我也经过了如下尝试</p>
+<ul>
+<li>我清空了~/.jenkins这个路径</li>
+<li>我关闭了所有已经开的服务</li>
+</ul>
+<p>好，一切重新开始，同时我也查看了tomcat里webapp的log日志，log日志里面清清楚楚的写着:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">your password is </div><div class="line">**************</div><div class="line">you can also find it in /var/root/jenkins/sercets/......</div></pre></td></tr></table></figure>
+<p>苍天啊，你就不能提示的正常点么。结果我发现了原本的~/.jenkins目录压根就没有生成任何的文件，另外我在tomcat里也找不到相关初始化密码的文件。</p>
+<p>稍等，有人说你是傻逼么，上面不是有写你的密码是什么么。对的，这个密码我放进去就是说不正确！不正确！不正确！快救救我吧😱😱😱😱😱</p>
+<h2 id="no-blood"><a href="#no-blood" class="headerlink" title="no blood"></a>no blood</h2><p>最后，我一切归零，正常搞定了。提醒大家的是<br><strong>不要太在意jenkins2.0的这个提示，看来很多的坑，尽量自己多找找相关文件在哪里<br>千万千万不要去装推荐的插件，插件肯定有冲突，最终我没有安装，所以就没有出现404，成功的过坑了<br>初始化密码是个很坑的设置，各种飘</strong></p>
+<p>之后有啥我还会继续更新的。。。。</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/03/27/jenkinsbuzuobusi/" class="archive-article-date">
+  	<time datetime="2016-03-26T18:08:17.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-03-27</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/持续集成/">持续集成</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-GeekTestinginShangHai" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/01/GeekTestinginShangHai/">第一届 Geek Testing in ShangHai 会议总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本次是我自己发起的第一届GeekTesting活动的总结</p>
+<h2 id="初衷"><a href="#初衷" class="headerlink" title="初衷"></a>初衷</h2><p>当初想在2016年有一个改变，所以尝试了Geek Testing的活动。本着会议更有质量，有具体的输出，能够真正的帮助到大家的原则。所以会议限制了人数，同时增加了50元的报名费，便于给大家提供更好的活动支持。</p>
+<h2 id="开场"><a href="#开场" class="headerlink" title="开场"></a>开场</h2><p>神码的总监给我们排了一个下午的桌子椅子，真心辛苦。一早东哥就来准备了，不过依然掩盖不了之后的紧张。。。😓。。。。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/ed906906af741c2c57cc23a6f119d5f4.jpg" alt="活动1"></p>
+<h2 id="上午——性能专题"><a href="#上午——性能专题" class="headerlink" title="上午——性能专题"></a>上午——性能专题</h2><p>上午基本上我开场白之后，就是东哥的性能在移动互联网上的落地的topic。总体来讲东哥紧张了，不过我想说的是，“东哥，你紧张也不要说出来啊。Orz“。<br>东哥的topic总体来讲还是很不错的，但是由于性能本身就是一个很深入的主题，东哥基本上说了下在移动互联网时代性能测试碰见的问题以及一些落地的解决方案，但由于思想太过跳跃，可能很多同学都没有跟上。不过我相信以后会越来越好哒<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/b690a2e631526be06149d9ef5b9e1c0a.jpg" alt="活动2"></p>
+<h2 id="下午——头脑风暴"><a href="#下午——头脑风暴" class="headerlink" title="下午——头脑风暴"></a>下午——头脑风暴</h2><p>首先来讲，头脑风暴的主持的真的很难很累，整个下午的控场控的我MP和HP都没有了。其实这次我主要抛出了这样几个问题</p>
+<p>假设我们的团队有很多是异地的，假设我们的产品都是很细的模块化组成的，假设我们的测试开发比也并没有达到很理想的状态。在移动互联网的快速迭代中，如果你是一家公司的测试总监，让你去安排如下的事情你怎么安排</p>
+<ul>
+<li>整个研发的流程你是会怎么安排，每个时间都做什么</li>
+<li>你觉得从初期，中期，后期来讲测试的关注点分别在什么地方</li>
+<li>如果你的老板认为测试出现的数据并不能真正说明线上用户手上的应用质量的时候，应该怎么办？（测试人数远远少于线上的用户，测试时间也很有限，网络，环境都是模拟的等）</li>
+</ul>
+<p>总体来讲大家还是很配合的，现场一共分了四组，每组都有一个代表上来阐述自己team的一些想法。我总结下我的感受，大家目前的想法和做法都感觉差不多，并没有太大的突破。但在我感觉，移动互联网下，现在的模式只是一种过度，也许会有更颠覆式的模式出现。</p>
+<blockquote>
+<p>现场也有一位创业公司的CTO提出了一个point，我觉得值得去思考。是反推式的方法，或者说是自己想达到什么目标，什么效果然后反推去安排人，去安排时间。可能半年，一年的跨度，自己想达到什么样的质量，什么样的覆盖率，什么样的产品，然后去反推去制定这半年，一年的计划和人员安排<br>请不要喷我写的。。。。妹子当天不在。。。</p>
+</blockquote>
+<p><strong>请不要喷我写的。。。。妹子当天不在。。。</strong><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/5ef9eb7f4905b2ac8446475b72fd0b5c.jpg" alt="活动总结1"><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/0e9a19315a30ab91c05e7778ceb5c530.jpg" alt="活动总结1"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>最后就是使用了亮瞎的方式补了一张合照。geektesting才第一期，路还很长。相信过程中我们能认识更多的专家，更多有技术的同学，更多有想法的同学。让这样一个集体真正的可以互相帮助，互相提升，达到一个新的高度。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-10-30%20%E4%B8%8B%E5%8D%8810.24.46.png" alt="活动总结1"></p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/03/01/GeekTestinginShangHai/" class="archive-article-date">
+  	<time datetime="2016-03-01T13:42:22.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-03-01</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GeekTesting/">GeekTesting</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-swift2app" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/11/06/swift2app/">Swift 第二个 app</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我们继续第二个app</p>
+<p>我们首先先创建一个新的swift的project<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swift2-1.png" alt="swift1"></p>
+<p>我们在storyboard中增加一个PickerView，然后将PickerView控件和ViewController.swift做绑定，具体操作可以参见第一篇swift文章，同时我们增加这个Picker中的内容列表</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-06%20%E4%B8%8B%E5%8D%8812.42.29.png" alt="swift2"></p>
+<p>我们继续添加应用启动时候需要加载的内容，如下代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function">override func <span class="title">viewDidLoad</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.viewDidLoad()</div><div class="line">    <span class="comment">// Do any additional setup after loading the view, typically from a nib.</span></div><div class="line"></div><div class="line">    MyPickerView.dataSource = self</div><div class="line">    MyPickerView.delegate = self</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在这里，我们看到了左边有两个error，这是因为我们picker的data和delegate都还没有做实现，之后我们会添加的</p>
+<p>接着我们需要对于ViewController文件做一个扩展，我们新增加一个swift文件，该文件中我们需要去实现data和delegate，我们先查看UIPickerViewDataSource这个协议下面有哪些方法。如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">protocol UIPickerViewDataSource : NSObjectProtocol &#123;</div><div class="line"></div><div class="line">    <span class="comment">// returns the number of 'columns' to display.</span></div><div class="line">    <span class="function">func <span class="title">numberOfComponentsInPickerView</span><span class="params">(pickerView: UIPickerView)</span> -&gt; Int</span></div><div class="line"></div><div class="line">    <span class="comment">// returns the # of rows in each component..</span></div><div class="line">    func <span class="title">pickerView</span><span class="params">(pickerView: UIPickerView, numberOfRowsInComponent component: Int)</span> -&gt; Int</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在这里，两个方法都不是可选的，故而我们都需要去重写这两个方法。新文件代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//</span></div><div class="line"><span class="comment">//  ViewControllerExtension.swift</span></div><div class="line"><span class="comment">// </span></div><div class="line"><span class="comment">//</span></div><div class="line"><span class="comment">//  Created by Monkey on 14-10-10.</span></div><div class="line"><span class="comment">//  Copyright (c) 2014年 Monkey. All rights reserved.</span></div><div class="line"><span class="comment">//</span></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">import</span> UIKit</div><div class="line"></div><div class="line">extension ViewController: UIPickerViewDataSource &#123;</div><div class="line">    <span class="comment">// returns the number of 'columns' to display.</span></div><div class="line">    <span class="function">func <span class="title">numberOfComponentsInPickerView</span><span class="params">(pickerView: UIPickerView)</span> -&gt; Int</span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="number">1</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// returns the # of rows in each component..</span></div><div class="line">    <span class="function">func <span class="title">pickerView</span><span class="params">(pickerView: UIPickerView, numberOfRowsInComponent component: Int)</span> -&gt; Int</span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> ListNames.count</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">extension ViewController: UIPickerViewDelegate&#123;</div><div class="line"></div><div class="line">    <span class="function">func <span class="title">pickerView</span><span class="params">(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int)</span> -&gt; String! </span>&#123;</div><div class="line">        <span class="keyword">return</span> ListNames[row]</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们需要新建一个ViewController，然后让第一个View的按钮和第二个View做跳转绑定。我们选择第二项。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swift2-2.png" alt="swift2-2"></p>
+<p>同样的，我们还需要在第二个界面上添加一个labelView，从而来接受第一个界面选择的字符串<br>我们接着需要在第一个ViewController中实现按钮的跳转，并将值去传到第二个界面上面。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line">    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) &#123;</div><div class="line">        if segue.identifier == "GoToSecondView" &#123;</div><div class="line">            let index = MyPickerView.selectedRowInComponent(0)</div><div class="line"></div><div class="line">            var NickName: String?</div><div class="line">            switch index &#123;</div><div class="line">            case 0:</div><div class="line">                NickName = "恒温"</div><div class="line">            case 1:</div><div class="line">                NickName = "Monkey"</div><div class="line">            case 2:</div><div class="line">                NickName = "Kirito"</div><div class="line">            case 3:</div><div class="line">                NickName = "大东"</div><div class="line">            case 4:</div><div class="line">                NickName = "国文"</div><div class="line">            default:</div><div class="line">                NickName = nil</div><div class="line">        &#125;</div><div class="line">            //这里我们需要定义这个动作是要跳转到第二个界面，并且将第一个界面上面的字符串传给第二个界面的一个对象</div><div class="line">            var vc = segue.destinationViewController as SecondViewController</div><div class="line">            vc.NickName = NickName</div><div class="line">    &#125;</div><div class="line"></div><div class="line">同时我们第二个界面也需要实现，如下</div><div class="line"></div><div class="line">```java</div><div class="line">//</div><div class="line">//  SecondViewController.swift</div><div class="line">// </div><div class="line">//</div><div class="line">//  Created by Monkey on 14-10-10.</div><div class="line">//  Copyright (c) 2014年 Monkey. All rights reserved.</div><div class="line">//</div><div class="line"></div><div class="line">import UIKit</div><div class="line"></div><div class="line">class SecondViewController: UIViewController &#123;</div><div class="line"></div><div class="line"></div><div class="line">    @IBOutlet weak var ReslutLabel: UILabel!</div><div class="line"></div><div class="line">    var NickName: String?</div><div class="line">    override func viewDidLoad() &#123;</div><div class="line">        super.viewDidLoad()</div><div class="line"></div><div class="line">        if NickName != nil&#123;</div><div class="line">            ReslutLabel.text = NickName!+"是奇异博士"</div><div class="line">        &#125;</div><div class="line"></div><div class="line"></div><div class="line">        // Do any additional setup after loading the view, typically from a nib.</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    override func didReceiveMemoryWarning() &#123;</div><div class="line">        super.didReceiveMemoryWarning()</div><div class="line">        // Dispose of any resources that can be recreated.</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2014/11/06/swift2app/" class="archive-article-date">
+  	<time datetime="2014-11-06T04:17:23.000Z" itemprop="datePublished"><i class="icon-clock"></i>2014-11-06</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-RASPBERRY" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/11/04/RASPBERRY/">RASPBERRY PI B+ 升级型 3 代 512m 开发板 初探</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>其实今天对于mac怎么烧raspbian还是很有疑惑的。完全不明白，首先先来看下树莓派。我是在淘宝上买的。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/pi1.jpg" alt="pi1"></p>
+<p>这个是树莓派B＋，四个usb，一个mini tf卡，一个网口，一个mini充电口，一个hdmi口主要是这样。</p>
+<p>先从官网下载raspbian 的img，下载完毕之后，将tf卡挂到mac上面。使用如下命令</p>
+<p><code>df -h</code></p>
+<p>查看当前挂载的disk</p>
+<p>一般默认tf卡这个挂载的就是disk1，接着使用sudo diskutil unmount /dev/disk1s1。<br>然后我们会看到disk1已经unmount了，这样我们就可以继续进行img的烧入。</p>
+<p>接着我们使用sudo dd bs=1m if=/Users/monkey/Downloads/2014-06-20-wheezy-raspbian.img of=/dev/rdisk1这里将img的路径换成自己系统中img所在的路径就ok啦。大概要过10分钟才会烧好。</p>
+<p>初次启动会看到如下界面：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/pi2.jpg" alt="pi2"></p>
+<p>接着就和bios的设置一样了，经过简单的设置之后你就可以进入raspbian系统了。因为我买了hdmi转接VGA的线，所以直接看到显示器上面显示。然后我还买了usb无线网络所以直接就可以链接上wifi了～～</p>
+<p>我补个过程图：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/pi3.png" alt="pi3"></p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2014/11/04/RASPBERRY/" class="archive-article-date">
+  	<time datetime="2014-11-04T07:15:28.000Z" itemprop="datePublished"><i class="icon-clock"></i>2014-11-04</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RASPBERRY/">RASPBERRY</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-swiftApp" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -272,7 +599,7 @@
     
     	<section class="tools-section tools-section-tag">
     			<div class="widget tagcloud" id="js-tagcloud">
-    				<a href="/tags/Android性能/" style="font-size: 10px;">Android性能</a> <a href="/tags/Appium/" style="font-size: 10px;">Appium</a> <a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/android性能测试/" style="font-size: 10px;">android性能测试</a> <a href="/tags/espresso/" style="font-size: 10px;">espresso</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 20px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 20px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 20px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
+    				<a href="/tags/Android性能/" style="font-size: 10px;">Android性能</a> <a href="/tags/Appium/" style="font-size: 10px;">Appium</a> <a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Gradle/" style="font-size: 15px;">Gradle</a> <a href="/tags/Groovy/" style="font-size: 10px;">Groovy</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 15px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/android性能测试/" style="font-size: 10px;">android性能测试</a> <a href="/tags/espresso/" style="font-size: 15px;">espresso</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 15px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 15px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 15px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
     			</div>
     	</section>
     

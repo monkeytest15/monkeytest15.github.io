@@ -139,6 +139,336 @@
       <div class="body-wrap">
         
   
+    <article id="post-AndroiGPU" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/07/AndroiGPU/">Android GPU 过渡绘制小 Demo，真正的测试</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近也是年底了，大家也是各忙各的，有的炫耀年终奖，有的炫耀维多利亚的秘密。反正各种炫耀。</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>嗯，你没有进错。这里是性能板块。我们还是回归正题吧。毕竟在大话移动2.0上面我们也要说点性能的东西。最近也是一边在外演讲一边自己学习中。我们这里拿一个应用来看吧。首先打开手机中的该项设置。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gpu1.png" alt="gpu1"></p>
+<h2 id="尝试测试"><a href="#尝试测试" class="headerlink" title="尝试测试"></a>尝试测试</h2><p>我们打开我们要测试的应用（注意这个是一个demo），进入主页面之后我们看到如下的界面。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gpu2.png" alt="gpu2"></p>
+<p>也许有同学就要说了，啊呀不对啊。这个颜色这样了。有bug！！！但是问题就在这里。到了这里我们根本不能算测试完毕，这个至少在正确的认知中，这样最多是测试不完整，因为你并不知道问题出在哪里。所以接着我们还是要继续做的，首先我们要来判断是不是有问题。</p>
+<h2 id="标准"><a href="#标准" class="headerlink" title="标准"></a>标准</h2><p>GPU绘制过渡，</p>
+<p>颜色标识: 从好到差:蓝-绿-淡红-红</p>
+<p>蓝色1x过度绘制<br>绿色2x过度绘制<br>淡红色3x过度绘制<br>红色超过4x过度绘制<br>那么大家大概能够心里有数了。接着我们要来真正的测试了。</p>
+<h2 id="排查"><a href="#排查" class="headerlink" title="排查"></a>排查</h2><p>那么首先我们先来看下UI的结构。如下图，我们得知是CustomViewAbove这个View。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gpu3.png" alt="gpu3"><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gpu4.png" alt="gpu4"></p>
+<p>我们必须追查到代码里，主要我们会关注两个。</p>
+<ol>
+<li>构造函数</li>
+<li>重写的各种draw的方法</li>
+</ol>
+<p>我们在代码中看到如下构造方法和draw的方法。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">CustomViewAbove</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>(context, <span class="keyword">null</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">CustomViewAbove</span><span class="params">(Context context, AttributeSet attrs)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>(context, attrs);</div><div class="line">    initCustomViewAbove();</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">initCustomViewAbove</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">// setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);</span></div><div class="line">    <span class="keyword">this</span>.setBackgroundColor(getResources().getColor(</div><div class="line">        R.color.backColor));</div><div class="line">    setDescendantFocusability(FOCUS_BEFORE_DESCENDANTS);</div><div class="line">    setClickable(<span class="keyword">true</span>);</div><div class="line">    setFocusable(<span class="keyword">true</span>);</div><div class="line">    setWillNotDraw(<span class="keyword">false</span>);</div><div class="line">    <span class="keyword">final</span> Context context = getContext();</div><div class="line">    mScroller = <span class="keyword">new</span> Scroller(context, sInterpolator);</div><div class="line">    <span class="keyword">final</span> ViewConfiguration configuration = ViewConfiguration.get(context);</div><div class="line">    mTouchSlop = ViewConfigurationCompat</div><div class="line">            .getScaledPagingTouchSlop(configuration);</div><div class="line">    mMinimumVelocity = configuration.getScaledMinimumFlingVelocity();</div><div class="line">    mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();</div><div class="line">    setInternalPageChangeListener(<span class="keyword">new</span> SimpleOnPageChangeListener() &#123;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPageSelected</span><span class="params">(<span class="keyword">int</span> position)</span> </span>&#123;</div><div class="line">            <span class="keyword">if</span> (mViewBehind != <span class="keyword">null</span>) &#123;</div><div class="line">                <span class="keyword">switch</span> (position) &#123;</div><div class="line">                <span class="keyword">case</span> <span class="number">0</span>:</div><div class="line">                <span class="keyword">case</span> <span class="number">2</span>:</div><div class="line">                    mViewBehind.setChildrenEnabled(<span class="keyword">true</span>);</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                <span class="keyword">case</span> <span class="number">1</span>:</div><div class="line">                    mViewBehind.setChildrenEnabled(<span class="keyword">false</span>);</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">    <span class="keyword">final</span> <span class="keyword">float</span> density = context.getResources().getDisplayMetrics().density;</div><div class="line">    mFlingDistance = (<span class="keyword">int</span>) (MIN_DISTANCE_FOR_FLING * density);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>首先我们从主界面上面可以看到是一个类似于fragment的控件的效果，Android的Views大家都知道是一个树状结构，那么其实有很多肉眼看不到的view是不用去绘制的。否则虽然看不到，但是依然会是影响性能的。我们经过尝试之后，去掉了其中的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">this</span>.setBackgroundColor(getResources().getColor(</div><div class="line">            R.color.backColor));</div></pre></td></tr></table></figure>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gpu5.png" alt="gpu5"></p>
+<p>在这里的setBackground其实本身是绘制背景的，但是由于View的重叠，用户并看不到这层绘制，但是的确重复绘制了。所以从效果上面我们可以看到从红色变成了淡红。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>大家不要上来就问测试怎么测试，安全怎么测试。性能和安全和你们执行测试用例，和UI的功能自动化是两回事儿。很多需要人为的介入分析和尝试。并不是说用一个工具去检测下有没有问题，有就有，没有就没有那么简单。希望大家明白这点。</p>
+<p>by monkey</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/07/AndroiGPU/" class="archive-article-date">
+  	<time datetime="2016-11-07T07:26:47.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-07</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android性能测试/">android性能测试</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-2014summary" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/07/2014summary/">2014年 年终总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>其实我一直不知道这一年做了什么。我其实一直只记得这一年我在重复做几件事情。</p>
+<ol>
+<li>不停的告诉大家不要伸手，但是同时又停止不了回答很多小白问题</li>
+<li>这一年我在公司可谓是坐过山车，一年中发生了5年可能发生的事情。不过结果还是好的</li>
+<li>不停的在外面飞机＋火车，从而获得了type in 的称号。</li>
+</ol>
+<p>其实我首先先想说累，很多人和我说自己没有时间，你们真的体验过吗？我想说只有你们体验过了你们才会进步，因为那是一种斗争。这一年中我每天要在公司夹缝中求生存，我每天回家要学习，我根本没有双休日。有的时候一周里面我加班到凌晨，周五还没有结束就上飞机飞到外面，凌晨住进酒店，然后周一的凌晨再飞回来，然后继续上班。有的时候累已经不是困，已经不是身体上的，更是精神上的，只有自己知道要什么，才能够坚持，才能够去努力改变这一切，改变自己的生活。累要累的值得，而不是希望这一生都那么劳累。</p>
+<p>其实很多人不了解我，但我明白大家的很多的感受。我不提倡伸手，我不想去和大家强调自己去主动学习的问题，原因是我是一个loser，我不敢说我多么成功，但是从2010年500元一个月的月薪，一个非常烂的专科毕业，连毕业证书都没有拿到的人这个点上面来讲，我觉得我能够混到现在已经算是奇迹了。依稀记得我在学校中我想过我以后会做什么，但是从未想到是现在这样。这四年的时间，我的确进步了，但是我没有忘记当初的心态和经历，我不希望只有我改变了，大家改变行业才能够改变。</p>
+<p>其实时不时的也有很多关心我的人，和我说要陪陪我女儿。我也知道现在正是孩子最需要陪，就如恒温说的，我也同样很感谢我丈母娘和我妈能够帮我去带领宝宝，也感谢我老婆能够去关心宝宝。而我实在没有办法，在社会，需要生存。我现在的付出是为了将来更好的生活，也是没有办法的办法。</p>
+<p>最后按照惯例，我回顾下我在2014年的一些事迹时间，说自己没有时间的看过来。那啥。。我澄清下。。我是88年的。。不要都觉得我很大了。。。。好不好。。。</p>
+<p>2014年2月23号举办了移动测试会沙龙，并且是第一次使用了公司场地<br>2014年4月12号在上海出席了拔丝活动，并担任讲师<br>2014年4月19号在北京举办了移动测试会沙龙<br>2014年5月18号出席了上海某测试沙龙讲师<br>2014年5月24号出席了南京测试圈测试沙龙活动，并担任讲师<br>2014年6月14号在北京工信部研究所帮他们做移动互联网测试企业内训<br>2014年6月20号出席北京亚太地区分会，并担任讲师<br>2014年7月1号大话移动app测试正式出版<br>2014年7月12号参加google开发者大会，并宣传我的新书<br>2014年7月13号去上海同济校区给学生做技术演讲<br>2014年7月26号出席上海亚太地区分会，并担任讲师<br>2014年8月1号连续3周前往苏州给园区公司做技术内训<br>2014年9月13号参加CSTQB大会，并担任讲师<br>2014年9月20号前往深圳，参加深圳的分会，并担任讲师<br>2014年11月2号举办移动测试会，在ucloud举办。<br>2014年11月时不时前往杭州，当天来回<br>2014年11月14号飞珠海进行企业内训<br>2014年11月23号前往帝都参加top100<br>2014年12月5号前往南京出席沙龙，并担任一天的讲师<br>2014年12月6号前往武汉，在华中科技大学举办创业和职业规划讲座</p>
+<p>精彩一直会继续，每个人都有每个人的精彩，也希望大家能活的精彩。祝愿大家2015年一切都好</p>
+<p>by monkey</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/07/2014summary/" class="archive-article-date">
+  	<time datetime="2016-11-07T07:21:28.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-07</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/other/">other</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-gradlenew" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/07/gradlenew/">Gradle 编译交互小技巧</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天偶然在网上看到这样的小技巧，不过其实按照中Groovy的介绍，这个也是理所当然的，不过这个例子能够打开脑洞，其实啥都可以做。</p>
+<p>首先工程已经在个人开源中：<a href="https://github.com/monkeytest15/Gradle_multi_apks/tree/master/monkeyApplication" target="_blank" rel="external">https://github.com/monkeytest15/Gradle_multi_apks/tree/master/monkeyApplication</a></p>
+<p>如果看到之前的Gradle文章的话其实可以了解到groovy是个什么语言，其次之前其实也都看到gradle的编译是运行之后可以直接产出应用的，这次我们来看下交互的模式。</p>
+<p>这个例子是为了在使用gradle编译的时候能够进行签名的定制化，我们需要在app的目录下，注意不是root project。在app的目录下的build.gradle做如下编写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line">apply plugin: <span class="string">'com.android.application'</span></div><div class="line"></div><div class="line">android &#123;</div><div class="line">    compileSdkVersion <span class="number">21</span></div><div class="line">    buildToolsVersion <span class="string">"20.0.0"</span></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">    defaultConfig &#123;</div><div class="line">        applicationId <span class="string">"com.example.monkey.myapplication"</span></div><div class="line">        minSdkVersion <span class="number">10</span></div><div class="line">        targetSdkVersion <span class="number">21</span></div><div class="line">        versionCode <span class="number">1</span></div><div class="line">        versionName <span class="string">"1.0"</span></div><div class="line">    &#125;</div><div class="line">    buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">            <span class="function">minifyEnabled <span class="keyword">false</span></span></div><div class="line">            proguardFiles <span class="title">getDefaultProguardFile</span><span class="params">(<span class="string">'proguard-android.txt'</span>)</span>, 'proguard-rules.pro'</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//这个是解决lint报错的代码</span></div><div class="line">    lintOptions &#123;</div><div class="line">        abortOnError <span class="keyword">false</span></div><div class="line">    &#125;</div><div class="line">    signingConfigs &#123;</div><div class="line">        myConfigs &#123;</div><div class="line">            <span class="function">storeFile     <span class="title">file</span><span class="params">( System.console()</span>.<span class="title">readLine</span><span class="params">(<span class="string">"\n\$ Enter keystore path: "</span>)</span>)</span></div><div class="line">            storePassword       System.<span class="title">console</span><span class="params">()</span>.<span class="title">readPassword</span><span class="params">(<span class="string">"\n\$ Enter keystore password: "</span>)</span></div><div class="line">            keyAlias            System.<span class="title">console</span><span class="params">()</span>.<span class="title">readLine</span><span class="params">(<span class="string">"\n\$ Enter key alias: "</span>)</span></div><div class="line">            keyPassword         System.<span class="title">console</span><span class="params">()</span>.<span class="title">readPassword</span><span class="params">(<span class="string">"\n\$ Enter key password: "</span>)</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    productFlavors &#123;</div><div class="line">        qqqq &#123;</div><div class="line">            applicationId = <span class="string">'com.monkey.qqq'</span></div><div class="line">        &#125;</div><div class="line">        hhhhh &#123;</div><div class="line">            applicationId=<span class="string">'com.monkey.hhh'</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    <span class="function">compile <span class="title">fileTree</span><span class="params">(dir: <span class="string">'libs'</span>, include: [<span class="string">'*.jar'</span>])</span></span></div><div class="line">    compile 'com.android.support:appcompat-v7:21.0.3'</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在这中间，关键代码如下：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gradle1.png" alt="gradle1"></p>
+<p>我们可以在编译的时候看到出现了签名的选择：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gradle2.png" alt="gradle2"></p>
+<p>到此我们脑洞可以大开啦～～</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/07/gradlenew/" class="archive-article-date">
+  	<time datetime="2016-11-07T03:40:55.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-07</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gradle/">gradle</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-gradle-Androidmanifest" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/07/gradle-Androidmanifest/">gradle 集成修改 Android Manifest.xml 打多个包实践</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>其实这次我想好好把gradle 构建android工程生成的文件好好看看的，但是实在太多了，而且网络上资料有限，故而就放在下次吧。</p>
+<p>这次做了一些新的尝试，然后也看了下一些之前没有关心的文件是啥用。</p>
+<h2 id="gradle-wrapper-jar"><a href="#gradle-wrapper-jar" class="headerlink" title="gradle-wrapper.jar"></a>gradle-wrapper.jar</h2><p>首先其实之前就看到有这个jar包，但是还没有去关心过到底是啥用。<br>Gradle Wrapper 是一种更加方便的使用gradle的方法，他包括了为支持windows的批处理脚本和支持类unix的shell脚本。这些脚本是你，在不安装gradle时候，也可以用gradle。安装wrapper只需要在你的build.gradle文件中添加如果下代码。<br>我们来看下结构</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">└── initial</div><div class="line">    └── gradlew</div><div class="line">    └──gradlew.bat</div><div class="line">    └── gradle</div><div class="line">       └── wrapper</div><div class="line">           └── gradle-wrapper.jar</div><div class="line">           └── gradle-wrapper.properties</div></pre></td></tr></table></figure>
+<p>现在已经可以用Wrapper构建你的工程了。你将和之前一样，运行gradle build命令构建工程。<br>./gradlew build<br>第一行执行Gradle的版，他讲下载和缓存执行版本gradle的二进制文件。 Gradle Wrapper 文件将和代码一样提交给版本控制器，这样任何人，获取代码后，不用安装gradle，就可以构建工程。</p>
+<p>这个的确会非常方便，总体感觉以后再也不用编写什么打包脚本了。直接checkout，运行指定gradle命令即可。</p>
+<h2 id="多个项目"><a href="#多个项目" class="headerlink" title="多个项目"></a>多个项目</h2><p>在gradle项目根目录下面我们也可以看到有一个settings.gradle的文件，默认是有<br>include ‘:app’<br>假设我们有三个项目，分别是</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">  MyProject/</div><div class="line"></div><div class="line">| settings.gradle</div><div class="line"></div><div class="line">app/</div><div class="line">| build.gradle</div><div class="line"></div><div class="line">app2/</div><div class="line">| build.gradle</div><div class="line"></div><div class="line">app3/</div><div class="line">| build.gradle</div></pre></td></tr></table></figure>
+<p>那么我们需要修改settings.gradle，变成include ‘:app’, ‘:app2′, ‘:app3′</p>
+<h2 id="1-0-rc的坑（转）"><a href="#1-0-rc的坑（转）" class="headerlink" title="1.0 rc的坑（转）"></a>1.0 rc的坑（转）</h2><ul>
+<li><p>Error:(26, 0) Gradle DSL method not found: ‘runProguard()’问题，这里是runProguard()方法被替换了，把runProguard改为minifyEnabled即可，<a href="http://stackoverflow.com/questions/27016385/error26-0-gradle-dsl-method-not-found-runproguard" target="_blank" rel="external">http://stackoverflow.com/questions/27016385/error26-0-gradle-dsl-method-not-found-runproguard</a></p>
+</li>
+<li><p>“Could not find property ‘packageApplication’ on com.android.build.gradle.internal.api.ApplicationVariantImpl_Decorated”问题，这个属性被取消了，这里是替换要输出的APK的名称，<a href="http://stackoverflow.com/questions/27209188/could-not-find-property-packageapplication-on-com-android-build-gradle-interna" target="_blank" rel="external">http://stackoverflow.com/questions/27209188/could-not-find-property-packageapplication-on-com-android-build-gradle-interna</a></p>
+</li>
+<li><p>“Could not find property ‘processManifest’ on com.android.build.gradle.internal.api.ApplicationVariantImpl”问题，这里是由于manifest merger改动了，解决方法如下：<a href="http://stackoverflow.com/questions/27302965/could-not-find-property-processmanifest-on-com-android-build-gradle-internal-a" target="_blank" rel="external">http://stackoverflow.com/questions/27302965/could-not-find-property-processmanifest-on-com-android-build-gradle-internal-a</a></p>
+</li>
+<li><p>android studio中的plugin也发生了改变，将”apply plugin: ‘android’”改为”apply plugin: ‘com.android.application’”</p>
+</li>
+</ul>
+<p>monkey：不过1.0坑真的很多，大家自己去尝试就知道了。主要是stackoverflow上面的东西太旧。</p>
+<h2 id="修改app和root-project中两个build-gradle"><a href="#修改app和root-project中两个build-gradle" class="headerlink" title="修改app和root project中两个build.gradle"></a>修改app和root project中两个build.gradle</h2><p>我们创建好Android application之后，可以在app目录和根目录下都看到build.gradle文件，这两个文件分别会从app层面和多个project层面进行build的管控。<br>我们先来看下根目录的gradle.build文件。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//其实这里已经有了标识，告诉大家这个是可以管控多个模块的</span></div><div class="line"><span class="comment">// Top-level build file where you can add configuration options common to all sub-projects/modules.</span></div><div class="line"></div><div class="line"><span class="comment">//编译脚本</span></div><div class="line">buildscript &#123;</div><div class="line">    repositories &#123;</div><div class="line"><span class="comment">//这里可以是maven，jcenter等</span></div><div class="line">        jcenter()</div><div class="line">    &#125;</div><div class="line">    dependencies &#123;</div><div class="line">        classpath <span class="string">'com.android.tools.build:gradle:1.0.0'</span></div><div class="line"></div><div class="line">        <span class="comment">// <span class="doctag">NOTE:</span> Do not place your application dependencies here; they belong</span></div><div class="line">        <span class="comment">// in the individual module build.gradle files</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"><span class="comment">// 1.0 rc之后这个需要修改</span></div><div class="line">apply plugin: <span class="string">'com.android.application'</span></div><div class="line"></div><div class="line"></div><div class="line">android &#123;</div><div class="line">    compileSdkVersion <span class="number">21</span></div><div class="line">    buildToolsVersion <span class="string">"20.0.0"</span></div><div class="line"></div><div class="line"><span class="comment">//这里需要设置资源文件，否则会报错，文件找不到</span></div><div class="line">    sourceSets &#123;</div><div class="line">        main &#123;</div><div class="line">            manifest.srcFile <span class="string">'AndroidManifest.xml'</span></div><div class="line">            java.srcDirs = [<span class="string">'src'</span>]</div><div class="line">            resources.srcDirs = [<span class="string">'src/main/res'</span>]</div><div class="line">            aidl.srcDirs = [<span class="string">'src'</span>]</div><div class="line">            renderscript.srcDirs = [<span class="string">'src'</span>]</div><div class="line">            res.srcDirs = [<span class="string">'res/main/res'</span>]</div><div class="line">            assets.srcDirs = [<span class="string">'assets'</span>]</div><div class="line">        &#125;</div><div class="line">        instrumentTest.setRoot(<span class="string">'tests'</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    defaultConfig &#123;</div><div class="line">        applicationId <span class="string">"com.example.monkey.myapplication"</span></div><div class="line">        minSdkVersion <span class="number">10</span></div><div class="line">        targetSdkVersion <span class="number">21</span></div><div class="line">        versionCode <span class="number">1</span></div><div class="line">        versionName <span class="string">"1.0"</span></div><div class="line">    &#125;</div><div class="line"><span class="comment">//增加混淆</span></div><div class="line">    buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">            <span class="function">minifyEnabled <span class="keyword">false</span></span></div><div class="line">            proguardFiles <span class="title">getDefaultProguardFile</span><span class="params">(<span class="string">'proguard-android.txt'</span>)</span>, 'proguard-rules.pro'</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="comment">//这个是解决lint报错的代码</span></div><div class="line">    lintOptions &#123;</div><div class="line">        abortOnError <span class="keyword">false</span></div><div class="line">    &#125;</div><div class="line">  <span class="comment">// 增加签名</span></div><div class="line">    signingConfigs &#123;</div><div class="line">        myConfigs &#123;</div><div class="line">            <span class="function">storeFile <span class="title">file</span><span class="params">(<span class="string">"/Users/monkey/.android/debug.keystore"</span>)</span></span></div><div class="line">            keyAlias "..."</div><div class="line">            keyPassword "..."</div><div class="line">            storePassword "..."</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">allprojects &#123;</div><div class="line">    repositories &#123;</div><div class="line">        jcenter()</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">//替换AndroidManifest.xml的REPLACE_KEY字符串为渠道名称</span></div><div class="line">android.applicationVariants.all &#123; variant -&gt;</div><div class="line">    variant.outputs.each &#123; output -&gt;</div><div class="line">        output.processManifest.doLast &#123;</div><div class="line">            <span class="comment">//v1.11之前这里用的copy&#123;&#125;，我换成了文件操作，这样可以在v1.11版本正常运行，并保持文件夹整洁</span></div><div class="line">            <span class="comment">//$&#123;buildDir&#125;是指build文件夹</span></div><div class="line">            <span class="comment">//$&#123;variant.dirName&#125;是flavor/buildtype，例如GooglePlay/release，运行时会自动生成</span></div><div class="line">            <span class="comment">//下面的路径是类似这样：build/intermediates/manifests/GooglePlay/release/AndroidManifest.xml</span></div><div class="line">            def manifestFile = <span class="string">"$&#123;buildDir&#125;/intermediates/manifests/full/$&#123;variant.dirName&#125;/AndroidManifest.xml"</span></div><div class="line"></div><div class="line">            <span class="comment">//将字符串REPLACE_KEY替换成flavor的名字</span></div><div class="line">            def updatedContent = <span class="keyword">new</span> File(manifestFile).getText(<span class="string">'UTF-8'</span>).replaceAll(<span class="string">"REPLACE_KEY"</span>, <span class="string">"$&#123;variant.productFlavors[0].name&#125;"</span>)</div><div class="line">            <span class="keyword">new</span> File(manifestFile).write(updatedContent, <span class="string">'UTF-8'</span>)</div><div class="line"></div><div class="line">            <span class="comment">//将此次flavor的AndroidManifest.xml文件指定为我们修改过的这个文件</span></div><div class="line">            variant.processResources.manifestFile = file(<span class="string">"$&#123;buildDir&#125;/intermediates/manifests/full/$&#123;variant.dirName&#125;/AndroidManifest.xml"</span>)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接着看下app下面的build.gradle<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//增加application的apply</span></div><div class="line">apply plugin: <span class="string">'com.android.application'</span></div><div class="line"></div><div class="line">android &#123;</div><div class="line"><span class="comment">//配置sdk版本</span></div><div class="line">    compileSdkVersion <span class="number">21</span></div><div class="line">    buildToolsVersion <span class="string">"20.0.0"</span></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">    defaultConfig &#123;</div><div class="line">        applicationId <span class="string">"com.example.monkey.myapplication"</span></div><div class="line">        minSdkVersion <span class="number">10</span></div><div class="line">        targetSdkVersion <span class="number">21</span></div><div class="line">        versionCode <span class="number">1</span></div><div class="line">        versionName <span class="string">"1.0"</span></div><div class="line">    &#125;</div><div class="line">    buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">            <span class="function">minifyEnabled <span class="keyword">false</span></span></div><div class="line">            proguardFiles <span class="title">getDefaultProguardFile</span><span class="params">(<span class="string">'proguard-android.txt'</span>)</span>, 'proguard-rules.pro'</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//这个是解决lint报错的代码</span></div><div class="line">    lintOptions &#123;</div><div class="line">        abortOnError <span class="keyword">false</span></div><div class="line">    &#125;</div><div class="line">    signingConfigs &#123;</div><div class="line">        myConfigs &#123;</div><div class="line">            <span class="function">storeFile <span class="title">file</span><span class="params">(<span class="string">"/Users/monkey/.android/debug.keystore"</span>)</span></span></div><div class="line">            keyAlias "..."</div><div class="line">            keyPassword "..."</div><div class="line">            storePassword "..."</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"><span class="comment">//增加多个打包渠道配置</span></div><div class="line">    productFlavors &#123;</div><div class="line">        qqqq &#123;</div><div class="line">            applicationId = <span class="string">'com.monkey.qqq'</span></div><div class="line">        &#125;</div><div class="line">        hhhhh &#123;</div><div class="line">            applicationId=<span class="string">'com.monkey.hhh'</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    <span class="function">compile <span class="title">fileTree</span><span class="params">(dir: <span class="string">'libs'</span>, include: [<span class="string">'*.jar'</span>])</span></span></div><div class="line">    compile 'com.android.support:appcompat-v7:21.0.3'</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我们使用gradlew进行编译之后，我们可以在如下目录下中找到分别为了打不同包所用的Android Manifest.xml文件。</p>
+<p>同时我们也可以在outputs中的apk看到我们编译出的多个apk，但这里只是package name不同，渠道的meta data并没有修改，但是方法是一样的。</p>
+<p>最后的给个编译report。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line">ec2-<span class="number">54</span>-<span class="number">67</span>-<span class="number">1</span>-<span class="number">101</span>:monkeyApplication monkey$ ./gradlew app:assembleDebug</div><div class="line">:app:preBuild</div><div class="line">:app:compileHhhhhDebugNdk UP-TO-DATE</div><div class="line">:app:preHhhhhDebugBuild</div><div class="line">:app:checkHhhhhDebugManifest</div><div class="line">:app:preHhhhhReleaseBuild</div><div class="line">:app:preQqqqDebugBuild</div><div class="line">:app:preQqqqReleaseBuild</div><div class="line">:app:prepareComAndroidSupportAppcompatV72103Library UP-TO-DATE</div><div class="line">:app:prepareComAndroidSupportSupportV42103Library UP-TO-DATE</div><div class="line">:app:prepareHhhhhDebugDependencies</div><div class="line">:app:compileHhhhhDebugAidl UP-TO-DATE</div><div class="line">:app:compileHhhhhDebugRenderscript UP-TO-DATE</div><div class="line">:app:generateHhhhhDebugBuildConfig UP-TO-DATE</div><div class="line">:app:generateHhhhhDebugAssets UP-TO-DATE</div><div class="line">:app:mergeHhhhhDebugAssets UP-TO-DATE</div><div class="line">:app:generateHhhhhDebugResValues UP-TO-DATE</div><div class="line">:app:generateHhhhhDebugResources UP-TO-DATE</div><div class="line">:app:mergeHhhhhDebugResources UP-TO-DATE</div><div class="line">:app:processHhhhhDebugManifest UP-TO-DATE</div><div class="line">:app:processHhhhhDebugResources UP-TO-DATE</div><div class="line">:app:generateHhhhhDebugSources UP-TO-DATE</div><div class="line">:app:compileHhhhhDebugJava UP-TO-DATE</div><div class="line">:app:preDexHhhhhDebug UP-TO-DATE</div><div class="line">:app:dexHhhhhDebug UP-TO-DATE</div><div class="line">:app:processHhhhhDebugJavaRes UP-TO-DATE</div><div class="line">:app:validateDebugSigning</div><div class="line">:app:packageHhhhhDebug UP-TO-DATE</div><div class="line">:app:zipalignHhhhhDebug UP-TO-DATE</div><div class="line">:app:assembleHhhhhDebug UP-TO-DATE</div><div class="line">:app:compileQqqqDebugNdk UP-TO-DATE</div><div class="line">:app:checkQqqqDebugManifest</div><div class="line">:app:prepareQqqqDebugDependencies</div><div class="line">:app:compileQqqqDebugAidl UP-TO-DATE</div><div class="line">:app:compileQqqqDebugRenderscript UP-TO-DATE</div><div class="line">:app:generateQqqqDebugBuildConfig UP-TO-DATE</div><div class="line">:app:generateQqqqDebugAssets UP-TO-DATE</div><div class="line">:app:mergeQqqqDebugAssets UP-TO-DATE</div><div class="line">:app:generateQqqqDebugResValues UP-TO-DATE</div><div class="line">:app:generateQqqqDebugResources UP-TO-DATE</div><div class="line">:app:mergeQqqqDebugResources UP-TO-DATE</div><div class="line">:app:processQqqqDebugManifest UP-TO-DATE</div><div class="line">:app:processQqqqDebugResources UP-TO-DATE</div><div class="line">:app:generateQqqqDebugSources UP-TO-DATE</div><div class="line">:app:compileQqqqDebugJava UP-TO-DATE</div><div class="line">:app:preDexQqqqDebug UP-TO-DATE</div><div class="line">:app:dexQqqqDebug UP-TO-DATE</div><div class="line">:app:processQqqqDebugJavaRes UP-TO-DATE</div><div class="line">:app:packageQqqqDebug UP-TO-DATE</div><div class="line">:app:zipalignQqqqDebug UP-TO-DATE</div><div class="line">:app:assembleQqqqDebug UP-TO-DATE</div><div class="line">:app:assembleDebug UP-TO-DATE</div><div class="line"></div><div class="line">BUILD SUCCESSFUL</div><div class="line"></div><div class="line">Total time: <span class="number">8.73</span> secs</div></pre></td></tr></table></figure>
+<p>总体来讲，gradle的编译会比以往的mvn的pom配置文件来的更灵活，可配置性更强。关于更多的配置见之后的文章吧</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/07/gradle-Androidmanifest/" class="archive-article-date">
+  	<time datetime="2016-11-07T03:33:31.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-07</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Gradle/">Gradle</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-howtostudytest" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/06/howtostudytest/">如何做好移动互联网应用测试</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>首先很高兴的是移动测试会第八期在ucloud的赞助下非常非常圆满的成功了。人真的越来越多，妹子也越来越漂亮了。同时感谢小A和永达以及小马试驾创业公司的支持。移动测试会虽然最早是我个人创立的，但是一个人的能力毕竟有限，所以这第八期说明了团结就是力量：），也希望之后大家更多的来支持我们，本次活动的链接：<a href="http://www.douban.com/event/22861768/" target="_blank" rel="external">http://www.douban.com/event/22861768/</a></p>
+<p>11月8号支付宝上海要开始一天的专场招聘，所以最近我面试也非常的频繁。今天的活动我也碰见了一些朋友来咨询我，所以在这里我想小小的谈论下如何进行移动无线应用的测试学习。</p>
+<p>为什么我定位移动无线互联网的测试，还是应用的测试呢，因为我个人就是做应用测试的，所以我系统测试也做过，不过不深入，所以我就不想去讨论自己不熟悉的领域了。其实在很久前我画过一张技能树的图，也许比较粗糙，但是也还是有价值的。blog链接见：<a href="http://blog.sina.com.cn/s/blog_7022adbf0101b31w.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_7022adbf0101b31w.html</a></p>
+<p>在之前的文章中也已经提到过了行业中的几类人，那么我们应该怎么如何客观的学习呢？请不要觉得自己已经工作很多时间就不愿意往下看了，反正看了你也不少块肉。请跟着以下的文字慢慢阅读，问问自己达到几点，不要自欺欺人就好。</p>
+<p>现在不会做测试的拼命到处问怎么做测试，现在在手动测试的拼命问怎么做自动化，现在做自动化的拼命问怎么写测试框架，现在写测试框架的拼命让团队使用，现在写框架并且让团队使用的拼命问除了维护框架还有什么别的可以做，现在没有事情做的拼命在问到底测试做什么呢？</p>
+<p>不知道每天会有多少人，每秒钟会有多少人会去问怎么做自动化，多少人会去问自己发展方向是什么，学习方向又是什么。我很明确的说，你没有方向原因在于你的无知，人最大的敌人就是恐惧和无知，两者相辅相成，最终就是一事无成。你问那么多有什么用，踏踏实实的先开始学有什么不好。<br>比如你要学习移动互联网的无线应用测试了，比如你要开始学习Android的应用测试了。那么首先第一步你先看google 提供的文档吧，sdk文档不说详细，先浏览一遍吧。然后既然你是一个做测试的，我们就说正常的道路，你至少先将文档中与test这个关键字相关的工具也好，框架也好看一下吧。不懂的可以随时google或者百度来帮助我们阅读完sdk的docs。什么？你从来不看官方文档？android是谁生的？你连亲爹妈都不看，那么你看啥？看后妈？然后抱怨怎么看不懂？你怪谁？</p>
+<p>ok，假设你老老实实的看完了，然后你说你了解你们产品的业务了，你就可以做应用的功能测试了吗？非也，试问大部分测试真的觉得自己够资格去做功能测试吗？觉得功能测试很简单吗？问起来很多人都很自信满满的说自己非常了解业务。ok，试问，你的app中每个功能对应哪些接口你知道吗？这些接口会有什么核心参数知道吗？试问，你的产品的核心代码你有阅读过吗？你的产品前端app对应的后台服务的代码你有阅读过吗？你说你测试的产品有视频是吧，视频格式有哪些？常见分辨率有哪几种？常见码流有哪些？如果这些你都不知道并不代表你不回做功能测试或者业务测试，而是你根本无法深层次的去设计测试用例，那么请问你这算会功能测试了吗？还有的同学和我说用户体验测试，ok，继续问，请问你看过google提供的android的UI Design Guide吗？也许你没有看过，也许你根本不知道，不管是哪条，那么还谈什么用户体验呢？简单来讲，我们做一个测试很简单，要深入做很困难，就如同今天移动测试会上茉莉说的wifi测试，也许让也许人去测试wifi测试也会测试，但是深入呢？我们做测试要踏踏实实，不要浮躁，浮躁只会让你继续sb，但是不会阻止别人nb。</p>
+<p>ok，假设功能测试的点你都清楚了，然后你说你技术多多少少知道点，然后你就可以去做应用的自动化测试了吗？非也。我们一个一个来看。大部分先来做的是UI Automation，ok，appium我在这边就不说了，也许2w字都吐槽吐不完，我就说robotium。那么你第一步是先看下robotium官方网站的sample和wiki，不要到处问例子或者直接上来就导入jar包去做。了解完毕之后，那么可以继续深入的去了解junit 和instrumentation，了解这两者能够让你对robotium更了解并且在写用例的时候更得心应手。然后你会写了sample，能够跑通就算ok了么？非也，那么接着碰见的问题就是如何管理suite，如何管理数据，比如testng，如何做参数配置，比如config.xml，如何进行用例的架构的维护，使用op等。接着如何将其集成到持续集成中？如果你仔细看过instrumentationtestrunner的官方文档你就不会问了。接着除了native的，也许会碰见自定义控件的自动化，最后还有webview和h5的自动化等。那么这些前提是你要先去了解这个自定义控件以及webview到底是什么吧，而不是直接拿robotium自定义的api直接食用，然后抱怨说，啊呀这个怎么跑不通。最后记得一定要结合业务去做设计和断言。<br>接着很多人还会觉得很牛逼的去找到BDD的框架，gem安装，套用cucumber和robotium。但是又会发现各种问题，在做这个事情之前继续试问，ruby gem管理你去学习了么？cucumber是啥知道了么？BDD框架源码结构有看过吗？step怎么封装知道吗？官方的github的wiki和issue有过一遍吗？都没有？那么你还问啥，先去看再做讨论。</p>
+<p>为什么我那么强调学习能力和态度，因为移动互联网的测试已经不是一个工具或者平台能够制霸的时代了。移动互联网现在更多的是注重实用开源框架，注重灵活的使用工具和代码来提升自己的效率，而不是拿来一个工具学会怎么用，然后就给你一个结果告诉你缺陷在什么地方。故而不是再去想什么“怎么做性能自动化测试”这种问题。无论你用360这种app也好，或者别的工具也罢，首先你拿到的数据并非是你公司团队想要的，其次请问这个数据你知道是怎么获取的吗？这个工具告诉你，cpu，内存，电量，流量，GPU绘制消耗，或者crash信息你就信啊？那么请问要你有啥用？你说你连数据怎么来的如果都不知道这个信息你敢用来作为测试报告吗？我们至少得自己去学习一下怎么获取这些数据吧，然后你编写service也好，使用shell也罢将这些做成自动化工具，那么也是有理有据。否则请问你真的会做自动化测试吗？最后记得一定要结合业务，那么势必要详细的了解业务，请看上面。可详见：<a href="https://github.com/monkeytest15/AndroidPerformanceTest_Python" target="_blank" rel="external">https://github.com/monkeytest15/AndroidPerformanceTest_Python</a></p>
+<p>接着来说安全测试也是一样。不要去想“有什么工具能够做安全测试啊？”。好了，这个问题我就不展开讨论了额，否则很多人肯定会觉得我在鄙视他们的智商。安全的测试和大部分人知道的测试根本就是两个领域，不要妄想你连上面几点都不知道的情况下就去做安全测试，真的不是我看不起你们。</p>
+<p>其实我们需要想象我们掌握的知识点是一个一个积木，而现在你先去看哪些积木你还没有，你先去获得。就比如java都不怎么会，然后就说自己要去做自动化，android都不了解就说要做自动化。没有太大必要。积木一个一个去搭，然后方向自然而然的就有了。目前学习移动无线的应用测试没有什么一定的路，每个人所在公司不同，所处业务不同，不要去问别人，最重要的是自己静下心来，记住，是静下心来问自己，自己真的不懂，如果自己是什么都不懂，那么就踏踏实实的从语言的学习，android本身的文档，工具等一个一个去学，不要浮躁。只要踏实了，不会没有方向，方向永远在你的心中。</p>
+<p>最后想强调一点的是，请眼光放长远，站在更高的高度看问题，不要做了10年还在做UI自动化，而且还根本做的不深入。记住，UI只不过是自动化中的冰山一角，你要去看的还有很多。不要局限自己，不要让公司局限你，除非你一辈子就打算在这个公司养老了。如果你不赞同我，那么随意，本来我就不指望所有人都点赞。</p>
+<p>by monkey</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/06/howtostudytest/" class="archive-article-date">
+  	<time datetime="2016-11-06T04:54:14.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-06</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/移动无线测试/">移动无线测试</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-ios-flex" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -724,339 +1054,6 @@
 
 
   
-    <article id="post-hexobuildblog" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/27/hexobuildblog/">Hexo搭建一套属于自己的Blog</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="起源"><a href="#起源" class="headerlink" title="起源"></a>起源</h2><p>  最近机缘巧合的逼迫自己在搭建属于自己的<code>blog</code>，经过了几次周折最终选择了网络上比较火的<code>Hexo</code>，使用之后的确是非常的方便。本文不会去太多的阐述安装，更多的是描述在使用过程中一些记忆深刻的点吧。</p>
-<h2 id="命令方式"><a href="#命令方式" class="headerlink" title="命令方式"></a>命令方式</h2><p>  <code>Hexo</code>安装成功之后，整个命令行使用的让我非常开心。😄😄😄</p>
-<p>  比如我需要新建一篇文章：<code>hexo new &quot;新文章的名字&quot;</code></p>
-<p>  我要清除缓存: <code>hexo clean</code></p>
-<p>  我要生成本地的静态网页: <code>hexo g</code></p>
-<p>  本地启动服务: <code>hexo s</code></p>
-<p>  远程代码部署: <code>hexo d</code></p>
-<p>  是的，一切让我愉快，基本上整个从零到现在网站成型过程中没有出现过什么问题。</p>
-<h2 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h2><p>  <code>Hexo</code>安装主题也是非常方便的，但这里要提醒一句的是，大部分主题的结构可能是相同的。但<code>star</code>数最多的<code>next</code>主题与其他主题的结构不同。所以说修改文件的时候大家需要自己注意。下面我就简单说下一些功能的添加。</p>
-<h2 id="友情链接"><a href="#友情链接" class="headerlink" title="友情链接"></a>友情链接</h2><p>  整个<code>hexo</code>中有两个<code>_config.yml</code>，这两个一个是针对<code>hexo</code>整个网站的，一个是针对主题的。都是非常重要的。如果你使用的主题是本身已经实现了友情链接的话，那么你可以直接在<code>hexo</code>的<code>_config.yml</code>里面增加下面的设置:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">social:</div><div class="line">github: https:<span class="comment">//github.com/monkeytest15</span></div><div class="line">twitter: https:<span class="comment">//twitter.com/snowangelsimon</span></div><div class="line">weibo: http:<span class="comment">//weibo.com/534598827</span></div><div class="line">zhihu: https:<span class="comment">//www.zhihu.com/people/chen-ye-47</span></div><div class="line">	</div><div class="line"></div></pre></td></tr></table></figure>
-<p> 效果如下：</p>
-<p> <img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-10-28%20%E4%B8%8A%E5%8D%8812.25.45.png" alt="社交"></p>
-<h2 id="本地搜索"><a href="#本地搜索" class="headerlink" title="本地搜索"></a>本地搜索</h2><p> 安装插件：<code>$ npm install hexo-generator-search --save</code><br> 增加配置：<br> <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">search:</div><div class="line">	path: search.xml</div><div class="line">	field: post</div><div class="line"></div></pre></td></tr></table></figure></p>
-<p>  效果就很好：<br>  <img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-10-28%20%E4%B8%8A%E5%8D%881.19.05.png" alt="本地搜索"></p>
-<h2 id="关于404公益界面"><a href="#关于404公益界面" class="headerlink" title="关于404公益界面"></a>关于404公益界面</h2><p>我们需要新建一个404的page，<code>hexo</code>能够很容易的帮助我们新建。然后只需要在对应的<code>index.md</code>中增加404网站的代码即可。<br> <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"> </div><div class="line"></div><div class="line">&lt;iframe scrolling='no' frameborder='0' </div><div class="line">src='http://yibo.iyiyun.com/Home/Distribute/ad404/key/1209395' </div><div class="line">width='654' height='470' style='display:block;'&gt;&lt;/iframe&gt;</div><div class="line"></div><div class="line"></div></pre></td></tr></table></figure></p>
-<p>这样每当我们404的时候也是做了一份公益了.<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-10-28%20%E4%B8%8A%E5%8D%881.21.23.png" alt="404"></p>
-<h2 id="域名绑定"><a href="#域名绑定" class="headerlink" title="域名绑定"></a>域名绑定</h2><p>这里主要要强调的就是需要在<code>github.io</code>的根目录下新建全大写的<code>CNAME</code>，否则是不会生效的。别的就没有什么主意的了。根据我给的图配置就可以了。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-10-27%20%E4%B8%8B%E5%8D%8811.58.25.png" alt="域名绑定"></p>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2016/10/27/hexobuildblog/" class="archive-article-date">
-  	<time datetime="2016-10-27T15:55:38.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-10-27</time>
-</a>
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hexo/">Hexo</a></li></ul>
-	</div>
-
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-STF3" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/27/STF3/">STF修改之三——NodeJS-AngularJS修改传递数据</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>最近我终于明白了AngularJS1.x的模式是MVW，W就是Whatever的意思😂 😂 😂 😂 😂 😂 😂 😂</strong></p>
-<p>接着就需要来进一步修改了，比如我们想新增一个报告界面，但想着复用STF的架构，所以就开始继续啃代码，先来说新增一个标签吧，比如下图:<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-02%20%E4%B8%8B%E5%8D%8811.35.20.png" alt="stf3"></p>
-<h2 id="device界面解析"><a href="#device界面解析" class="headerlink" title="device界面解析"></a><code>device</code>界面解析</h2><p>根据STF的界面来看，我们想着在这个界面新增一个标签然后复用device的界面，device界面主要目录在<code>/res/app/</code>这里，由于STF中主要的界面都是复用这里的模版和文件的，所以先对于这个目录下的文件做一定的解析。</p>
-<p><code>res/app/index.js</code> 这个主要是整个<code>http://localhost:7100/#!/devices</code>对应的界面的主界面代码。这里可以看得出来对应url是/devices，同时引用了<code>./device-list.jade</code>的模版以及<code>DeviceListCtrl</code>的这个<code>Controller</code>。 代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">require(<span class="string">'./device-list.css'</span>)</div><div class="line"></div><div class="line"><span class="keyword">module</span>.<span class="keyword">exports</span> = angular.<span class="keyword">module</span>(<span class="string">'device-list'</span>, [</div><div class="line">require ...</div><div class="line">])</div><div class="line">  .config([<span class="string">'$routeProvider'</span>, function($routeProvider) &#123;</div><div class="line">    $routeProvider</div><div class="line">      .when(<span class="string">'/devices'</span>, &#123;</div><div class="line">        template: require(<span class="string">'./device-list.jade'</span>),</div><div class="line">        controller: <span class="string">'DeviceListCtrl'</span></div><div class="line">      &#125;)</div><div class="line">  &#125;])</div><div class="line">  .run(function(editableOptions) &#123;</div><div class="line">    <span class="comment">// bootstrap3 theme for xeditables</span></div><div class="line">    editableOptions.theme = <span class="string">'bs3'</span></div><div class="line">  &#125;)</div><div class="line">  .controller(<span class="string">'DeviceListCtrl'</span>, require(<span class="string">'./device-list-controller'</span>))</div></pre></td></tr></table></figure>
-<ul>
-<li><code>res/app/device-list</code>， 这就是<code>index.js</code>对应模版的样式</li>
-<li><code>res/app/device-list.jade</code>，这里是整个index加载的界面元素模版，我们的标签也是加在这个地方，后面会详细来说的。<br>*<code>res/app/device-list-controller.js</code>，这个文件比较复杂，首先是通过<code>$scope</code>在这个<code>Controller</code>里面去动态获取了所有当前链接的机器，并且创建对应的服务和监听。</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$scope.tracker = DeviceService.trackAll($scope)</div><div class="line">$scope.control = ControlService.create($scope.tracker.devices, <span class="string">'*ALL'</span>)</div><div class="line"></div><div class="line">$scope.columnDefinitions = DeviceColumnService</div></pre></td></tr></table></figure>
-<p>同时在里面定义了界面列表的元素有哪些并做了绑定以及一些初始化排序的工作，如下</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">$scope.columns = defaultColumns</div><div class="line"></div><div class="line">SettingsService.bind($scope, &#123;</div><div class="line">  target: <span class="string">'columns'</span></div><div class="line">, source: <span class="string">'deviceListColumns'</span></div><div class="line">&#125;)</div><div class="line"></div><div class="line">var defaultSort = &#123;</div><div class="line">  fixed: [</div><div class="line">    &#123; </div><div class="line">      name: <span class="string">'state'</span></div><div class="line">      , order: <span class="string">'asc'</span></div><div class="line">    &#125;</div><div class="line">  ]</div><div class="line">  , user: [</div><div class="line">    &#123;</div><div class="line">      name: <span class="string">'name'</span></div><div class="line">      , order: <span class="string">'asc'</span></div><div class="line">    &#125;</div><div class="line">  ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在整个结构中还有一个文件夹叫做<code>details</code>，这个文件夹中的界面，页面结构都是复用<code>util</code>下面的这些文件，这个待会儿再会来详细说，我们先继续来讲增加标签的事情。</p>
-<h2 id="增加标签"><a href="#增加标签" class="headerlink" title="增加标签"></a>增加标签</h2><p>如下增加<code>res/app/device-list.jade</code>的代码，<code>jade</code>严格控制锁进，所以要切记</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">uib-tab(active=<span class="string">'activeTabs.monkey'</span>, select=<span class="string">'focusSearch()'</span>, ng-<span class="keyword">if</span>=<span class="string">'!$root.basicMode'</span>)</div><div class="line">  uib-tab-heading</div><div class="line">    i.fa.fa-<span class="function">list</span></div><div class="line">    <span class="title">span</span><span class="params">(translate)</span> monkey</div><div class="line">  div.device-list-monkey-<span class="title">content</span><span class="params">(ng-<span class="keyword">if</span>=<span class="string">'activeTabs.monkey'</span>)</span>.selectable</div><div class="line"></div><div class="line">    device-list-<span class="title">monkey</span><span class="params">(tracker=<span class="string">'tracker'</span>, columns=<span class="string">'columns'</span>, sort=<span class="string">'sort'</span>, filter=<span class="string">'filter'</span>)</span>.selectable</div></pre></td></tr></table></figure>
-<p>这里增加了一个<code>activeTabs.monkey</code>这样一个标签，同时看到了这样一行代码d<code>evice-list-monkey(tracker=&#39;tracker&#39;, columns=&#39;columns&#39;, sort=&#39;sort&#39;, filter=&#39;filter&#39;).selectable，</code>可以先有个印象，待会儿再来说。增加了标签之后，需要在controller里面增加对应的定义和绑定，如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$scope.activeTabs = &#123;</div><div class="line">  icons: <span class="keyword">true</span></div><div class="line">, details: <span class="keyword">false</span></div><div class="line">, monkey: <span class="keyword">false</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>最后在<code>/res/app/</code>增加对应的<code>monkey</code>文件夹，同时记得在<code>index.js</code>中增加<code>require(&#39;./monkey&#39;).name</code>,引用当然下面文件的名字对应都要修改。Angular本身还是有一定规范的。</p>
-<h2 id="nodejs–-gt-JS"><a href="#nodejs–-gt-JS" class="headerlink" title="nodejs–&gt;JS"></a>nodejs–&gt;JS</h2><p>有了标签之后，那么接下来就说数据怎么传输过去了。那么这里就有两个问题，第一个问题就是怎么传到界面上，第二个问题就是怎么修改STF原有的数据。先来说第一个</p>
-<p>我们可以在<code>lib/units/app/index.js</code>中增加如下代码，这样在STF启动的时候这个服务就会生效。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">app.get(<span class="string">'/monkey/demo'</span>, function(req, res) &#123;</div><div class="line">          var monkey_map = &#123;tips:<span class="string">"this is demo"</span>&#125;</div><div class="line">          res.send(monkey_map)</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>同时我们可以在<code>res/app/device-list</code>中增加一个界面请求数据的方法，这里就要用到<code>$http</code>和<code>$scope</code>，在界面刷新的时候自动会进行对应url的请求。同时需要在jade中有一个ng的标签是等于<code>monkey_demo</code>，比如<code>(ng-model=&#39;sbmonkey&#39;)</code>代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$scope.monkey = &#123;</div><div class="line">  monkey: $http.get(<span class="string">'/monkey/demo'</span>).success(function(data,header,config,status)&#123;</div><div class="line">    console.log(data.tips);</div><div class="line">    $scope.monkey.monkey_demo = data.tips</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>对于$scope实在太博大精深，这里share一张图，附上网盘地址：<a href="http://pan.baidu.com/s/1eROs7qM" target="_blank" rel="external">http://pan.baidu.com/s/1eROs7qM</a><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/e7da37b22e74c30fd22cef31a73849a2.jpg" alt="scope"></p>
-<p>在STF中很多实用到$rootScope的方法，这些我们都可以在源码中看到方法的定义，有兴趣的同学可以进一步查看。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="function">function <span class="title">Scope</span><span class="params">()</span> </span>&#123;</div><div class="line">  <span class="comment">// 省略属性定义</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">Scope.prototype = &#123;</div><div class="line">  constructor: Scope,</div><div class="line"></div><div class="line">  $<span class="keyword">new</span>: function(isolate) &#123;...&#125;,</div><div class="line"></div><div class="line">  $watch: function(watchExp, listener, objectEquality) &#123;...&#125;,</div><div class="line"></div><div class="line">  $watchGroup: function(watchExpressions, listener) &#123;...&#125;,</div><div class="line"></div><div class="line">  $watchCollection: function(obj, listener) &#123;...&#125;,</div><div class="line"></div><div class="line">  $digest: function() &#123;...&#125;,</div><div class="line"></div><div class="line">  $destroy: function() &#123;...&#125;,</div><div class="line"></div><div class="line">  $eval: function(expr, locals) &#123;...&#125;,</div><div class="line"></div><div class="line">  $evalAsync: function(expr) &#123;...&#125;,</div><div class="line"></div><div class="line">  $apply: function(expr) &#123;...&#125;,</div><div class="line"></div><div class="line">  $applyAsync: function(expr) &#123;...&#125;,</div><div class="line"></div><div class="line">  $on: function(name, listener) &#123;...&#125;,</div><div class="line"></div><div class="line">  $emit: function(name, args) &#123;...&#125;,</div><div class="line"></div><div class="line">  $broadcast: function(name, args) &#123;...&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<h2 id="nodejs–-gt-STF-JS"><a href="#nodejs–-gt-STF-JS" class="headerlink" title="nodejs–&gt;STF JS"></a>nodejs–&gt;STF JS</h2><p>这里为了不破坏STF原本的架构，所以都基于STF原本的代码去修改的，所以还是比较好理解的。按照网上说的，从首先修改了res/app/device-list/column/device-column-service.js这个文件的第一列获取数据的代码，新定义了一个device.monkeytest()</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">module</span>.<span class="keyword">exports</span> = <span class="function">function <span class="title">DeviceColumnService</span><span class="params">($filter, gettext)</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    state: DeviceStatusCell(&#123;</div><div class="line">      title: gettext(<span class="string">'Status'</span>)</div><div class="line">    , value: function(device) &#123;</div><div class="line">        <span class="keyword">return</span> device.monkeytest()</div><div class="line">      &#125;</div><div class="line">    &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>接着我们需要修改这个数据来源，在<code>res/app/components/stf/device/enhance-device/enhance-device-service.js</code>，这里也定义了<code>device.monkeytest</code>的值是什么。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">  var monkey_aaa</div><div class="line">  device.monkeytest = function()&#123;$http.get(<span class="string">'/monkey/demo'</span>).success(function(data,header,config,status)&#123;</div><div class="line">    monkey_aaa = data.tips</div><div class="line"></div><div class="line">  &#125;).error(function(data,header,config,status)&#123;</div><div class="line">    console.log(data)</div><div class="line">  &#125;)</div><div class="line">    <span class="keyword">return</span> monkey_aaa</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/6d3335707565a0702cc06d93581e4011.png" alt="stf3-2"></p>
-<p>好吧，所以就是我大概理解了<code>Whatever</code>的意思。to be continue…..</p>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2016/10/27/STF3/" class="archive-article-date">
-  	<time datetime="2016-10-27T03:53:25.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-10-27</time>
-</a>
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/STF/">STF</a></li></ul>
-	</div>
-
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-dahua2xu" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/27/dahua2xu/">首发—大话2专项测试试读</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2016/10/27/dahua2xu/" class="archive-article-date">
-  	<time datetime="2016-10-27T03:53:00.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-10-27</time>
-</a>
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/《大话移动App测试》/">《大话移动App测试》</a></li></ul>
-	</div>
-
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-nginxgor" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/27/nginxgor/">nginx+gor 初心者之旅</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>hi 各位，我又来了。我最近都是初心者。踩坑王就是我。</p>
-<p>背景就是我们都知道有一个引流工具gor，为了调试这个货，我想在本地起几个不同端口的服务进行调试，所以才有了今天卧槽的经验。</p>
-<h2 id="配置nginx"><a href="#配置nginx" class="headerlink" title="配置nginx"></a>配置nginx</h2><p>首先我们先安装<code>nginx</code></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">brew search nginx</div><div class="line">brew install nginx</div></pre></td></tr></table></figure>
-<p>nginx本身的nginx.config是设置好的，如下:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">&lt;!-- lang: shell --&gt;</div><div class="line">worker_processes  <span class="number">1</span>;  </div><div class="line"></div><div class="line">error_log       /usr/local/var/log/nginx/error.log warn;</div><div class="line"></div><div class="line">pid        /usr/local/var/run/nginx.pid;</div><div class="line"></div><div class="line">events &#123;</div><div class="line">    worker_connections  <span class="number">256</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line">http &#123;</div><div class="line">    include       mime.types;</div><div class="line">    default_type  application/octet-stream;</div><div class="line"></div><div class="line">    log_format  main  <span class="string">'$remote_addr - $remote_user [$time_local] "$request" '</span></div><div class="line">                      <span class="string">'$status $body_bytes_sent "$http_referer" '</span></div><div class="line">                      <span class="string">'"$http_user_agent" "$http_x_forwarded_for"'</span>;</div><div class="line"></div><div class="line">    access_log      /usr/local/var/log/nginx/access.log main;</div><div class="line">    port_in_redirect off;</div><div class="line">    sendfile        on; </div><div class="line">    keepalive_timeout  <span class="number">65</span>; </div><div class="line"></div><div class="line">    include /usr/local/etc/nginx/conf.d<span class="comment">/*.conf;</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>如果我们想启动多个服务，那么我们需要在路径./conf.d/里面新建多个server.conf，在同一个conf里面写多个server是不允许。<br>所以我们新建了两个，配置如下：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&lt;!-- lang: shell --&gt;</div><div class="line">server &#123;</div><div class="line">    listen       8080; 这里写启动的端口</div><div class="line">    server_name  localhost; 这里是server name</div><div class="line">    root /Users/user_name/nginx_sites/; 这里是自定义webapp的目录</div><div class="line"></div><div class="line">    location / &#123; </div><div class="line">        index index.php; 页面文件</div><div class="line">        autoindex on; </div><div class="line">    &#125;   </div><div class="line"></div><div class="line">    #proxy the php scripts to php-fpm  </div><div class="line">    location ~ \.php$ &#123;</div><div class="line">        include /usr/local/etc/nginx/fastcgi.conf;</div><div class="line">        fastcgi_intercept_errors on; </div><div class="line">        fastcgi_pass   127.0.0.1:9000; </div><div class="line">    &#125;   </div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>Mac OSX自带了php-fpm，但如果直接启动会报错，说log文件路径不正确。所以我们还需要更改php-fpm.conf文件如下：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">[global]</div><div class="line">; Pid file</div><div class="line">; Note: the default prefix is /usr/local/var</div><div class="line">; Default Value: none</div><div class="line">;pid = run/php-fpm.pid</div><div class="line"></div><div class="line">; Error log file</div><div class="line">; If it's set to "syslog", log is sent to syslogd instead of being written</div><div class="line">; in a local file.</div><div class="line">; Note: the default prefix is /usr/local/var</div><div class="line">; Default Value: log/php-fpm.log</div><div class="line">error_log = /usr/local/var/log/php-fpm.log 此处需要自定义目录</div></pre></td></tr></table></figure>
-<p>按照如上配置，我们是可以正常启动服务的，但这个时候我们访问localhost:8080会出现403，原因是我们index.php所在的所有根目录都需要有755权限，如果没有，我们需要chmod 755 path就可以了。正常的界面如下：</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/987bdca036d392c9b89620cf04234b86.png" alt="php"></p>
-<h2 id="gor"><a href="#gor" class="headerlink" title="gor"></a>gor</h2><p>这就是坑的开始。先配置golang的环境以及安装gor我就不说了。<br>我碰见的问题是这样的。我使用命令<br><code>./gor --input-http :8080 --output-http www.verycd.com -stats -verbose</code></p>
-<p>此时我访问8080界面会变成ok，这说明是gor接受到了这个input而出现的界面，如下：</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-03%20%E4%B8%8A%E5%8D%8812.45.27.png" alt="phpok"></p>
-<p>同时gor的log显示让我很无语：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">[DEBUG][PID <span class="number">2963</span>][<span class="number">1462464221018871751</span>][<span class="number">1462464221018.871826</span>ms] [HTTPClient] Connecting: http:<span class="comment">//www.verycd.com</span></div><div class="line">[DEBUG][PID <span class="number">2963</span>][<span class="number">1462464236080793607</span>][<span class="number">15061.921856</span>ms] [HTTPClient] Connecting: http:<span class="comment">//www.verycd.com</span></div><div class="line">[DEBUG][PID <span class="number">2963</span>][<span class="number">1462464236080850524</span>][<span class="number">0.056917</span>ms] [HTTP] Disconnected:  http:<span class="comment">//www.verycd.com</span></div><div class="line">[DEBUG][PID <span class="number">2963</span>][<span class="number">1462464247776394823</span>][<span class="number">11695.544299</span>ms] [HTTPClient] Connecting: http:<span class="comment">//www.verycd.com</span></div><div class="line">[DEBUG][PID <span class="number">2963</span>][<span class="number">1462464247776448620</span>][<span class="number">0.053797</span>ms] [HTTP] Disconnected:  http:<span class="comment">//www.verycd.com</span></div><div class="line">[DEBUG][PID <span class="number">2963</span>][<span class="number">1462464251310765636</span>][<span class="number">3534.317016</span>ms] [HTTPClient] Connecting: http:<span class="comment">//www.verycd.com</span></div><div class="line">[DEBUG][PID <span class="number">2963</span>][<span class="number">1462464251310821301</span>][<span class="number">0.055665</span>ms] [HTTP] Disconnected:  http:<span class="comment">//www.verycd.com</span></div></pre></td></tr></table></figure>
-<p>此时我尝试了几个方法。</p>
-<ul>
-<li>方法一：Google Group<br>group里有一个和我碰见一样的问题，我看到了作者给了最新的binary，我下载之后，mac无法识别，估计是编译模式不同导致的吧。failed</li>
-<li>方法二：重新下载最新的代码，go build<br>生成了gor，可以使用，但日志和前面一样</li>
-<li>方法三：直接从官方地址去下载最新build的binary<br>可以使用，但日志和前面一样</li>
-</ul>
-<p>到此，我要吐槽的不是这个日志了，关键是gor之后连version都不显示。我几乎可以判断gor还在demo阶段，根本无法投入正式使用这个结论。暂时到这里吧。</p>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2016/10/27/nginxgor/" class="archive-article-date">
-  	<time datetime="2016-10-26T18:09:01.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-10-27</time>
-</a>
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gor/">gor</a></li></ul>
-	</div>
-
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-ReactNativeBuiildView" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/27/ReactNativeBuiildView/">ReactNative 大会卖萌 View</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>今天早上看到了FB发的一个关于RN框架开发过程中的故事的文章，真的感觉很好啊。一个开源的项目，很多人参与进来真心是个不错的事情，真不知道TesterHome啥时候能有人来merge代码，😢😢😢。</p>
-<p>根据之前的ReactNative扫盲实践，我们继续来看一些组合View怎么来做。使用RN比Native的实现成本的确低了很多。不过性能方面的话，等以后复杂的应用再来对比了。</p>
-<p>我们下载了一个大会的banner，放到我们的View中。如下：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;Text style=&#123;&#123;fontSize:16&#125;&#125;&gt;'测试大会来啦'&lt;/Text&gt;</div><div class="line">&lt;Image style=&#123;&#123;flex: 1, height: 300, resizeMode: Image.resizeMode.stretch&#125;&#125; source=&#123; require('./img/meeting.png')&#125; /&gt;</div></pre></td></tr></table></figure>
-<p>然后是选择票的种类，这里选择了picker选择器：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">var AwesomeProject = React.createClass(&#123;</div><div class="line">   getInitialState: function() &#123;</div><div class="line">    return &#123;</div><div class="line">      language: '',</div><div class="line">    &#125;;</div><div class="line">  &#125;,</div><div class="line">  render() &#123;</div><div class="line">    return (</div><div class="line">&lt;View  style=&#123;&#123;marginLeft:10,marginTop:10&#125;&#125;&gt;</div><div class="line"></div><div class="line">        &lt;Text &gt;</div><div class="line">         长的漂亮的都来买票了</div><div class="line">        &lt;/Text&gt;</div><div class="line">        &lt;Picker </div><div class="line">          mode=&#123;'dropdown'&#125;</div><div class="line">          style=&#123;&#123;width:200&#125;&#125;</div><div class="line">          selectedValue=&#123;this.state.language&#125;</div><div class="line">          onValueChange=&#123;(value) =&gt; this.setState(&#123;language: value&#125;)&#125;&gt;</div><div class="line">          &lt;Picker.Item label="个人早鸟无虫吃票" value="个人早鸟无虫吃票" /&gt;</div><div class="line">          &lt;Picker.Item label="个人早鸟有虫吃票" value="个人早鸟有虫吃票" /&gt;</div><div class="line">           &lt;Picker.Item label="组队早鸟被虫吃票" value="组队早鸟被虫吃票" /&gt;</div><div class="line">          &lt;Picker.Item label="长的帅的人的票" value="长的帅的人的票" /&gt;</div><div class="line">        &lt;/Picker&gt;</div><div class="line">        &lt;Text&gt;当前选择的是:&#123;this.state.language&#125;&lt;/Text&gt;</div><div class="line">      &lt;/View&gt;</div></pre></td></tr></table></figure>
-<p>可以见下效果图。</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-03%20%E4%B8%8A%E5%8D%8812.50.01.png" alt="reactnative1"></p>
-<p>另外附上图片的一些设置方法：<br>通过Image.resizeMode来适配图片布局，包括contain, cover, stretch<br>默认不设置模式等于cover模式</p>
-<ul>
-<li>contain模式自适应宽高，给出高度值即可</li>
-<li>cover铺满容器，但是会做截取</li>
-<li>stretch铺满容器，拉伸</li>
-</ul>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2016/10/27/ReactNativeBuiildView/" class="archive-article-date">
-  	<time datetime="2016-10-26T18:08:04.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-10-27</time>
-</a>
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/">ReactNative</a></li></ul>
-	</div>
-
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -1120,7 +1117,7 @@
     
     	<section class="tools-section tools-section-tag">
     			<div class="widget tagcloud" id="js-tagcloud">
-    				<a href="/tags/Android性能/" style="font-size: 10px;">Android性能</a> <a href="/tags/Appium/" style="font-size: 10px;">Appium</a> <a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/android性能测试/" style="font-size: 10px;">android性能测试</a> <a href="/tags/espresso/" style="font-size: 10px;">espresso</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 20px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 20px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 20px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
+    				<a href="/tags/Android性能/" style="font-size: 10px;">Android性能</a> <a href="/tags/Appium/" style="font-size: 10px;">Appium</a> <a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Gradle/" style="font-size: 15px;">Gradle</a> <a href="/tags/Groovy/" style="font-size: 10px;">Groovy</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 15px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/android性能测试/" style="font-size: 10px;">android性能测试</a> <a href="/tags/espresso/" style="font-size: 15px;">espresso</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 15px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 15px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 15px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
     			</div>
     	</section>
     
