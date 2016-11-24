@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://yoursite.com">
+  <title>移动测试人员的未来：测试开发技术的融合 | Monkey`s Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="原链接：http://www.infoq.com/cn/articles/mobile-testing-future
+作者：陈晔
+首先说明，测试包括很多领域，这次谈测试的未来，我只谈移动互联网测试的未来。这些年我和很多公司的同学都做过交流，经过了长时间的交流，基本上对现状有一个清楚的了解，这里就大胆的对未来进行一个预测。
+另外我还想说，测试行业还是一个不成熟的行业，学术界和工业界都存在着大量看不清">
+<meta property="og:type" content="article">
+<meta property="og:title" content="移动测试人员的未来：测试开发技术的融合">
+<meta property="og:url" content="http://yoursite.com/2016/11/17/test-future/index.html">
+<meta property="og:site_name" content="Monkey`s Note">
+<meta property="og:description" content="原链接：http://www.infoq.com/cn/articles/mobile-testing-future
+作者：陈晔
+首先说明，测试包括很多领域，这次谈测试的未来，我只谈移动互联网测试的未来。这些年我和很多公司的同学都做过交流，经过了长时间的交流，基本上对现状有一个清楚的了解，这里就大胆的对未来进行一个预测。
+另外我还想说，测试行业还是一个不成熟的行业，学术界和工业界都存在着大量看不清">
+<meta property="og:updated_time" content="2016-11-17T01:52:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="移动测试人员的未来：测试开发技术的融合">
+<meta name="twitter:description" content="原链接：http://www.infoq.com/cn/articles/mobile-testing-future
+作者：陈晔
+首先说明，测试包括很多领域，这次谈测试的未来，我只谈移动互联网测试的未来。这些年我和很多公司的同学都做过交流，经过了长时间的交流，基本上对现状有一个清楚的了解，这里就大胆的对未来进行一个预测。
+另外我还想说，测试行业还是一个不成熟的行业，学术界和工业界都存在着大量看不清">
+  
+    <link rel="alternative" href="/atom.xml" title="Monkey`s Note" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/assets/img/favicon.ico">
+  
+  <link rel="stylesheet" href="/main.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/blogImg/litten.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/photos">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">标签</a>
+    			
+    			
+            
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+		        
+					<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+		        
+					<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/blogImg/litten.png" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/photos">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-test-future" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      移动测试人员的未来：测试开发技术的融合
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>原链接：<a href="http://www.infoq.com/cn/articles/mobile-testing-future" target="_blank" rel="external">http://www.infoq.com/cn/articles/mobile-testing-future</a></p>
+<p>作者：陈晔</p>
+<p>首先说明，测试包括很多领域，这次谈测试的未来，我只谈移动互联网测试的未来。这些年我和很多公司的同学都做过交流，经过了长时间的交流，基本上对现状有一个清楚的了解，这里就大胆的对未来进行一个预测。</p>
+<p>另外我还想说，测试行业还是一个不成熟的行业，学术界和工业界都存在着大量看不清客观事实的人，同样的也存在大量的扯淡的人，本篇文章希望大家都能够认清楚现在的局势，以便更好的认清方向去学习，从而将行业整体推向一个正确的道路上。</p>
+<h2 id="过去：从极易到极难"><a href="#过去：从极易到极难" class="headerlink" title="过去：从极易到极难"></a>过去：从极易到极难</h2><p>要预测未来，我们首先必须对过去和现状有一个清晰的了解，所以，下面首先介绍一下移动测试过去是什么样的。</p>
+<p>我自己是从09年底开始接触Android无线应用的功能测试，那么就从那个时间开始说起吧。</p>
+<p>09年到11年底属于移动互联网测试在中国的第一个阶段，那个阶段几乎网络上除了Android、iOS的官方文档，不存在其它任何相关的测试技术博客或者文档，这对当初接触这个行业的我们是一个非常大的挑战。</p>
+<p>对于一个未知的领域，为了保证产品质量，测试必然是从功能方面切入进行。不过好在那个时期的App大多都是纯Native的逻辑，并不像现在那么的复杂。但由于开发整体技术的不成熟以及硬件上不充分的支持，我们最常见的其实就是OOM（Out Of Memory），那个时期真的算是习以为常了。</p>
+<p>09年到11年的时候，整个行业的大部分互联网公司都感觉到了移动互联网的到来，这个时候，很多大企业也觉得应该开始储备移动团队和技术基础了，所以开始大范围招人。</p>
+<p>初创企业招入的测试肯定是One Man One Team，一个人就相当于一个团队，而大公司的话，会将自己公司内以往做服务端测试，或者Web测试经验丰富的人，拉过来做移动测试团队的leader，然后开始招兵买马。</p>
+<p>但无论是哪一类公司，测试工作肯定集中在功能测试用例的设计、执行测试用例上，而且非常的累。所以当时如果你会或者说掌握Android Monkey测试以及iOS的Monkey测试的话，那么已经是神一样的人物了，很多公司会争先恐后的抢着要的。（这里我不得不提一句，我面试了那么多的人，大部分人就是知道基础的命令，也不知道Monkey执行的策略包括实现，这些人就不要说掌握或者熟练了。）</p>
+<p>在移动互联网早期，功能测试就被放在了一个很低的位置，直到现在依然没有什么一个很好的改观。</p>
+<p>然后过了快2年，各个公司发现，移动互联网不如自己设想中的赚钱，反而烧钱很快。于是11年下半年部分公司就开始裁员了，而首当其冲的就是测试工程师。在这个阶段中，几乎所有公司都不知道自己要招什么样的人，JD（岗位描述）都会很模糊，会写上要移动互联网测试经验，但不知道具体要什么经验。整整2年就处于这样一个阶段，我称之为移动测试第一阶段。</p>
+<p>接着12年开始到13年底基本上又是两年，进入了第二阶段。</p>
+<p>这个阶段，移动互联网的项目迭代周期也基本定型了，1～2月内一次大迭代，小版本可能每天都有。此时的公司对移动测试的要求也开始具体化——当然，中国是一个跟风严重的国家，比如当初BAT或者各个大公司写出来具体的测试JD，行业的其它公司纷纷开始抄袭，所以这阶段的移动测试的要求基本是从BAT和大公司出来的。</p>
+<p>12年开始，行业对测试人员的招聘要求来了一个180度的转变，Robotium，Monkey，Monkeyrunner，Instrumentation，Objective-C，Java，Python等各种详细的要求接踵而来，整个12年的面试会给测试人员一个感觉———面试测试岗位比面试一个CTO岗位都要累。记得某些公司在面试测试人员之前，首先先要笔试，做各种卷子，包括软件工程，测试，算法，代码，智力题等，从我看来简直变态的可以。</p>
+<p>另一方面，移动互联网的产品本身从Native开始慢慢的转变成部分Native，部分WebView。Native主要用来实现一些类似于设置、本地界面框架的功能，而WebView更多的会做一些活动界面、广告投放的功能。之后Hybrid混合式应用就变成了移动互联网应用的主流实现方式。测试工作也从以往的纯功能性测试，增加到现在的自动化测试、持续集成、碎片化测试等等。移动测试的技术在这段时间也得到了非常大的进步和提升。</p>
+<p>其实在这两年里，还有一个事情让所有人都感觉到非常大的变化，那就是开源的测试技术越来越多。现在很多刚进入移动互联网的测试人会发现单是UI自动化测试就会有几十个框架，根本就不知道选什么。</p>
+<h2 id="现状：业务与工具无法兼得"><a href="#现状：业务与工具无法兼得" class="headerlink" title="现状：业务与工具无法兼得"></a>现状：业务与工具无法兼得</h2><p>最近的一年又有了什么变化呢？</p>
+<p>从我了解的情况看，各个公司的关注点慢慢从功能测试转到专项测试，又从以往单纯去做UI自动化框架的开发发展到了测试平台化，发展到了线上监控。</p>
+<p>前几年，行业大部分公司都在大量招聘业务测试人员，以及所谓的自动化测试工程师。在某些大公司里，整个测试团队分成两部分—————业务团队和工具团队（这里不得不吐槽，其实实际情况是工具组的大部分所谓的测试开发工程师其实就是开发，并没有太多测试的积累）。从2011年开始，百度等公司就开始陆续这样去分团队工作，几年下来的确有着不错的积累，比如各个公司属于自己的框架和平台都搭建起来了，但这样的分工就如双刃剑，让我来和大家说下另外一面吧。</p>
+<p>第一点相信很多人心里也都知道，也就是两个组总是不能非常融洽的合作，总有互相的抱怨。所谓一个巴掌拍不响，双方都存在问题：</p>
+<ul>
+<li>业务方的同学抱怨工具组做的工具不落地，不能触及到业务功能测试的痛点</li>
+<li>工具方的同学不停的输出工具，更多的从架构层代码层去改进工具，却忽略了业务的实际真正的用途</li>
+<li>业务方和工具方的同学互相不服对方，这点很实际。业务同学大多拼体力，工具方大多拼技术，两者薪资会有一定的差别，公司的重视程度也会有一定的差异，这其中不见得一定哪方好哪方不好，得看公司。</li>
+<li>工具组的同学难过的一点就是他们大多并没有自己实际的KPI，更多的是看多少能在业务方落地，也就是说KPI其实是依附于业务方，那么合作就变的尤其重要，但从上面的现状我们看得出来这并非易事。</li>
+</ul>
+<p>第二点可能很多人就未必知道了。在移动互联网，工具组的同学无非做两样东西————二次开发自动化测试框架和测试平台（兼容性，自动化，监控等）。先说框架这个东西，如果仅仅是API层面的框架，那么的确能够长期有效的使用下去。但移动互联网中工具组大多做的是什么类型的框架呢？你猜对了，正是UIAutomation Framework，过程很黄很暴力，我就不多说了，我们来说结果吧。结果就是大多数业务方用着也不是很爽，所以不停的给工具组提需求，而工具组服务的不止一个业务方，为了KPI只能不停的去接需求，加班修改，最后不仅没有满足业务方，工具组团队先跪了，原因是需求根本来不及满足，Bug也根本就修不完，不停的恶性循环。</p>
+<p>所以说，经过这段时间之后，行业里的公司在功能测试上基本都有了一定的积累，然后开始关注应用的性能，因为性能直接关系到用户体验。</p>
+<p>同时，行业也意识到功能测试和自动化应该是测试人员的基本能力，而不是一个加分项。</p>
+<p>所以到了14年，其实很少看到再有公司要招单纯的自动化测试工程师了，就算有，招入进去的也会承担更多的职责。虽然我很难确认这到底是不是一个进步，但是国内测试行业之前一直很混乱，伸手党横行，大多数人属于自己根本不能自理的状态，所以从这个角度来看，整个行业的技术能力要求提升，算是一个非常不错的趋势了。关于测试行业到底有哪一些捣乱的人，可以移步测试行业感谢有你。</p>
+<p>行业现状也能说明这种情况，我能够透露的是，蚂蚁金服从title上面来讲的话，已经不存在“测试工程师”了，全部是“测试开发工程师”，这其实隐约的在暗示点了什么。今年我去了360、百度、JD、OneAPM等公司，同时也和手Q、赶集等同学有了深入的交流。交流下来来看，大家也都隐约的有一种转型。</p>
+<h2 id="未来：找出问题还不够，要定位问题"><a href="#未来：找出问题还不够，要定位问题" class="headerlink" title="未来：找出问题还不够，要定位问题"></a>未来：找出问题还不够，要定位问题</h2><p>了解了移动测试的过去和现状，现在可以大胆的预测未来了，不过，这里也仅仅是未来三年内的情况。</p>
+<p>首先，测试人员肯定是朝着全栈的方向去发展了，这点毫无疑问。而功能（业务）测试，专项测试，自动化测试等都会变成一个测试人员基本的能力，而非加分项。</p>
+<p>而随着网商的发展，各类互联网＋金融的崛起，移动安全的测试将会变成专项测试之后的一个新的关注点。</p>
+<p>有些人可能会担心随着第三方测试服务流行，测试工程师的前途在哪，我想说，测试这个岗位和测试这个工作在移动互联网不会消亡，但综合能力的要求提升很多，将来不会再有单纯的业务测试，也不会再有单纯的自动化测试，以后测试将全部是测试开发工程师，这些人可以快速的去适应各种需求，并且能够通过业务和技术的双向分析从而定位真正所在的问题。</p>
+<p>测试人员自我能力的提升，也不再是单纯的某一方面技术，而是这些技术如何真正的落地，以及怎么结合自己的业务，以及产品的实现框架去排查和定位问题，最终解决问题或者优化产品性能。</p>
+<p>与此同时，开发工程师也会慢慢的被要求承担一部分测试工作（产品自测），不仅能让开发工程师更深入的了解业务，而且本来我们就需要自己去吃自己的狗食（Dog Food）。</p>
+<p>举个例子，随着React Native和Html5的发展，很多公司为了满足应用的需求，会开发私有的RCT和WebView容器。同时，很多业务复杂的公司的客户端，背后对接的不仅仅是一个服务，更多的是服务群。那么这个时候问题就出现了：</p>
+<p>我们发现了一个客户端很卡，或者有某些安全的风险，那么，我们首先需要去从业务角度分析，可能是哪些业务链路上出现问题，接着我们需要去将被测产品拆开，一个一个排查和定位问题。比如</p>
+<ul>
+<li>Native Activity View启动消耗</li>
+<li>RCT转换到Natvie控件的消耗</li>
+<li>WebView自定义容器的消耗</li>
+<li>Html中的CSS，JS，PNG等流量和时间的消耗</li>
+<li>Native业务代码调用RPC，http请求的方法的消耗</li>
+<li>本地请求到得到返回的时间消耗</li>
+<li>数据交互的Json结构是否复杂，json解析的消耗</li>
+<li>本地业务逻辑是否编写恰当</li>
+<li>客户端在智能机上的界面绘制的消耗</li>
+<li>整个架构View是否存在重复绘制</li>
+<li>服务群中互相交互以及透传的逻辑是否恰当</li>
+<li>服务群中的系统超时机制是否恰当</li>
+<li>服务群中每个系统的消耗</li>
+</ul>
+<p>我们会发现，其实我们并不能一下子就能够找到问题在什么地方，而是需要对业务和被测应用技术了解的情况下，去慢慢排除哪些地方没有问题，从而最终定位问题所在。此时的你光有技术，或者你光懂业务，都无法去完成这样一个工作。测试人员很大的一部分价值会体现在这个地方。</p>
+<p>也许看到这里，很多测试同学就要跳起来了，觉得要求怎么那么高，感觉就在扯淡，肯定不是这样。我想说的是：</p>
+<p>第一，目前测试圈很多人以为自己的圈子就是这个行业的全部，但其实测试的内涵比他们想象的要大的多。</p>
+<p>第二，很多人被培训忽悠（什么自称xxx培训第一），觉得单纯的学习技术就可以提升价值，你们自己想想看，测试真的只是一个纯技术岗位吗？</p>
+<p>第三，国内测试原本长时间存活在低要求环境中，导致很多人已经不知道正常的要求是什么了，当行业开始以正确的标准来要求的时候，就感觉无法接受。</p>
+<p>大家只要抛弃成见，自然知道谁对谁错，也会知道应该怎么去面对未来，只要勇于承认，并且快速学习，未来的测试仍然有你的一席之地。</p>
+<p>说到这里，很多测试管理者可能会问，管理者的出路在何方。</p>
+<p>其实对于管理者而言，现在应该已经有所感受了，就是纯管理角色在移动互联网很难存活下去。原因有两个，其一，测试本身的技术定位要求，以及技术的更新速度会倒逼着管理者需要有一定的技术基础，包括对一些新技术有一定的了解，否则如何将合适的人安排在合适的位置上呢？又如何去服众呢？其二，未来的转变不仅仅是测试技术和业务的融合，更多的是就业人员从85后转变成了90后以及95后。以往很多管理者觉得给员工一些钱，一些股票，这些员工就会默默无闻的为公司卖命，为项目去加班。但是随着时代的发展，现在很多的年轻人看重事情变成：工作是否开心以及是否对自己有提升。他们不是不在乎钱，但他们会变的更有自己的想法和追求。面临这样一群人，管理者本身的管理方式也需要有一定的改变，同时需要从公司的流程，业务发展，个人规划，技术发展等各个角度去给出一些引导。</p>
+<p>差不多以上就是我想表达的观点了，也许很多人已经看到了变化，也许很多人没有，但是无论如何，变化总在快速的，不以任何人的意志而转移的进行下去。最后，如何想了解更多移动测试发展的话，可以关注我写的书《大话移动App测试2.0——技术篇》，会在明年上半年出版，这会是全新的一本书。粗略的目录可见： <strong>大话移动App测试2.0一书</strong>。其中我也会将这次我全程参与钱包9.0研发过程中的一些经历和技术写在里面。</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/17/test-future/" class="archive-article-date">
+  	<time datetime="2016-11-17T01:49:02.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-17</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/other/">other</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/11/17/iOS-Zombie/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          iOS_Zombie
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/16/CoreAnimationII/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">iOS Core Animation (II)</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+	    <a class="jiathis_button_twitter"></a>
+	    <a class="jiathis_button_plus"></a> 
+	    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="test-future" data-title="移动测试人员的未来：测试开发技术的融合" data-url="http://yoursite.com/2016/11/17/test-future/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"litten-hexo"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/Android性能/" style="font-size: 10px;">Android性能</a> <a href="/tags/Appium/" style="font-size: 10px;">Appium</a> <a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Gradle/" style="font-size: 13.33px;">Gradle</a> <a href="/tags/Groovy/" style="font-size: 10px;">Groovy</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/IOS/" style="font-size: 10px;">IOS</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 13.33px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/android性能测试/" style="font-size: 10px;">android性能测试</a> <a href="/tags/espresso/" style="font-size: 13.33px;">espresso</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/swift/" style="font-size: 13.33px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 13.33px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 13.33px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 13.33px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
+    			</div>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Litten，&lt;br&gt;毕业于华科，就职于鹅厂&lt;br&gt;&lt;br&gt;热爱大海与冷笑话，&lt;br/&gt;目前是一枚前端&lt;br/&gt;&lt;br/&gt;胆小认生，不易相处，&lt;br&gt;年轻无为，卖马为生。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

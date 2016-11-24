@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://yoursite.com">
+  <title>做 iOS 安全测试之前你应该知道的工具 (一) | Monkey`s Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="顺便提一句，iOS的国内安全书我也是遍历了一遍，简直是shit，我只能遍历国外的去了，国内的全部放弃。
+前言前言还是让我吐槽爽一把吧。我已经碰见很多人上来就问我，用什么工具啊，有没有扫一下就出来的啊，我真的无力吐槽了。我只想说，那你们就不要学习了，也不要上学，更不要上班，就到处讨讨饭不是蛮好的么？多省力啊。专项已经不是那种用工具看一下，扫一下就能够出现结果的了，安全就更不要说了。就一点，要结合产品">
+<meta property="og:type" content="article">
+<meta property="og:title" content="做 iOS 安全测试之前你应该知道的工具 (一)">
+<meta property="og:url" content="http://yoursite.com/2016/11/24/iOS-anquan-1/index.html">
+<meta property="og:site_name" content="Monkey`s Note">
+<meta property="og:description" content="顺便提一句，iOS的国内安全书我也是遍历了一遍，简直是shit，我只能遍历国外的去了，国内的全部放弃。
+前言前言还是让我吐槽爽一把吧。我已经碰见很多人上来就问我，用什么工具啊，有没有扫一下就出来的啊，我真的无力吐槽了。我只想说，那你们就不要学习了，也不要上学，更不要上班，就到处讨讨饭不是蛮好的么？多省力啊。专项已经不是那种用工具看一下，扫一下就能够出现结果的了，安全就更不要说了。就一点，要结合产品">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/0f53da5a2685d82b0e170f51f75e74f9.png">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/4b2fd9bf5e84615ca9339b4ed48ae7ed.png">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/4cbe5aecc6ec0a463b9cc53469d92159.jpg">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/e85a196caee0ef9345da14980f1439fc.jpg">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/902f82dedebca97158dad9181741fe15.jpg">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/fdde270dcd537c6aeda1c0b93f4bae07.jpg">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/f1b1f17efd18638562259fccbcc1dc9f.png">
+<meta property="og:updated_time" content="2016-11-24T03:26:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="做 iOS 安全测试之前你应该知道的工具 (一)">
+<meta name="twitter:description" content="顺便提一句，iOS的国内安全书我也是遍历了一遍，简直是shit，我只能遍历国外的去了，国内的全部放弃。
+前言前言还是让我吐槽爽一把吧。我已经碰见很多人上来就问我，用什么工具啊，有没有扫一下就出来的啊，我真的无力吐槽了。我只想说，那你们就不要学习了，也不要上学，更不要上班，就到处讨讨饭不是蛮好的么？多省力啊。专项已经不是那种用工具看一下，扫一下就能够出现结果的了，安全就更不要说了。就一点，要结合产品">
+<meta name="twitter:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/0f53da5a2685d82b0e170f51f75e74f9.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Monkey`s Note" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/assets/img/favicon.ico">
+  
+  <link rel="stylesheet" href="/main.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/blogImg/litten.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/photos">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">标签</a>
+    			
+    			
+            
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+		        
+					<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+		        
+					<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/blogImg/litten.png" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/photos">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-iOS-anquan-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      做 iOS 安全测试之前你应该知道的工具 (一)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>顺便提一句，iOS的国内安全书我也是遍历了一遍，简直是shit，我只能遍历国外的去了，国内的全部放弃。</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前言还是让我吐槽爽一把吧。我已经碰见很多人上来就问我，用什么工具啊，有没有扫一下就出来的啊，我真的无力吐槽了。我只想说，那你们就不要学习了，也不要上学，更不要上班，就到处讨讨饭不是蛮好的么？多省力啊。专项已经不是那种用工具看一下，扫一下就能够出现结果的了，安全就更不要说了。<strong>就一点，要结合产品的业务特性以及技术实现细节、架构等等才能够分析出来的，不要指望工具，否则你就不要做测试了，做不长久的</strong></p>
+<h2 id="idb"><a href="#idb" class="headerlink" title="idb"></a>idb</h2><p>第一个来介绍的就是idb，idb可以说是我用过到现在最最友好的了，因为有GUI界面。不过安全貌似不是那么的方便，大家自己去Google吧。我从来不认为小白就需要手把手。谁都是小白，就看谁会Google，就这句话。</p>
+<p>首先我们需要在终端中输入idb，只要安装顺利的话，大家会看到如下界面：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/0f53da5a2685d82b0e170f51f75e74f9.png" alt=""></p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/4b2fd9bf5e84615ca9339b4ed48ae7ed.png" alt=""></p>
+<p>是不是觉得就很亲民，我们通过usb或者ssh连接上之后就可以开始使用idb的功能了。（ssh默认密码是alpine）我这里由于之前测试的时候环境没有了，所以我只能用之前的老图了，大家见谅。首先来看下这个。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/4cbe5aecc6ec0a463b9cc53469d92159.jpg" alt=""><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/e85a196caee0ef9345da14980f1439fc.jpg" alt=""></p>
+<p>这里拿点评作为案例，大家可以看到app在device中的基础信息都是已经显示了出来。当然这才是开始。<br>如下图，我们会看到一个url header的list。这个意思我解释一下，其实就是说现在应用中很多都是通过scheme唤起容器或者Activity的，又或者直接通过url打开某些web。那么这里就是说在这个应用中会调用到的url的header，比如dianping://xxxx这样一类就是其中的调用。通过idb可以直接去mock这些url。如下图：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/902f82dedebca97158dad9181741fe15.jpg" alt=""></p>
+<p>再来看这个，类似于sandbox，从图中我们也可以看出来ipa沙箱中的目录结构以及每个文件中的数据结构，当然双击这些数据结构中的数据还是能够看到detail的，大部分是不会加密的。包括字段名字，长度等。这些信息也是能够给予我们很大的帮助<br>Android可以反编译，iOS也是一样的。idb可以说集成了iOS反编译的一些工具让我们直接可以对ipa进行反编译，不过这里都是.h，并没有.m，我估计应该是调用工具的关系，理论上都是可以反编译的。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/fdde270dcd537c6aeda1c0b93f4bae07.jpg" alt=""></p>
+<p>idb还能够截图，抓包等，简直就是多功能一体机啊。我这里就不多说了，大家自己去体会吧。</p>
+<h2 id="otool"><a href="#otool" class="headerlink" title="otool"></a>otool</h2><p>好吧，我承认我low了，我以为这是一个要安装的工具，没有想到是mac自带的。</p>
+<p>官方描述</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">The   otool  command  displays  specified  parts  of  object  files  or</div><div class="line">      libraries.  If the -m option is not used the file arguments may  be  of</div><div class="line">      the  form  libx.a(foo.o), to request information about only that object</div><div class="line">      file and not the entire library.   (Typically  <span class="keyword">this</span>  argument  must  be</div><div class="line">      quoted,  ``libx.a(foo.o)<span class="string">''</span>,  to  get  it past the shell.)  Otool under-</div><div class="line">      stands both Mach-O (Mach object)  files  and  universal  file  formats.</div><div class="line">      <span class="function">Otool can display the specified information in either its <span class="title">raw</span> <span class="params">(numeric)</span></span></div><div class="line">      <span class="title">form</span> <span class="params">(without the -v flag)</span>, or in a symbolic form using macro names  of</div><div class="line">      constants, etc. <span class="params">(with the -v or -V flag)</span>.</div></pre></td></tr></table></figure>
+<p>输入otool我们可以看到很多的参数，如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">Usage: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/otool [-arch arch_type] [-fahlLDtdorSTMRIHGvVcXmqQjCP] [-mcpu=arg] [--version] &lt;object file&gt; ...</div><div class="line">    -f print the fat headers</div><div class="line">    -a print the archive header</div><div class="line">    -h print the mach header</div><div class="line">    -l print the load commands</div><div class="line">    -L print shared libraries used</div><div class="line">    -D print shared library id name</div><div class="line">    -t print the text section (disassemble with -v)</div><div class="line">    -p &lt;routine name&gt;  start dissassemble from routine name</div><div class="line">    -s &lt;segname&gt; &lt;sectname&gt; print contents of section</div><div class="line">    -d print the data section</div><div class="line">    -o print the Objective-C segment</div><div class="line">    -r print the relocation entries</div><div class="line">    -S print the table of contents of a library</div><div class="line">    -T print the table of contents of a dynamic shared library</div><div class="line">    -M print the module table of a dynamic shared library</div><div class="line">    -R print the reference table of a dynamic shared library</div><div class="line">    -I print the indirect symbol table</div><div class="line">    -H print the two-level hints table</div><div class="line">    -G print the data in code table</div><div class="line">    -v print verbosely (symbolically) when possible</div><div class="line">    -V print disassembled operands symbolically</div><div class="line">    -c print argument strings of a core file</div><div class="line">    -X print no leading addresses or headers</div><div class="line">    -m don't use archive(member) syntax</div><div class="line">    -B force Thumb disassembly (ARM objects only)</div><div class="line">    -q use llvm's disassembler (the default)</div><div class="line">    -Q use otool(1)'s disassembler</div><div class="line">    -mcpu=arg use `arg' as the cpu for disassembly</div><div class="line">    -j print opcode bytes</div><div class="line">    -P print the info plist section as strings</div><div class="line">    -C print linker optimization hints</div><div class="line">    --version print the version of /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/otool</div></pre></td></tr></table></figure>
+<p>这里不难看出，原来是xcode自带的commond tool。首先我们来看下怎么用，开始其实我并不知道这个命令后面到底跟的是什么文件类型。然后otool一直提示需要提供object file，最后我才明白这个object file是个什么东西，这里以JD的ipa为例。</p>
+<p>如果是debug签名的.app那么我们右键之后可以看到包的展开，但线上下来的.app默认是没有这个选项的。我们需要先解压缩之后看到如下的界面，这个.app是可以有包展开的。</p>
+<p>展开之后我们可以看到很多文件，需要找到如下高亮的文件，这个文件就是otool可以识别的object file，这点大家要注意。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/f1b1f17efd18638562259fccbcc1dc9f.png" alt=""></p>
+<p>找到了这个可以执行的文件之后，我们就开始落地尝试了。首先我们输入</p>
+<p><code>otool -L ~/Payload/JD4iPhone.app/JD4iPhone</code></p>
+<p>这条命令可以让我们知道这个ipa中引用了哪些库并且是什么版本的，结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">/usr/lib/libstdc++.6.dylib (compatibility version 7.0.0, current version 104.2.0)</div><div class="line">/System/Library/Frameworks/LocalAuthentication.framework/LocalAuthentication (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/CoreData.framework/CoreData (compatibility version 1.0.0, current version 519.15.0)</div><div class="line">/System/Library/Frameworks/AdSupport.framework/AdSupport (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/Foundation.framework/Foundation (compatibility version 300.0.0, current version 1144.17.0)</div><div class="line">/System/Library/Frameworks/CoreAudio.framework/CoreAudio (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/usr/lib/libicucore.A.dylib (compatibility version 1.0.0, current version 53.1.0)</div><div class="line">/System/Library/Frameworks/CoreTelephony.framework/CoreTelephony (compatibility version 1.0.0, current version 2651.0.0)</div><div class="line">/System/Library/Frameworks/Accelerate.framework/Accelerate (compatibility version 1.0.0, current version 4.0.0)</div><div class="line">/System/Library/Frameworks/CoreImage.framework/CoreImage (compatibility version 1.0.0, current version 4.0.0)</div><div class="line">/System/Library/Frameworks/CoreMotion.framework/CoreMotion (compatibility version 1.0.0, current version 1756.0.20)</div><div class="line">/System/Library/Frameworks/AssetsLibrary.framework/AssetsLibrary (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/AddressBookUI.framework/AddressBookUI (compatibility version 1.0.0, current version 33.0.0)</div><div class="line">/System/Library/Frameworks/AddressBook.framework/AddressBook (compatibility version 1.0.0, current version 30.0.0)</div><div class="line">/System/Library/Frameworks/CoreLocation.framework/CoreLocation (compatibility version 1.0.0, current version 1756.0.20)</div><div class="line">/System/Library/Frameworks/MessageUI.framework/MessageUI (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/usr/lib/libiconv.2.dylib (compatibility version 7.0.0, current version 7.0.0)</div><div class="line">/System/Library/Frameworks/CoreText.framework/CoreText (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/ImageIO.framework/ImageIO (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/UIKit.framework/UIKit (compatibility version 1.0.0, current version 3347.44.0)</div><div class="line">/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics (compatibility version 64.0.0, current version 600.0.0)</div><div class="line">/System/Library/Frameworks/QuartzCore.framework/QuartzCore (compatibility version 1.2.0, current version 1.11.0)</div><div class="line">/usr/lib/libsqlite3.dylib (compatibility version 9.0.0, current version 169.2.0)</div><div class="line">/System/Library/Frameworks/SystemConfiguration.framework/SystemConfiguration (compatibility version 1.0.0, current version 700.20.6)</div><div class="line">/System/Library/Frameworks/CFNetwork.framework/CFNetwork (compatibility version 1.0.0, current version 711.3.18)</div><div class="line">/usr/lib/libz.1.dylib (compatibility version 1.0.0, current version 1.2.5)</div><div class="line">/usr/lib/libxml2.2.dylib (compatibility version 10.0.0, current version 10.9.0)</div><div class="line">/System/Library/Frameworks/Security.framework/Security (compatibility version 1.0.0, current version 0.0.0)</div><div class="line">/System/Library/Frameworks/MobileCoreServices.framework/MobileCoreServices (compatibility version 1.0.0, current version 66.0.0)</div><div class="line">/System/Library/Frameworks/OpenGLES.framework/OpenGLES (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox (compatibility version 1.0.0, current version 492.0.0)</div><div class="line">/System/Library/Frameworks/OpenAL.framework/OpenAL (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/AVFoundation.framework/AVFoundation (compatibility version 1.0.0, current version 2.0.0)</div><div class="line">/System/Library/Frameworks/CoreMedia.framework/CoreMedia (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/CoreVideo.framework/CoreVideo (compatibility version 1.2.0, current version 1.8.0)</div><div class="line">/System/Library/Frameworks/MapKit.framework/MapKit (compatibility version 1.0.0, current version 14.0.0)</div><div class="line">/usr/lib/libobjc.A.dylib (compatibility version 1.0.0, current version 228.0.0)</div><div class="line">/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1214.5.1)</div><div class="line">/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation (compatibility version 150.0.0, current version 1144.17.0)</div></pre></td></tr></table></figure>
+<p>当然，这些是不够的，我们继续来看一下这条命令。</p>
+<p><code>otool -v -arch armv7 -s __TEXT __cstring ~/Payload/JD4iPhone.app/JD4iPhone &gt; ipa_Str.txt</code></p>
+<p>我们打开txt之后可以看到如下的内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">0187be4a  addNewAddress</div><div class="line">0187be58  addressDefault</div><div class="line">0187be67  kShowPickSitesMap</div><div class="line">0187be79  kPickViewWillApperNotifaction</div><div class="line">0187be97  kPickViewWillDisapperNotifaction</div><div class="line">0187beb8  kOrderPaymentTypeChangedNotification</div><div class="line">0187bedd  OrderPickSieTypeChangedNotification</div><div class="line">0187bf01  kToOrderPickSieTypeVcNotification</div><div class="line">0187bf23  kSelectedPickSiteNotification</div><div class="line">0187bf41  PayAndShipmentTypeViewController</div><div class="line">0187bf62  DeliveryPayType_Confirm</div><div class="line">0187bf7a  complatePayAndShiment</div><div class="line">0187bf90  OrderInfoViewController</div><div class="line">0187bfa8  pickSites</div><div class="line">0187bfb2  kUpdatePickSiteLocation</div><div class="line">0187bfca  paymentType</div></pre></td></tr></table></figure>
+<p>这其实是会将ipa中在代码中hard code或者配置文件中的字符串都拉出来，一般有几万行，这里的字符串其实就如同Android中我们查看logcat中有没有敏感词是一样的，这里我们也可以去看看在代码中有没有什么私钥或者其他的敏感信息。我们可以通过一些小技巧来做过滤，比如我们在sublime text中find的时候打开正则匹配，使用正则表达式之后可以简单的找到一些符合我们规律的字符串</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/24/iOS-anquan-1/" class="archive-article-date">
+  	<time datetime="2016-11-24T02:37:26.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-24</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2016/11/22/testnouse/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">测试技术无用论</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+	    <a class="jiathis_button_twitter"></a>
+	    <a class="jiathis_button_plus"></a> 
+	    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="iOS-anquan-1" data-title="做 iOS 安全测试之前你应该知道的工具 (一)" data-url="http://yoursite.com/2016/11/24/iOS-anquan-1/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"litten-hexo"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/Android性能/" style="font-size: 10px;">Android性能</a> <a href="/tags/Appium/" style="font-size: 10px;">Appium</a> <a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Gradle/" style="font-size: 13.33px;">Gradle</a> <a href="/tags/Groovy/" style="font-size: 10px;">Groovy</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/IOS/" style="font-size: 10px;">IOS</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 13.33px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/android性能测试/" style="font-size: 10px;">android性能测试</a> <a href="/tags/espresso/" style="font-size: 13.33px;">espresso</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/swift/" style="font-size: 13.33px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 13.33px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 13.33px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 13.33px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
+    			</div>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Litten，&lt;br&gt;毕业于华科，就职于鹅厂&lt;br&gt;&lt;br&gt;热爱大海与冷笑话，&lt;br/&gt;目前是一枚前端&lt;br/&gt;&lt;br/&gt;胆小认生，不易相处，&lt;br&gt;年轻无为，卖马为生。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

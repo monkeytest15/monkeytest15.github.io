@@ -139,6 +139,462 @@
       <div class="body-wrap">
         
   
+    <article id="post-nginxgor" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/27/nginxgor/">nginx+gor 初心者之旅</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>hi 各位，我又来了。我最近都是初心者。踩坑王就是我。</p>
+<p>背景就是我们都知道有一个引流工具gor，为了调试这个货，我想在本地起几个不同端口的服务进行调试，所以才有了今天卧槽的经验。</p>
+<h2 id="配置nginx"><a href="#配置nginx" class="headerlink" title="配置nginx"></a>配置nginx</h2><p>首先我们先安装<code>nginx</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">brew search nginx</div><div class="line">brew install nginx</div></pre></td></tr></table></figure>
+<p>nginx本身的nginx.config是设置好的，如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">&lt;!-- lang: shell --&gt;</div><div class="line">worker_processes  <span class="number">1</span>;  </div><div class="line"></div><div class="line">error_log       /usr/local/var/log/nginx/error.log warn;</div><div class="line"></div><div class="line">pid        /usr/local/var/run/nginx.pid;</div><div class="line"></div><div class="line">events &#123;</div><div class="line">    worker_connections  <span class="number">256</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line">http &#123;</div><div class="line">    include       mime.types;</div><div class="line">    default_type  application/octet-stream;</div><div class="line"></div><div class="line">    log_format  main  <span class="string">'$remote_addr - $remote_user [$time_local] "$request" '</span></div><div class="line">                      <span class="string">'$status $body_bytes_sent "$http_referer" '</span></div><div class="line">                      <span class="string">'"$http_user_agent" "$http_x_forwarded_for"'</span>;</div><div class="line"></div><div class="line">    access_log      /usr/local/var/log/nginx/access.log main;</div><div class="line">    port_in_redirect off;</div><div class="line">    sendfile        on; </div><div class="line">    keepalive_timeout  <span class="number">65</span>; </div><div class="line"></div><div class="line">    include /usr/local/etc/nginx/conf.d<span class="comment">/*.conf;</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果我们想启动多个服务，那么我们需要在路径./conf.d/里面新建多个server.conf，在同一个conf里面写多个server是不允许。<br>所以我们新建了两个，配置如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&lt;!-- lang: shell --&gt;</div><div class="line">server &#123;</div><div class="line">    listen       8080; 这里写启动的端口</div><div class="line">    server_name  localhost; 这里是server name</div><div class="line">    root /Users/user_name/nginx_sites/; 这里是自定义webapp的目录</div><div class="line"></div><div class="line">    location / &#123; </div><div class="line">        index index.php; 页面文件</div><div class="line">        autoindex on; </div><div class="line">    &#125;   </div><div class="line"></div><div class="line">    #proxy the php scripts to php-fpm  </div><div class="line">    location ~ \.php$ &#123;</div><div class="line">        include /usr/local/etc/nginx/fastcgi.conf;</div><div class="line">        fastcgi_intercept_errors on; </div><div class="line">        fastcgi_pass   127.0.0.1:9000; </div><div class="line">    &#125;   </div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Mac OSX自带了php-fpm，但如果直接启动会报错，说log文件路径不正确。所以我们还需要更改php-fpm.conf文件如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">[global]</div><div class="line">; Pid file</div><div class="line">; Note: the default prefix is /usr/local/var</div><div class="line">; Default Value: none</div><div class="line">;pid = run/php-fpm.pid</div><div class="line"></div><div class="line">; Error log file</div><div class="line">; If it's set to "syslog", log is sent to syslogd instead of being written</div><div class="line">; in a local file.</div><div class="line">; Note: the default prefix is /usr/local/var</div><div class="line">; Default Value: log/php-fpm.log</div><div class="line">error_log = /usr/local/var/log/php-fpm.log 此处需要自定义目录</div></pre></td></tr></table></figure>
+<p>按照如上配置，我们是可以正常启动服务的，但这个时候我们访问localhost:8080会出现403，原因是我们index.php所在的所有根目录都需要有755权限，如果没有，我们需要chmod 755 path就可以了。正常的界面如下：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/987bdca036d392c9b89620cf04234b86.png" alt="php"></p>
+<h2 id="gor"><a href="#gor" class="headerlink" title="gor"></a>gor</h2><p>这就是坑的开始。先配置golang的环境以及安装gor我就不说了。<br>我碰见的问题是这样的。我使用命令<br><code>./gor --input-http :8080 --output-http www.verycd.com -stats -verbose</code></p>
+<p>此时我访问8080界面会变成ok，这说明是gor接受到了这个input而出现的界面，如下：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-03%20%E4%B8%8A%E5%8D%8812.45.27.png" alt="phpok"></p>
+<p>同时gor的log显示让我很无语：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">[DEBUG][PID <span class="number">2963</span>][<span class="number">1462464221018871751</span>][<span class="number">1462464221018.871826</span>ms] [HTTPClient] Connecting: http:<span class="comment">//www.verycd.com</span></div><div class="line">[DEBUG][PID <span class="number">2963</span>][<span class="number">1462464236080793607</span>][<span class="number">15061.921856</span>ms] [HTTPClient] Connecting: http:<span class="comment">//www.verycd.com</span></div><div class="line">[DEBUG][PID <span class="number">2963</span>][<span class="number">1462464236080850524</span>][<span class="number">0.056917</span>ms] [HTTP] Disconnected:  http:<span class="comment">//www.verycd.com</span></div><div class="line">[DEBUG][PID <span class="number">2963</span>][<span class="number">1462464247776394823</span>][<span class="number">11695.544299</span>ms] [HTTPClient] Connecting: http:<span class="comment">//www.verycd.com</span></div><div class="line">[DEBUG][PID <span class="number">2963</span>][<span class="number">1462464247776448620</span>][<span class="number">0.053797</span>ms] [HTTP] Disconnected:  http:<span class="comment">//www.verycd.com</span></div><div class="line">[DEBUG][PID <span class="number">2963</span>][<span class="number">1462464251310765636</span>][<span class="number">3534.317016</span>ms] [HTTPClient] Connecting: http:<span class="comment">//www.verycd.com</span></div><div class="line">[DEBUG][PID <span class="number">2963</span>][<span class="number">1462464251310821301</span>][<span class="number">0.055665</span>ms] [HTTP] Disconnected:  http:<span class="comment">//www.verycd.com</span></div></pre></td></tr></table></figure>
+<p>此时我尝试了几个方法。</p>
+<ul>
+<li>方法一：Google Group<br>group里有一个和我碰见一样的问题，我看到了作者给了最新的binary，我下载之后，mac无法识别，估计是编译模式不同导致的吧。failed</li>
+<li>方法二：重新下载最新的代码，go build<br>生成了gor，可以使用，但日志和前面一样</li>
+<li>方法三：直接从官方地址去下载最新build的binary<br>可以使用，但日志和前面一样</li>
+</ul>
+<p>到此，我要吐槽的不是这个日志了，关键是gor之后连version都不显示。我几乎可以判断gor还在demo阶段，根本无法投入正式使用这个结论。暂时到这里吧。</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/10/27/nginxgor/" class="archive-article-date">
+  	<time datetime="2016-10-26T18:09:01.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-10-27</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gor/">gor</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-ReactNativeBuiildView" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/27/ReactNativeBuiildView/">ReactNative 大会卖萌 View</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天早上看到了FB发的一个关于RN框架开发过程中的故事的文章，真的感觉很好啊。一个开源的项目，很多人参与进来真心是个不错的事情，真不知道TesterHome啥时候能有人来merge代码，😢😢😢。</p>
+<p>根据之前的ReactNative扫盲实践，我们继续来看一些组合View怎么来做。使用RN比Native的实现成本的确低了很多。不过性能方面的话，等以后复杂的应用再来对比了。</p>
+<p>我们下载了一个大会的banner，放到我们的View中。如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;Text style=&#123;&#123;fontSize:16&#125;&#125;&gt;'测试大会来啦'&lt;/Text&gt;</div><div class="line">&lt;Image style=&#123;&#123;flex: 1, height: 300, resizeMode: Image.resizeMode.stretch&#125;&#125; source=&#123; require('./img/meeting.png')&#125; /&gt;</div></pre></td></tr></table></figure>
+<p>然后是选择票的种类，这里选择了picker选择器：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">var AwesomeProject = React.createClass(&#123;</div><div class="line">   getInitialState: function() &#123;</div><div class="line">    return &#123;</div><div class="line">      language: '',</div><div class="line">    &#125;;</div><div class="line">  &#125;,</div><div class="line">  render() &#123;</div><div class="line">    return (</div><div class="line">&lt;View  style=&#123;&#123;marginLeft:10,marginTop:10&#125;&#125;&gt;</div><div class="line"></div><div class="line">        &lt;Text &gt;</div><div class="line">         长的漂亮的都来买票了</div><div class="line">        &lt;/Text&gt;</div><div class="line">        &lt;Picker </div><div class="line">          mode=&#123;'dropdown'&#125;</div><div class="line">          style=&#123;&#123;width:200&#125;&#125;</div><div class="line">          selectedValue=&#123;this.state.language&#125;</div><div class="line">          onValueChange=&#123;(value) =&gt; this.setState(&#123;language: value&#125;)&#125;&gt;</div><div class="line">          &lt;Picker.Item label="个人早鸟无虫吃票" value="个人早鸟无虫吃票" /&gt;</div><div class="line">          &lt;Picker.Item label="个人早鸟有虫吃票" value="个人早鸟有虫吃票" /&gt;</div><div class="line">           &lt;Picker.Item label="组队早鸟被虫吃票" value="组队早鸟被虫吃票" /&gt;</div><div class="line">          &lt;Picker.Item label="长的帅的人的票" value="长的帅的人的票" /&gt;</div><div class="line">        &lt;/Picker&gt;</div><div class="line">        &lt;Text&gt;当前选择的是:&#123;this.state.language&#125;&lt;/Text&gt;</div><div class="line">      &lt;/View&gt;</div></pre></td></tr></table></figure>
+<p>可以见下效果图。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-03%20%E4%B8%8A%E5%8D%8812.50.01.png" alt="reactnative1"></p>
+<p>另外附上图片的一些设置方法：<br>通过Image.resizeMode来适配图片布局，包括contain, cover, stretch<br>默认不设置模式等于cover模式</p>
+<ul>
+<li>contain模式自适应宽高，给出高度值即可</li>
+<li>cover铺满容器，但是会做截取</li>
+<li>stretch铺满容器，拉伸</li>
+</ul>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/10/27/ReactNativeBuiildView/" class="archive-article-date">
+  	<time datetime="2016-10-26T18:08:04.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-10-27</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/">ReactNative</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-ReactNativeNew" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/27/ReactNativeNew/">ReactNative 扫盲实践</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近Weex等开源也是炒的沸沸扬扬。我Mac环境也恢复的差不多了，又到了要学习的时候了。所以就带着基础大家一起来学吧。</p>
+<p>现在越来越多的公司会去进行React Native的实践，当然不仅仅只是去使用facebook的框架，也会基于RN的一些理念自己去封装属于自己的RN。公司里现在去使用RN的话大多是想着减少开发成本，增加开发效率，同时也是希望降低现在复杂App的开发门槛。</p>
+<p>从测试角度来讲，其实我们会更关心，其与<code>Hybird</code>一些框架的区别以及性能上的差别。这的话，希望接下来慢慢的通过一些复杂点的例子来做些对比。今天先还是开个头吧，马上就回去整理书稿了。</p>
+<p>我们先安装<code>npm install -g react-native-cli</code>，然后进行项目的初始化：<code>react-native init AwesomeProject</code>，这个过程中会下载很多的<code>node modules</code>，所以只能耐心等待，顺便说句，翻墙的话我用了<code>Shadowsocks</code>，目前还是非常稳定的。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/eb17966b6d5924489252ec265d29e03d.png" alt="finer"></p>
+<p>这里的话，Android是一个Gradle工程，iOS就是一个workspace，那接下来就是来先上个手。我这里都是用模拟器，原因就是比较方便。我们可以直接去运行react-native run-android来打包一个android的apk，并且运行起来。不过这里也会下载比较久的Gradle，如果大家不愿意等的话，可以去下载离线的。看到如下日志说明你的程序运行很正常。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Starting JS server...</div><div class="line"><span class="function">Building and installing the app on the <span class="title">device</span> <span class="params">(cd android &amp;&amp; ./gradlew installDebug...</span></span></div><div class="line">Downloading https://services.gradle.org/distributions/gradle<span class="number">-2.4</span>-all.zip</div><div class="line">...................................................................................................................................................................................................................</div><div class="line">Unzipping /Users/Monkey/.gradle/wrapper/dists/gradle<span class="number">-2.4</span>-all/<span class="number">6</span>r4uqcc6ovnq6ac6s0txzcpc0/gradle<span class="number">-2.4</span>-all.zip to /Users/Monkey/.gradle/wrapper/dists/gradle<span class="number">-2.4</span>-all/<span class="number">6</span>r4uqcc6ovnq6ac6s0txzcpc0</div><div class="line">Set executable permissions <span class="keyword">for</span>: /Users/Monkey/.gradle/wrapper/dists/gradle<span class="number">-2.4</span>-all/<span class="number">6</span>r4uqcc6ovnq6ac6s0txzcpc0/gradle<span class="number">-2.4</span>/bin/gradle</div><div class="line">Download https://jcenter.bintray.com/com/android/tools/build/gradle/<span class="number">1.3</span><span class="number">.1</span>/gradle<span class="number">-1.3</span><span class="number">.1</span>.pom</div><div class="line">Download https://jcenter.bintray.com/com/android/tools/build/gradle-core/<span class="number">1.3</span><span class="number">.1</span>/gradle-core<span class="number">-1.3</span><span class="number">.1</span>.pom</div><div class="line">Download https://jcenter.bintray.com/com/android/tools/build/builder/<span class="number">1.3</span><span class="number">.1</span>/builder<span class="number">-1.3</span><span class="number">.1</span>.pom</div><div class="line">Download https://jcenter.bintray.com/com/android/tools/lint/lint/<span class="number">24.3</span><span class="number">.1</span>/lint<span class="number">-24.3</span><span class="number">.1</span>.pom</div><div class="line">....</div></pre></td></tr></table></figure>
+<p>不过出了些意外，需要更新build tool，更新之后就好了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">FAILURE: Build failed with an exception.</div><div class="line"></div><div class="line">* What went wrong:</div><div class="line">A problem occurred configuring project <span class="string">':app'</span>.</div><div class="line">&gt; failed to find Build Tools revision <span class="number">23.0</span>.1</div><div class="line"></div><div class="line">* Try:</div><div class="line">Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.</div><div class="line"></div><div class="line">BUILD FAILED</div></pre></td></tr></table></figure>
+<p>在安装的同时RN会启动一个8081端口的服务，其实就是读取js文件的一个渠道。我们在初次打开的时候会看到如下的界面：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">~/Documents/RN_or/RN1/AwesomeProject/node_modules/react-<span class="keyword">native</span>/packager ~</div><div class="line"> ┌────────────────────────────────────────────────────────────────────────────┐ </div><div class="line"> │  Running packager on port <span class="number">8081</span>.                                            │ </div><div class="line"> │                                                                            │ </div><div class="line"> │  Keep <span class="keyword">this</span> packager running <span class="keyword">while</span> developing on any JS projects. Feel      │ </div><div class="line"> │  free to close <span class="keyword">this</span> tab and run your own packager instance <span class="keyword">if</span> you          │ </div><div class="line"> │  prefer.                                                                   │ </div><div class="line"> │                                                                            │ </div><div class="line"> │  https:<span class="comment">//github.com/facebook/react-native                                  │ </span></div><div class="line"> │                                                                            │ </div><div class="line"> └────────────────────────────────────────────────────────────────────────────┘ </div><div class="line">Looking <span class="keyword">for</span> JS files in</div><div class="line">   /Users/Monkey/Documents/RN_or/RN1/AwesomeProject</div></pre></td></tr></table></figure>
+<p>在初次apk加载js的时候，我们可以在server上看到transformed 522/522 (100%)的字样，这是一个加载的过程。如果成功，我们可以看到如下的界面：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/6b9315cc9e78b6ecea6c7fb8f88b4889.png" alt="rn2"></p>
+<p>紧接着我们只要更新对应的js文件，就可以直接在应用中看到我们修改的效果了。项目结构如下：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/1a50a18a6622fd6a5abcb63224617bc6.png" alt="rn3"></p>
+<p>最后来看一个Sample吧，文字＋图片的。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"> &lt;View style=&#123;&#123;width:70&#125;&#125;&gt;</div><div class="line">    &lt;Image source=&#123;require('./img/seven.png')&#125; style=&#123;&#123;alignSelf:'center',width:45,height:45&#125;&#125; /&gt;</div><div class="line">    &lt;Text style=&#123;&#123;marginTop:5,alignSelf:'center',fontSize:11,color:'#555555',textAlign:'center'&#125;&#125;&gt;恒温&lt;/Text&gt;</div><div class="line">&lt;/View&gt;</div></pre></td></tr></table></figure>
+<p>接下来后续做一些性能上的评估，应该会比较有意思。其实RN本身搭建不难，还是很容易上手的</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/10/27/ReactNativeNew/" class="archive-article-date">
+  	<time datetime="2016-10-26T18:07:44.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-10-27</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/">ReactNative</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-first" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/27/first/">This is first blood!!!!</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/10/27/first/" class="archive-article-date">
+  	<time datetime="2016-10-26T18:00:58.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-10-27</time>
+</a>
+      
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-keychain" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/03/keychain/">你所需要了解的区块链技术</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近花了大概一周的时间把各个证券，git上关于区块链的文章和论文都看了一遍。我个人的理解已经和之前完全不同了，在这里和大家分享下我的理解吧</p>
+<p>起初知道区块链肯定都是因为比特币(bitcoin)，但对于其本身到底是什么根本不得而知，如果只是和别人交流的话可能最多知道区块链是一种比特币底层使用的加密方式。但真的去看相关文献的时候又会觉得云里雾里。不过可能真的隔行如隔山吧，也许金融行业出身的同学就能够更直接的理解了。</p>
+<p>而这次查看论文和文献我主要的目的是希望去了解区块链的本质，我并不想现在去了解实现，而是思想的本质，这个东西到底是怎么孕育而生的，中本聪又到底是怎么去思考和设计的。</p>
+<p>在我完整的阅读完了我找到的一系列2016年的白皮书和文献之后，我至少领悟到了一点，我之前对于区块链的理解实在太low太low。我相信所有人看完都会有两个很极端的看法：</p>
+<ul>
+<li>这绝对是未来科学，未来可挖掘潜力非常大，可以说是非常前卫的思想</li>
+<li>这就是bullshit，这不仅仅会颠覆金融行业，更会造成很大的恐慌</li>
+</ul>
+<p>从本质上来讲区块链的确会给人这样的感觉。</p>
+<h2 id="区块链1-0"><a href="#区块链1-0" class="headerlink" title="区块链1.0"></a>区块链1.0</h2><p>这是第一阶段的区块链运用，在于可编程货币的时候，目的就是达到全球货币统一化。虽然比特币已经是一个先驱者了，但真的要达到这个远景还是非常难的。但这里的区块链我觉得大部分人是比较好理解的，就是为了大大降低交易成本的一套系统，一套支持货币交易的系统</p>
+<h2 id="区块链2-0"><a href="#区块链2-0" class="headerlink" title="区块链2.0"></a>区块链2.0</h2><p>这是第二阶段，可编程金融，在github上面其实已经有了“智能合约”的项目，而区块链基于python等语言也有适应自己的可编程语言。目前已经在运用的领域有：p2p，登记，确权，智能管理等。不过总体还是基于金融行业.</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/0ac483c7aae1138d5c78e4492ef58a05.png" alt="keychain"><br>(图片来自于兴业证券的深度报告）</p>
+<h2 id="区块链3-0"><a href="#区块链3-0" class="headerlink" title="区块链3.0"></a>区块链3.0</h2><p>这就是我觉得大部分不可接受的阶段了，区块链的各个领域的普及。所以到3.0的时候我才认识到其实区块链和比特币的关系并不是我想的那么强绑定。区块链本身是一种技术，但更是一种思想和模式，如果要普及和应用，人们势必一定要先能理解这个模式和思想。</p>
+<p>为什么说会造成恐慌，原因就在于所谓的“去中心化”，这个前几天我在朋友圈里提到过，这点其实对于现在的整个生态是非常致命的。因为去中心化的思想本身就在于要简单化，将现在行业中过多的参与者，企业，中介等都去除掉。现在是人与人，人与物，将来是物与物。只有物与物的时候才会出现真正的信任制度。</p>
+<p>最后PS下，有人已经用区块链在测试中落地了，待我进一步了解哈</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/10/03/keychain/" class="archive-article-date">
+  	<time datetime="2016-10-03T09:46:52.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-10-03</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/keychain/">keychain</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-dahuaapp2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/27/dahuaapp2/">《大话移动App测试2.0》序开放试读</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>随着封面的确定，说明大会也临近了，同时说明716拿到书这件事情终于也还是可能的了，只能说一切都太不容易了，设计师妹子被我快嫩死了。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/1.png" alt="大话2"></p>
+<p>这里再次感谢各位支持本书的前辈，以下开放顺序是根据序的提交顺序</p>
+<h2 id="钱承君序"><a href="#钱承君序" class="headerlink" title="钱承君序"></a>钱承君序</h2><blockquote>
+<p>钱承君介绍：钱承君，多年互联网从业经验，目前在百度担任部门经理岗位，下属百人规模团队，先后负责大数据、图片搜索、云安全、基础架构、网站联盟的质量团队管理工作，在大型分布式系统、大数据系统、广告检索架构等领域拥有丰富实战经验。每年坚持出品最新测试技术实践，乐于分享，欢迎业内同仁交流。<br>非常荣幸受邀为这样一本书写序。看到风格鲜明的前言，我就有深刻的共鸣，有不少个人的想法希望与诸位读者分享。纵观“质量保障”这一行业发展至今，从起初的平顺，到近几年更激烈的变革，可以清晰看到几个关键时间节点：</p>
+</blockquote>
+<p>工业革命后，分工协作与大规模生产替代了家庭作坊。最早的质量管理体系针对的是制造业，典型的图景是一群白大褂在实验室抽检产品，在合格证上盖章。对于传统制造业，尤其是敏感的食品、药品、精密机械、军工，批次质量不稳定对企业是非常致命的问题。质量管理、品质控制等概念，是远超出我们所谈论的测试工作的，从检测手段到检测执行，从员工培训到奖惩机制，从生产效率到符合法律法规，是一个系统性的工程。质量是企业的生命线，质量管理是CEO背负的重要使命之一。<br>九十年代初，随着摩尔定律的应验与个人电脑的普及，我们有能力架构越来越复杂的软件系统，软件研发也从单兵作战转为集团军作战模式。当时行业中出现一个困扰，大型的、耗资过亿美元的复杂项目有高概率偏离最初目标甚至完全失败，这一现象激活了学术界对软件工程及相关理论的研究兴趣，而软件测试是其中一个重要的分支。瀑布模型开始盛行，一个项目从需求分析、架构、开发、测试、实施，被切分成了清晰隔离的片段，相互间有明确的交付边界，从而尽可能避免大型组织的不可控风险。继承细化的分工的趋势，测试职能也进一步分化，有专注测试工具开发的，有专注测试过程管理的，有专注性能测试的，有专注集成验收的。</p>
+<p>千禧一代，随着互联网的快速兴起，带来了一些软件研发理念的变化。在瀑布模型下，测试人员追求的是规避一切风险，尽可能覆盖缺陷，追求尽可能高的质量。在互联网时代，由于缺陷召回成本的降低，团队更多追求的是质量与效率的平衡。国内的行业发展略有滞后，在大约五年前，很多CTO的履历中重要的一条是带领软件组织进行敏捷变革。从市场反应看，出现了短期的对测试开发工程师（及敏捷教练）的旺盛需求，需要自动化与持续集成实践来支持企业的快速迭代。对于互联网时代的企业，快速应对市场变化是一种非常重要的能力。</p>
+<p>后敏捷时代（我自造的一个名词），用以描述我看到的当前与未来几年的行业状态。新一代的互联网化软件组织（例如Facebook），宣扬角色模糊，强调全栈工程师，强调一专多能。一个需求的出现到发布与实现，希望能压缩到四个小时左右，极致快速，成为一种新的竞争力。从持续集成，到持续发布，到Dev-OP，是我们目前看到的趋势，目前看，这一波趋势会愈加激进。</p>
+<p>如果把这些重大转变放在时间轴上，我们会发现，变革的周期变得越来越短，对单一职能的要求变得越来越高。回到最初在制造业的定义，质量技术服务的是整个业务领域，远远不是“测试”这一单一能力。质量的价值是永久存在的，但是否由测试工程师这一工种抱着几个时代之前的老旧理念去交付，是一个非常存疑的问题，请容许我抱有谨慎的悲观。<br>在上述历史长河，移动测试技术是近几年很重要的那一股激流。五年一个时代，移动互联网的五年，智能移动设备持有量的高速增长，造就商业机会与行业需求增长，是继自动化测试后，对测试行业又一个非常好的机会。手机应用的质量数据分析（崩溃分析）、应用端监控、手机云测、易用的 AB-Test 能力，都是移动应用行业为测试从业人员带来的新机遇。</p>
+<p>逐渐我已成为陈晔吐槽的测试管理者，擅长的领域并不在移动应用，对书中提及的测试技术本身无法给出有价值的评价。但是作为在测试行业挥洒过青春、抱有真挚感情的从业人员，非常感激和赞赏陈晔及所有参与者的努力。因为行业有这样一群优秀的执着的追求着技术的人们，测试行业会在激变的时代续存、进化、重生，变得越来越有价值，越来越重要。</p>
+<p>想借写序的机会对读者朋友说，开卷有益，每年了解下业内主流的会议、主流的技术变革、主流的新技术，对于技术视野的提升与个人职业生涯的保值，是一个非常好的习惯。如果读者朋友在测试行业足够资深，也非常欢迎和期待能够加入分享者的行列，为测试行业肩负起责任，通过博客、沙龙、微信、乃至出品书籍等各种方式，使得我们所在的行业能持续进步，能在这个风起云涌的新时代，发挥出质量技术应有的影响力与价值。<br>逆水行舟，优胜劣汰，在激烈的变革中一定会有很多人离场，也一定会有很多机会，有很多人脱颖而出。祝福看到这段序言的测试人，希望你能成为脱颖而出的那一个。</p>
+<h2 id="戴亦斌序"><a href="#戴亦斌序" class="headerlink" title="戴亦斌序"></a>戴亦斌序</h2><blockquote>
+<p>介绍：Testin云测COO，联合创始人</p>
+</blockquote>
+<p>这是移动互联网的时代，也是创新的时代</p>
+<p>2012年的时候，我记得是Testin网站上线的第二年，我们已经发展了很多的开发者来免费使用Testin的服务，当时我正在为一件事发愁，就是如何提升我们平台自动化测试的深度，我们在2012年年初已经基于图像识别的技术开发了一套自动遍历测试的算法，对一般的兼容测试而言，已经相当不错了，但是我们还想做的更深入，我们想支持自定义脚本的测试，这样可以在云端实现自动化功能的测试，这将是一个非常大的突破，但是当时公开的资料非常少，Android本身的自动测试框架也非常弱，我当时在到处搜集资料，正好看到一篇文章，标题就是“Android Application Testing”，我觉得作者在移动APP测试领域颇有见地，而且非常全面，我查了下作者，叫Monkey陈瞱瞱，当时就加了微博，而且通过微博的私信进行了深入的探讨，Monkey当时也在使用Testin的兼容测试，并且提了很多建议和意见，我们还讨论了云端的自动化功能测试、性能测试和测试管理系统，我们都有一个共识，这是一个移动互联网的时代，而移动应用软件的测试与传统软件测试相比，测试方式和内容发生了巨大的变化，软件的移动化，要求软件具备跨终端、跨网络、跨地区、个性化、更新升级速度快等特性，给软件测试带来了更大难度、更多复杂性和更高的成本；测试设备的多样化和不断更新、人力成本的逐年增加，无论原来的自建队伍、自购设备测试还是外包测试的方式已经适应不了市场发展的需要，必将被新的测试方式所替代，这是移动互联网的时代，也是创新的时代。</p>
+<p>创新改变行业<br>从2012年之后的几年间，我和Monkey都在测试领域按我们各自对创新的理解进行着具体的实践，我能明显感觉到Monkey的进步和探索的步伐，他从一个专业的测试工程师成长为一个测试行业的布道者，Monkey致力于提升整个测试行业的技术水平，力图改变大家对测试的认识，他在大学担任公益讲师，希望帮助更多的测试行业从业者，2014年他出版了他的第一本著作“大话移动APP测试”，在这本书里，Monkey以自己多年的工作经验和在移动APP测试领域的创新实践，为有志于移动APP测试的测试人员打开了移动APP测试的大门，展现了移动APP测试的复杂性和多样性，为新入行的同学们指明了一条清晰明确的道路。</p>
+<p>与Monkey一样，我们也希望通过创新改变行业，Testin是国内第一个提出“云测试”概念:把测试能力搬到云上，并努力去实施的公司，2012年之后，Testin的发展也非常快，Testin兼容测试的用户到今年年初已经突破了70万，我们的真机测试实验室也已经落地到旧金山，Testin真机云测试平台管理的手机和其他移动智能终端设备已经从2012年的几百台扩充到今年年初的四万多台，我们实现了云端的自动化功能测试，并且支持各种常用和最新的测试框架，完善了性能测试，通过Testin的测试大数据分析，我们重新定义了各行业APP的性能基准，为APP开发者提供精准的性能数据标准。</p>
+<p>Testin另一个改变行业的创新，就是率先在国内建设了开放的众包测试服务平台，成为国内第一家采用专家众包服务模式，帮助客户解决专业测试难题的公司，Testin利用参与众包的大量测试专家为客户组建专门的虚拟测试队伍完成软件测试，截止到2016年5月，Testin众测平台上已经聚集了上万名的测试专家，以及将近二十万的普通测试人员，Testin已经具备同时服务上万家客户的测试能力，而且这个能力还在不断增长。<br>我和Monkey都相信，在我们的不懈努力下，一定可以通过创新改变测试行业，在移动互联网时代，创新可以改变一切。</p>
+<p>这是你的时代，你一定能够成功<br>时隔两年之后，Monkey再次推出了他的新书“大话移动APP测试2”，我很荣幸作为第一批读者先睹为快，在新书里，Monkey保持了他一贯的犀利，他用清晰有趣的方式与大家分享他的研究成果、工作经验以及独特观点，Monkey花了很大篇幅介绍移动APP测试领域的最新趋势与前沿技术，尤其在专项测试、UI自动化、Appium等方面，本书都是你所能找到的最新、最全以及最具实操性的一本书，书中大量的经典案例，对所有想要提升自己技术水平以及想要在移动APP领域取得成功的企业技术管理人员都非常适用。<br>我们正处在一个前所未有的移动互联网时代，也是一个创新为王的时代。</p>
+<p>“这是你的时代，你一定能够成功！”，在此，我把这句话送给所有的创业者和本书的读者，相信在读完这本书之后，你工作起来会比以前更轻松，也能取得更为卓越的成绩。</p>
+<h2 id="Dennis段念序"><a href="#Dennis段念序" class="headerlink" title="Dennis段念序"></a>Dennis段念序</h2><blockquote>
+<p>介绍：现华夏信财副总裁兼互联网金融品牌CEO，前宜人贷CTO、豆瓣网工程副总裁<br>“老板，来一斤移动APP。 要用最新的 UI规范，但不要太花哨。耗电得低，不能偷跑用户的流量。对了，Android兼容性可得充分考虑。还有啊，这个App我们准备两周发布一个版本，开发测试得跟上了 ……”<br>——丹尼斯.段 的要求</p>
+</blockquote>
+<p>现在的互联网早就成了移动App的天下，地铁里，公交上，某个小面馆的收银台，甚至走在路上深色匆匆的人，大部分时候，都在用或漠然，或微笑，或烦恼的眼神，专注地盯着自己手上那个充满魔力的小盒子，而小盒子的屏幕上，总是某个骄傲的App。</p>
+<p>“这是最好的时代，也是个最坏的时代”——虽然这句话的烂大街程度是的文艺青年都都不再原意引用，可我还是觉得，对开发和测试来说，在这个移动应用的时代，这句话是个好的注脚。即使只看中国市场，苹果AppStore每月新增的应用数量也将几千款，想要让某个应用在这么激烈的竞争情况下脱颖而出，可想而知，除了对应用本身是否满足了用户的需求有要求之外，对app的质量和用户体验也有着非常高的要求。</p>
+<p>不得不说，在国内，就我所能了解的情况来看，移动App的测试方法仍然处在早期的阶段：大部分移动应用的测试严重的依赖手工，对移动的专项测试、移动应用的持续集成与发布方面的关注，还有相当大的改进空间。当然，造成这种状况的一部分原因是移动App本身的特性：相较于Web 2.0时代的网站来说，移动App的UI逻辑与业务逻辑耦合更加紧密；移动设备在兼容性、移动性（对网络状况的影响）、耐用性（目前主流的智能手机操作系统都采用了尽可能节省电量的进程调度策略）方面的策略则给移动APP测试带来了一些需要深入研究的专题。而另一个造成这种状况的重要原因，自然是这个行业的从业人员，在面对移动App的大潮时，并没有做好必要的准备。</p>
+<p>讲真，陈晔晔邀请我为他的《大话移动App2》写序的时候，我其实内心是拒绝的。原因很简单：首先，好几年前我就不再把软件测试当成我的主业了，让我来评价一本描述我长时间不再涉足领域的书，听起来就不太合适；其次，就像陈晔晔在书中吐槽的那样，说起国内的软件现状，我也有满满的吐槽能量无处释放。不过，在读完这本书完整的初稿之后，我还是打开了Word，在我的MBP上敲下了这些文字。</p>
+<p>很高兴陈晔晔愿意用一本书来分享他在移动App测试领域的心得，从系统性的角度来看，也许这本书还可以做的更好，但通读全书的时候，我还是很被陈晔晔的真诚所打动。他已经努力的把自己所知，所实践过的重要内容都留在了纸面上，从移动App测试的总体状况、App测试的工具、专项测试等各个方面进行了自己的阐述，尤其是其中对专项的深入挖掘。看得出来，陈晔晔在这个领域的确是下了不少的功夫，也有不少值得品味的心得体会。字里行间，除了对心得的描述之外， 满满的还有陈晔晔“恨铁不成钢”的心情，甚至不乏某些读者可能会觉得不舒服的字句，但作为曾经在测试行业战斗过10多年的我来说，我完全理解陈晔晔的吐槽，以及他希望这个行业能够更优秀，更吸引人的拳拳之心——可以随心所欲地说想说的话，真是羡慕这个活力四射的年纪呀。</p>
+<p>这是一本作者用心写就的书，对于想要理解移动App测试的同学而言，开卷必然会有益。回望我曾经战斗过的测试领域，衷心希望这个领域中的同学们多一点开拓，多一点冒险精神和让自己不舒服的勇气。</p>
+<p>是为序。</p>
+<h2 id="我还想说的"><a href="#我还想说的" class="headerlink" title="我还想说的"></a>我还想说的</h2><p>如果你能看到这里，说明你还是很有耐心的，容我最后啰嗦几句。凌晨1:30，我仅仅只是复制黏贴这些序已经让我热泪盈眶。每个人都代表着一段历史，每个人也都会影响未来，因果循环。让我感动的是这已经过去的历史，让我害怕的是这没有来到的未来，让我兴奋的是有你们这样一群用心做事的战友们。谢谢</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/07/27/dahuaapp2/" class="archive-article-date">
+  	<time datetime="2016-07-27T03:52:32.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-07-27</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/《大话移动App测试》/">《大话移动App测试》</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Api_1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/16/Api_1/">接口测试初学者心得——从 0 开始</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天还有人把我列成大牛，我真心受不起。这几天由于后台架构问题，打乱了我原本使用python框架来测试接口的计划，不得不使用java进行编写。对于我而言，这块经验我和应届生，甚至连应届生都不如。下面的方法用了2个小时才完全调通，真心惭愧。</p>
+<p><strong>不过我觉得人贵在挑战自己，贵在愿意去尝试不熟悉的东西，愿意不耻下问，愿意分享，哪怕再初级的东西。每个人都有自己的短板，每个人都要从0到1</strong></p>
+<p>从我一个App出身的人来讲，其实我以前对于maven并没有太大的理解，反而觉得pom这个文件配置也很繁琐，没有太感觉到好处。但的确任何事情不去从0开始做的话，很难去体会其中的一些因素，比如我这次做接口测试也一样。我在2年多前做完完整的以python为基础的API测试，但java的话，从0开始去选型，去搭建的确是第一次。</p>
+<p>开始我凭借我的经验就是选择了httpclinet，但httpclinet去做接口测试，仅仅是为了调试通各种不同类型的请求就下载了很多依赖库，这方面我真的吐槽Java吐槽的无力了。而且仅仅使用httpclinet的话也不能成体系，简单来讲可以做demo，但无法真正在项目上很有效率的落地。所以我开始寻求了另外的方式，同时不得不说为了追求速度，我就直接手动下载各种jar包了，开始还是很爽的，但后来就发现痛不欲生，这个时候就有一个想法，也许如果很多年前是我的话，我也会想到用maven这种方式吧，否则实在受不了了，感觉就算工程写完了也是一乱团。</p>
+<h2 id="第二次尝试"><a href="#第二次尝试" class="headerlink" title="第二次尝试"></a>第二次尝试</h2><p>首先我是选择了<code>rest-assured</code>，对我来讲是完全陌生的东西，当然既然是重新来一次，这次我选择了我从来不怎么喜欢用的maven，一切就这样开始了。<br>既然是从0开始，我们就一步一步来讲吧。新建一个maven工程：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/36014ce8578a19a96e84f41f25faa713.png" alt="maven"></p>
+<p>当然在pom中默认我们得要配置上我们基础要用的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&lt;dependency&gt;</div><div class="line">          &lt;groupId&gt;com.jayway.restassured&lt;/groupId&gt;</div><div class="line">          &lt;artifactId&gt;rest-assured&lt;/artifactId&gt;</div><div class="line">          &lt;version&gt;2.9.0&lt;/version&gt;</div><div class="line">          &lt;scope&gt;test&lt;/scope&gt;</div><div class="line">      &lt;/dependency&gt;</div><div class="line">      &lt;dependency&gt;</div><div class="line">          &lt;groupId&gt;junit&lt;/groupId&gt;</div><div class="line">          &lt;artifactId&gt;junit&lt;/artifactId&gt;</div><div class="line">          &lt;version&gt;4.12&lt;/version&gt;</div><div class="line">          &lt;scope&gt;test&lt;/scope&gt;</div><div class="line">      &lt;/dependency&gt;</div><div class="line">      &lt;dependency&gt;</div></pre></td></tr></table></figure>
+<p>接着我们来看下我们的测试代码，一个方法是直接断言，一个方法是rest-assured我写的demo方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.monkey.app.my_rest_test;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.junit.Before;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.jayway.restassured.RestAssured;</div><div class="line"></div><div class="line"><span class="keyword">import</span> junit.framework.TestCase;</div><div class="line"><span class="keyword">import</span> junit.framework.TestSuite;</div><div class="line"></div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> com.jayway.restassured.RestAssured.expect;</div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.hamcrest.Matchers.equalTo;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.testng.annotations.BeforeTest;</div><div class="line"></div><div class="line"><span class="comment">//import org.junit.Test;</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> org.testng.annotations.Test;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Unit test for simple App.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="meta">@BeforeTest</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUp</span><span class="params">()</span> </span>&#123;</div><div class="line">        RestAssured.baseURI = <span class="string">""</span>;</div><div class="line">        RestAssured.port = <span class="number">8080</span>;</div><div class="line">        RestAssured.basePath = <span class="string">""</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testUserLogin</span><span class="params">()</span> </span>&#123;</div><div class="line">        expect().statusCode(<span class="number">200</span>).body(<span class="string">"success"</span>, equalTo(<span class="keyword">true</span>)).when().get(<span class="string">""</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AppTest</span><span class="params">(String testName)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>(testName);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Rigourous Test :-)</div><div class="line">     */</div><div class="line">    <span class="meta">@Test</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testApp</span><span class="params">()</span> </span>&#123;</div><div class="line">        assertTrue(<span class="keyword">true</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其实最开始并没有想用testng的，但过程中为了更好的管理case和生成report，（maven默认的报告已经丑哭了）所以最终还是选择了testng。所以pom做了增加：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&lt;dependency&gt;</div><div class="line">        &lt;groupId&gt;org.testng&lt;/groupId&gt;</div><div class="line">        &lt;artifactId&gt;testng&lt;/artifactId&gt;</div><div class="line">        &lt;version&gt;6.8&lt;/version&gt;</div><div class="line">        &lt;scope&gt;test&lt;/scope&gt;</div><div class="line">    &lt;/dependency&gt;</div><div class="line"></div><div class="line">&lt;build&gt;</div><div class="line">    &lt;plugins&gt;</div><div class="line">        &lt;plugin&gt;</div><div class="line">            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</div><div class="line">            &lt;artifactId&gt;maven-surefire-report-plugin&lt;/artifactId&gt;</div><div class="line">            &lt;version&gt;2.19.1&lt;/version&gt;</div><div class="line">        &lt;/plugin&gt;</div><div class="line">        &lt;plugin&gt;</div><div class="line">            &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;</div><div class="line">            &lt;artifactId&gt;cobertura-maven-plugin&lt;/artifactId&gt;</div><div class="line">            &lt;version&gt;2.5.1&lt;/version&gt;</div><div class="line">        &lt;/plugin&gt;</div><div class="line">    &lt;/plugins&gt;</div><div class="line">&lt;/build&gt;</div></pre></td></tr></table></figure>
+<p>build标签里的主要就是报告和代码覆盖率。<br>同时增加了testng的case管理xml。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line">&lt;suite name="test" parallel="true"&gt;</div><div class="line"></div><div class="line">    &lt;test name="test" preserver-order="true"&gt;</div><div class="line">        &lt;classes&gt;</div><div class="line">            &lt;class name="com.monkey.app.my_rest_test.AppTest" /&gt;</div><div class="line"></div><div class="line">        &lt;/classes&gt;</div><div class="line">        &lt;listeners&gt;</div><div class="line">            &lt;property&gt;</div><div class="line">                &lt;name&gt;userdefaultlisteners&lt;/name&gt;</div><div class="line">                &lt;value&gt;false&lt;/value&gt;</div><div class="line">            &lt;/property&gt;</div><div class="line">            &lt;listener class-name="org.uncommons.reportng.HTMLReporter" /&gt;</div><div class="line">            &lt;listener class-name="org.uncommons.reportng.JUnitXMLReporter" /&gt;</div><div class="line">        &lt;/listeners&gt;</div><div class="line">    &lt;/test&gt; &lt;!-- Test --&gt;</div><div class="line">&lt;/suite&gt; &lt;!-- Suite --&gt;</div></pre></td></tr></table></figure>
+<p>其实还是很简单的，直接mvn test就可以执行了。我们可以看到这种报告。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/03e80a9b07141b7157c1e466af54c064.png" alt="report1"><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/a36ddf6b7cb4b424652f3a11677a5887.png" alt="report2"></p>
+<p>接下来就是1到100的事情了，我也是要不停的去学习更多新的东西，哪怕对很多人来讲是老的东西。</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/07/16/Api_1/" class="archive-article-date">
+  	<time datetime="2016-07-15T18:08:31.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-07-16</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/接口测试/">接口测试</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-apibeginning2" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -343,202 +799,9 @@
 
 
   
-    <article id="post-swift2app" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/11/06/swift2app/">Swift 第二个 app</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>我们继续第二个app</p>
-<p>我们首先先创建一个新的swift的project<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swift2-1.png" alt="swift1"></p>
-<p>我们在storyboard中增加一个PickerView，然后将PickerView控件和ViewController.swift做绑定，具体操作可以参见第一篇swift文章，同时我们增加这个Picker中的内容列表</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-11-06%20%E4%B8%8B%E5%8D%8812.42.29.png" alt="swift2"></p>
-<p>我们继续添加应用启动时候需要加载的内容，如下代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function">override func <span class="title">viewDidLoad</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.viewDidLoad()</div><div class="line">    <span class="comment">// Do any additional setup after loading the view, typically from a nib.</span></div><div class="line"></div><div class="line">    MyPickerView.dataSource = self</div><div class="line">    MyPickerView.delegate = self</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在这里，我们看到了左边有两个error，这是因为我们picker的data和delegate都还没有做实现，之后我们会添加的</p>
-<p>接着我们需要对于ViewController文件做一个扩展，我们新增加一个swift文件，该文件中我们需要去实现data和delegate，我们先查看UIPickerViewDataSource这个协议下面有哪些方法。如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">protocol UIPickerViewDataSource : NSObjectProtocol &#123;</div><div class="line"></div><div class="line">    <span class="comment">// returns the number of 'columns' to display.</span></div><div class="line">    <span class="function">func <span class="title">numberOfComponentsInPickerView</span><span class="params">(pickerView: UIPickerView)</span> -&gt; Int</span></div><div class="line"></div><div class="line">    <span class="comment">// returns the # of rows in each component..</span></div><div class="line">    func <span class="title">pickerView</span><span class="params">(pickerView: UIPickerView, numberOfRowsInComponent component: Int)</span> -&gt; Int</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在这里，两个方法都不是可选的，故而我们都需要去重写这两个方法。新文件代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//</span></div><div class="line"><span class="comment">//  ViewControllerExtension.swift</span></div><div class="line"><span class="comment">// </span></div><div class="line"><span class="comment">//</span></div><div class="line"><span class="comment">//  Created by Monkey on 14-10-10.</span></div><div class="line"><span class="comment">//  Copyright (c) 2014年 Monkey. All rights reserved.</span></div><div class="line"><span class="comment">//</span></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">import</span> UIKit</div><div class="line"></div><div class="line">extension ViewController: UIPickerViewDataSource &#123;</div><div class="line">    <span class="comment">// returns the number of 'columns' to display.</span></div><div class="line">    <span class="function">func <span class="title">numberOfComponentsInPickerView</span><span class="params">(pickerView: UIPickerView)</span> -&gt; Int</span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="number">1</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// returns the # of rows in each component..</span></div><div class="line">    <span class="function">func <span class="title">pickerView</span><span class="params">(pickerView: UIPickerView, numberOfRowsInComponent component: Int)</span> -&gt; Int</span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> ListNames.count</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">extension ViewController: UIPickerViewDelegate&#123;</div><div class="line"></div><div class="line">    <span class="function">func <span class="title">pickerView</span><span class="params">(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int)</span> -&gt; String! </span>&#123;</div><div class="line">        <span class="keyword">return</span> ListNames[row]</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>我们需要新建一个ViewController，然后让第一个View的按钮和第二个View做跳转绑定。我们选择第二项。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swift2-2.png" alt="swift2-2"></p>
-<p>同样的，我们还需要在第二个界面上添加一个labelView，从而来接受第一个界面选择的字符串<br>我们接着需要在第一个ViewController中实现按钮的跳转，并将值去传到第二个界面上面。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line">    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) &#123;</div><div class="line">        if segue.identifier == "GoToSecondView" &#123;</div><div class="line">            let index = MyPickerView.selectedRowInComponent(0)</div><div class="line"></div><div class="line">            var NickName: String?</div><div class="line">            switch index &#123;</div><div class="line">            case 0:</div><div class="line">                NickName = "恒温"</div><div class="line">            case 1:</div><div class="line">                NickName = "Monkey"</div><div class="line">            case 2:</div><div class="line">                NickName = "Kirito"</div><div class="line">            case 3:</div><div class="line">                NickName = "大东"</div><div class="line">            case 4:</div><div class="line">                NickName = "国文"</div><div class="line">            default:</div><div class="line">                NickName = nil</div><div class="line">        &#125;</div><div class="line">            //这里我们需要定义这个动作是要跳转到第二个界面，并且将第一个界面上面的字符串传给第二个界面的一个对象</div><div class="line">            var vc = segue.destinationViewController as SecondViewController</div><div class="line">            vc.NickName = NickName</div><div class="line">    &#125;</div><div class="line"></div><div class="line">同时我们第二个界面也需要实现，如下</div><div class="line"></div><div class="line">```java</div><div class="line">//</div><div class="line">//  SecondViewController.swift</div><div class="line">// </div><div class="line">//</div><div class="line">//  Created by Monkey on 14-10-10.</div><div class="line">//  Copyright (c) 2014年 Monkey. All rights reserved.</div><div class="line">//</div><div class="line"></div><div class="line">import UIKit</div><div class="line"></div><div class="line">class SecondViewController: UIViewController &#123;</div><div class="line"></div><div class="line"></div><div class="line">    @IBOutlet weak var ReslutLabel: UILabel!</div><div class="line"></div><div class="line">    var NickName: String?</div><div class="line">    override func viewDidLoad() &#123;</div><div class="line">        super.viewDidLoad()</div><div class="line"></div><div class="line">        if NickName != nil&#123;</div><div class="line">            ReslutLabel.text = NickName!+"是奇异博士"</div><div class="line">        &#125;</div><div class="line"></div><div class="line"></div><div class="line">        // Do any additional setup after loading the view, typically from a nib.</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    override func didReceiveMemoryWarning() &#123;</div><div class="line">        super.didReceiveMemoryWarning()</div><div class="line">        // Dispose of any resources that can be recreated.</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2014/11/06/swift2app/" class="archive-article-date">
-  	<time datetime="2014-11-06T04:17:23.000Z" itemprop="datePublished"><i class="icon-clock"></i>2014-11-06</time>
-</a>
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
-	</div>
-
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-RASPBERRY" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/11/04/RASPBERRY/">RASPBERRY PI B+ 升级型 3 代 512m 开发板 初探</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>其实今天对于mac怎么烧raspbian还是很有疑惑的。完全不明白，首先先来看下树莓派。我是在淘宝上买的。</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/pi1.jpg" alt="pi1"></p>
-<p>这个是树莓派B＋，四个usb，一个mini tf卡，一个网口，一个mini充电口，一个hdmi口主要是这样。</p>
-<p>先从官网下载raspbian 的img，下载完毕之后，将tf卡挂到mac上面。使用如下命令</p>
-<p><code>df -h</code></p>
-<p>查看当前挂载的disk</p>
-<p>一般默认tf卡这个挂载的就是disk1，接着使用sudo diskutil unmount /dev/disk1s1。<br>然后我们会看到disk1已经unmount了，这样我们就可以继续进行img的烧入。</p>
-<p>接着我们使用sudo dd bs=1m if=/Users/monkey/Downloads/2014-06-20-wheezy-raspbian.img of=/dev/rdisk1这里将img的路径换成自己系统中img所在的路径就ok啦。大概要过10分钟才会烧好。</p>
-<p>初次启动会看到如下界面：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/pi2.jpg" alt="pi2"></p>
-<p>接着就和bios的设置一样了，经过简单的设置之后你就可以进入raspbian系统了。因为我买了hdmi转接VGA的线，所以直接看到显示器上面显示。然后我还买了usb无线网络所以直接就可以链接上wifi了～～</p>
-<p>我补个过程图：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/pi3.png" alt="pi3"></p>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2014/11/04/RASPBERRY/" class="archive-article-date">
-  	<time datetime="2014-11-04T07:15:28.000Z" itemprop="datePublished"><i class="icon-clock"></i>2014-11-04</time>
-</a>
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RASPBERRY/">RASPBERRY</a></li></ul>
-	</div>
-
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-swiftApp" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/08/04/swiftApp/">swift开发第一个App</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>swift也出来那么多时间了。2048太高大上了，我们可以来看一个简单的app。</p>
-<h2 id="创建project"><a href="#创建project" class="headerlink" title="创建project"></a>创建project</h2><p>我们首先先创建一个新的swift的project</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit1.png" alt="swift1"></p>
-<p>在这里我们选择了single application,输入我们的应用名称，语言默认已经是swift</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swift2.png" alt="swift2"></p>
-<p>新建完毕之后我们看到的是这样的结构</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit3.png" alt="swift3"></p>
-<h2 id="创建我们的控件"><a href="#创建我们的控件" class="headerlink" title="创建我们的控件"></a>创建我们的控件</h2><p>点击左边面板中的Main.storyboard，这个是从object c很早xcode版本中就流传下来的工具。如同Android中的manifest.xml。接着我们看右下角的面板。选择“show the object library”标签之后，我们就可以直接拖拽控件到storyboard上面。</p>
-<p><img src="https://github.com/monkeytest15/BlogPNG/blob/master/swfit4.png" alt="swift4"></p>
-<p>在这里我们分别选择三个控件，一个是button，一个是text field，一个是webview。拖拽完毕之后我们可见如下图：</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit5.png" alt="swift5"></p>
-<h2 id="定义我们的控件"><a href="#定义我们的控件" class="headerlink" title="定义我们的控件"></a>定义我们的控件</h2><p>我们接着需要在ViewController.swift中进行我们设置的控件的定义。在class ViewController: UIViewController {中添加如下两行:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@IBOutlet</span> var textField:UITextField!</div><div class="line"> <span class="meta">@IBOutlet</span> var webView:UIWebView!</div></pre></td></tr></table></figure>
-<p>这里的@IBOutlet是告诉swift，我设置的对象是和Interface Builder绑定的。</p>
-<h2 id="定义我们的Action"><a href="#定义我们的Action" class="headerlink" title="定义我们的Action"></a>定义我们的Action</h2><p>我们还有一个button，对。那么我们需要对这个button的行为进行定义。同样的在ViewController.swift中我们添加如下Action方法。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@IBAction</span> <span class="function">func <span class="title">didClickGo</span><span class="params">(AnyObject)</span> </span>&#123;</div><div class="line">    var text = textField.text</div><div class="line">    var url = NSURL.URLWithString(<span class="string">"http:"</span>+text)</div><div class="line">    var request = NSURLRequest(URL: url)</div><div class="line">    webView.loadRequest(request)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这样我们就简单的从textfield的控件中得到text，然后进行一个网址的请求。</p>
-<h2 id="控件与代码的关联"><a href="#控件与代码的关联" class="headerlink" title="控件与代码的关联"></a>控件与代码的关联</h2><p>完成了以上的步骤，关键是我们的代码和控件还没有绑定起来。Android中通过findviewbyid可以和manifest.xml中的控件进行绑定，而在storyboard中我们只需要进行简单的操作就可以完成这一切。如下图我们首先选择storyboard，然后选择右边面板最后一个标签。</p>
-<p>接着我们先关联text和webview，我们只需要拖动下方相应的控件并指定到storyboard上面即可。如下图所示：</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit6.png" alt="swift6"><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit7.png" alt="swift7"><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit8.png" alt="swift8"></p>
-<h2 id="来看看我们的成果吧"><a href="#来看看我们的成果吧" class="headerlink" title="来看看我们的成果吧"></a>来看看我们的成果吧</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/swfit9.png" alt="swift9"></p>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2014/08/04/swiftApp/" class="archive-article-date">
-  	<time datetime="2014-08-04T07:38:24.000Z" itemprop="datePublished"><i class="icon-clock"></i>2014-08-04</time>
-</a>
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
-	</div>
-
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+      <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
     </nav>
   
 
@@ -599,7 +862,7 @@
     
     	<section class="tools-section tools-section-tag">
     			<div class="widget tagcloud" id="js-tagcloud">
-    				<a href="/tags/Android性能/" style="font-size: 10px;">Android性能</a> <a href="/tags/Appium/" style="font-size: 10px;">Appium</a> <a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Gradle/" style="font-size: 15px;">Gradle</a> <a href="/tags/Groovy/" style="font-size: 10px;">Groovy</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 15px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/android性能测试/" style="font-size: 10px;">android性能测试</a> <a href="/tags/espresso/" style="font-size: 15px;">espresso</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 15px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 15px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 15px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
+    				<a href="/tags/Android性能/" style="font-size: 10px;">Android性能</a> <a href="/tags/Appium/" style="font-size: 10px;">Appium</a> <a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Gradle/" style="font-size: 13.33px;">Gradle</a> <a href="/tags/Groovy/" style="font-size: 10px;">Groovy</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/IOS/" style="font-size: 10px;">IOS</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 13.33px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/android性能测试/" style="font-size: 10px;">android性能测试</a> <a href="/tags/espresso/" style="font-size: 13.33px;">espresso</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/swift/" style="font-size: 13.33px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 13.33px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 13.33px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 13.33px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
     			</div>
     	</section>
     

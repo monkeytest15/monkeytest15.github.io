@@ -4,6 +4,296 @@
   
     
     <entry>
+      <title><![CDATA[做 iOS 安全测试之前你应该知道的工具 (一)]]></title>
+      <url>http://yoursite.com/2016/11/24/iOS-anquan-1/</url>
+      <content type="html"><![CDATA[<p>顺便提一句，iOS的国内安全书我也是遍历了一遍，简直是shit，我只能遍历国外的去了，国内的全部放弃。</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前言还是让我吐槽爽一把吧。我已经碰见很多人上来就问我，用什么工具啊，有没有扫一下就出来的啊，我真的无力吐槽了。我只想说，那你们就不要学习了，也不要上学，更不要上班，就到处讨讨饭不是蛮好的么？多省力啊。专项已经不是那种用工具看一下，扫一下就能够出现结果的了，安全就更不要说了。<strong>就一点，要结合产品的业务特性以及技术实现细节、架构等等才能够分析出来的，不要指望工具，否则你就不要做测试了，做不长久的</strong></p>
+<h2 id="idb"><a href="#idb" class="headerlink" title="idb"></a>idb</h2><p>第一个来介绍的就是idb，idb可以说是我用过到现在最最友好的了，因为有GUI界面。不过安全貌似不是那么的方便，大家自己去Google吧。我从来不认为小白就需要手把手。谁都是小白，就看谁会Google，就这句话。</p>
+<p>首先我们需要在终端中输入idb，只要安装顺利的话，大家会看到如下界面：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/0f53da5a2685d82b0e170f51f75e74f9.png" alt=""></p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/4b2fd9bf5e84615ca9339b4ed48ae7ed.png" alt=""></p>
+<p>是不是觉得就很亲民，我们通过usb或者ssh连接上之后就可以开始使用idb的功能了。（ssh默认密码是alpine）我这里由于之前测试的时候环境没有了，所以我只能用之前的老图了，大家见谅。首先来看下这个。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/4cbe5aecc6ec0a463b9cc53469d92159.jpg" alt=""><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/e85a196caee0ef9345da14980f1439fc.jpg" alt=""></p>
+<p>这里拿点评作为案例，大家可以看到app在device中的基础信息都是已经显示了出来。当然这才是开始。<br>如下图，我们会看到一个url header的list。这个意思我解释一下，其实就是说现在应用中很多都是通过scheme唤起容器或者Activity的，又或者直接通过url打开某些web。那么这里就是说在这个应用中会调用到的url的header，比如dianping://xxxx这样一类就是其中的调用。通过idb可以直接去mock这些url。如下图：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/902f82dedebca97158dad9181741fe15.jpg" alt=""></p>
+<p>再来看这个，类似于sandbox，从图中我们也可以看出来ipa沙箱中的目录结构以及每个文件中的数据结构，当然双击这些数据结构中的数据还是能够看到detail的，大部分是不会加密的。包括字段名字，长度等。这些信息也是能够给予我们很大的帮助<br>Android可以反编译，iOS也是一样的。idb可以说集成了iOS反编译的一些工具让我们直接可以对ipa进行反编译，不过这里都是.h，并没有.m，我估计应该是调用工具的关系，理论上都是可以反编译的。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/fdde270dcd537c6aeda1c0b93f4bae07.jpg" alt=""></p>
+<p>idb还能够截图，抓包等，简直就是多功能一体机啊。我这里就不多说了，大家自己去体会吧。</p>
+<h2 id="otool"><a href="#otool" class="headerlink" title="otool"></a>otool</h2><p>好吧，我承认我low了，我以为这是一个要安装的工具，没有想到是mac自带的。</p>
+<p>官方描述</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">The   otool  command  displays  specified  parts  of  object  files  or</div><div class="line">      libraries.  If the -m option is not used the file arguments may  be  of</div><div class="line">      the  form  libx.a(foo.o), to request information about only that object</div><div class="line">      file and not the entire library.   (Typically  <span class="keyword">this</span>  argument  must  be</div><div class="line">      quoted,  ``libx.a(foo.o)<span class="string">''</span>,  to  get  it past the shell.)  Otool under-</div><div class="line">      stands both Mach-O (Mach object)  files  and  universal  file  formats.</div><div class="line">      <span class="function">Otool can display the specified information in either its <span class="title">raw</span> <span class="params">(numeric)</span></span></div><div class="line">      <span class="title">form</span> <span class="params">(without the -v flag)</span>, or in a symbolic form using macro names  of</div><div class="line">      constants, etc. <span class="params">(with the -v or -V flag)</span>.</div></pre></td></tr></table></figure>
+<p>输入otool我们可以看到很多的参数，如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">Usage: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/otool [-arch arch_type] [-fahlLDtdorSTMRIHGvVcXmqQjCP] [-mcpu=arg] [--version] &lt;object file&gt; ...</div><div class="line">    -f print the fat headers</div><div class="line">    -a print the archive header</div><div class="line">    -h print the mach header</div><div class="line">    -l print the load commands</div><div class="line">    -L print shared libraries used</div><div class="line">    -D print shared library id name</div><div class="line">    -t print the text section (disassemble with -v)</div><div class="line">    -p &lt;routine name&gt;  start dissassemble from routine name</div><div class="line">    -s &lt;segname&gt; &lt;sectname&gt; print contents of section</div><div class="line">    -d print the data section</div><div class="line">    -o print the Objective-C segment</div><div class="line">    -r print the relocation entries</div><div class="line">    -S print the table of contents of a library</div><div class="line">    -T print the table of contents of a dynamic shared library</div><div class="line">    -M print the module table of a dynamic shared library</div><div class="line">    -R print the reference table of a dynamic shared library</div><div class="line">    -I print the indirect symbol table</div><div class="line">    -H print the two-level hints table</div><div class="line">    -G print the data in code table</div><div class="line">    -v print verbosely (symbolically) when possible</div><div class="line">    -V print disassembled operands symbolically</div><div class="line">    -c print argument strings of a core file</div><div class="line">    -X print no leading addresses or headers</div><div class="line">    -m don't use archive(member) syntax</div><div class="line">    -B force Thumb disassembly (ARM objects only)</div><div class="line">    -q use llvm's disassembler (the default)</div><div class="line">    -Q use otool(1)'s disassembler</div><div class="line">    -mcpu=arg use `arg' as the cpu for disassembly</div><div class="line">    -j print opcode bytes</div><div class="line">    -P print the info plist section as strings</div><div class="line">    -C print linker optimization hints</div><div class="line">    --version print the version of /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/otool</div></pre></td></tr></table></figure>
+<p>这里不难看出，原来是xcode自带的commond tool。首先我们来看下怎么用，开始其实我并不知道这个命令后面到底跟的是什么文件类型。然后otool一直提示需要提供object file，最后我才明白这个object file是个什么东西，这里以JD的ipa为例。</p>
+<p>如果是debug签名的.app那么我们右键之后可以看到包的展开，但线上下来的.app默认是没有这个选项的。我们需要先解压缩之后看到如下的界面，这个.app是可以有包展开的。</p>
+<p>展开之后我们可以看到很多文件，需要找到如下高亮的文件，这个文件就是otool可以识别的object file，这点大家要注意。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/f1b1f17efd18638562259fccbcc1dc9f.png" alt=""></p>
+<p>找到了这个可以执行的文件之后，我们就开始落地尝试了。首先我们输入</p>
+<p><code>otool -L ~/Payload/JD4iPhone.app/JD4iPhone</code></p>
+<p>这条命令可以让我们知道这个ipa中引用了哪些库并且是什么版本的，结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">/usr/lib/libstdc++.6.dylib (compatibility version 7.0.0, current version 104.2.0)</div><div class="line">/System/Library/Frameworks/LocalAuthentication.framework/LocalAuthentication (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/CoreData.framework/CoreData (compatibility version 1.0.0, current version 519.15.0)</div><div class="line">/System/Library/Frameworks/AdSupport.framework/AdSupport (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/Foundation.framework/Foundation (compatibility version 300.0.0, current version 1144.17.0)</div><div class="line">/System/Library/Frameworks/CoreAudio.framework/CoreAudio (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/usr/lib/libicucore.A.dylib (compatibility version 1.0.0, current version 53.1.0)</div><div class="line">/System/Library/Frameworks/CoreTelephony.framework/CoreTelephony (compatibility version 1.0.0, current version 2651.0.0)</div><div class="line">/System/Library/Frameworks/Accelerate.framework/Accelerate (compatibility version 1.0.0, current version 4.0.0)</div><div class="line">/System/Library/Frameworks/CoreImage.framework/CoreImage (compatibility version 1.0.0, current version 4.0.0)</div><div class="line">/System/Library/Frameworks/CoreMotion.framework/CoreMotion (compatibility version 1.0.0, current version 1756.0.20)</div><div class="line">/System/Library/Frameworks/AssetsLibrary.framework/AssetsLibrary (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/AddressBookUI.framework/AddressBookUI (compatibility version 1.0.0, current version 33.0.0)</div><div class="line">/System/Library/Frameworks/AddressBook.framework/AddressBook (compatibility version 1.0.0, current version 30.0.0)</div><div class="line">/System/Library/Frameworks/CoreLocation.framework/CoreLocation (compatibility version 1.0.0, current version 1756.0.20)</div><div class="line">/System/Library/Frameworks/MessageUI.framework/MessageUI (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/usr/lib/libiconv.2.dylib (compatibility version 7.0.0, current version 7.0.0)</div><div class="line">/System/Library/Frameworks/CoreText.framework/CoreText (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/ImageIO.framework/ImageIO (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/UIKit.framework/UIKit (compatibility version 1.0.0, current version 3347.44.0)</div><div class="line">/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics (compatibility version 64.0.0, current version 600.0.0)</div><div class="line">/System/Library/Frameworks/QuartzCore.framework/QuartzCore (compatibility version 1.2.0, current version 1.11.0)</div><div class="line">/usr/lib/libsqlite3.dylib (compatibility version 9.0.0, current version 169.2.0)</div><div class="line">/System/Library/Frameworks/SystemConfiguration.framework/SystemConfiguration (compatibility version 1.0.0, current version 700.20.6)</div><div class="line">/System/Library/Frameworks/CFNetwork.framework/CFNetwork (compatibility version 1.0.0, current version 711.3.18)</div><div class="line">/usr/lib/libz.1.dylib (compatibility version 1.0.0, current version 1.2.5)</div><div class="line">/usr/lib/libxml2.2.dylib (compatibility version 10.0.0, current version 10.9.0)</div><div class="line">/System/Library/Frameworks/Security.framework/Security (compatibility version 1.0.0, current version 0.0.0)</div><div class="line">/System/Library/Frameworks/MobileCoreServices.framework/MobileCoreServices (compatibility version 1.0.0, current version 66.0.0)</div><div class="line">/System/Library/Frameworks/OpenGLES.framework/OpenGLES (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox (compatibility version 1.0.0, current version 492.0.0)</div><div class="line">/System/Library/Frameworks/OpenAL.framework/OpenAL (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/AVFoundation.framework/AVFoundation (compatibility version 1.0.0, current version 2.0.0)</div><div class="line">/System/Library/Frameworks/CoreMedia.framework/CoreMedia (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/CoreVideo.framework/CoreVideo (compatibility version 1.2.0, current version 1.8.0)</div><div class="line">/System/Library/Frameworks/MapKit.framework/MapKit (compatibility version 1.0.0, current version 14.0.0)</div><div class="line">/usr/lib/libobjc.A.dylib (compatibility version 1.0.0, current version 228.0.0)</div><div class="line">/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1214.5.1)</div><div class="line">/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation (compatibility version 150.0.0, current version 1144.17.0)</div></pre></td></tr></table></figure>
+<p>当然，这些是不够的，我们继续来看一下这条命令。</p>
+<p><code>otool -v -arch armv7 -s __TEXT __cstring ~/Payload/JD4iPhone.app/JD4iPhone &gt; ipa_Str.txt</code></p>
+<p>我们打开txt之后可以看到如下的内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">0187be4a  addNewAddress</div><div class="line">0187be58  addressDefault</div><div class="line">0187be67  kShowPickSitesMap</div><div class="line">0187be79  kPickViewWillApperNotifaction</div><div class="line">0187be97  kPickViewWillDisapperNotifaction</div><div class="line">0187beb8  kOrderPaymentTypeChangedNotification</div><div class="line">0187bedd  OrderPickSieTypeChangedNotification</div><div class="line">0187bf01  kToOrderPickSieTypeVcNotification</div><div class="line">0187bf23  kSelectedPickSiteNotification</div><div class="line">0187bf41  PayAndShipmentTypeViewController</div><div class="line">0187bf62  DeliveryPayType_Confirm</div><div class="line">0187bf7a  complatePayAndShiment</div><div class="line">0187bf90  OrderInfoViewController</div><div class="line">0187bfa8  pickSites</div><div class="line">0187bfb2  kUpdatePickSiteLocation</div><div class="line">0187bfca  paymentType</div></pre></td></tr></table></figure>
+<p>这其实是会将ipa中在代码中hard code或者配置文件中的字符串都拉出来，一般有几万行，这里的字符串其实就如同Android中我们查看logcat中有没有敏感词是一样的，这里我们也可以去看看在代码中有没有什么私钥或者其他的敏感信息。我们可以通过一些小技巧来做过滤，比如我们在sublime text中find的时候打开正则匹配，使用正则表达式之后可以简单的找到一些符合我们规律的字符串</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[测试技术无用论]]></title>
+      <url>http://yoursite.com/2016/11/22/testnouse/</url>
+      <content type="html"><![CDATA[<p><strong>我先声明，有没有用看你自己，任何事情都是有上下文的，不是100%的。请勿断章取义。文中所提到的观点也许你现在不同意，但是相信未来你可能就会同意。不过无论你同意不同意，在我们没有能力改变这一切之前，我们也只能先follow，慢慢的从自己开始改变，不是么？</strong></p>
+<h2 id="对话"><a href="#对话" class="headerlink" title="对话"></a>对话</h2><p>“你思考问题，看问题，做计划要有高度”<br>“我们要有idea，技术不是问题，技术实现的人这个世界一抓一大把”<br>“放眼行业高层，有多少是做技术做上去的？就算做上去的，有多少能够混得风生水起的？”</p>
+<p>也许我们在行业的日常中随处都可以听到这样的话语，也许很多人还在努力学习技术，也不关心那么多七七八八的事儿。但是现在行业就是这样的。</p>
+<h2 id="技术无用论"><a href="#技术无用论" class="headerlink" title="技术无用论"></a>技术无用论</h2><p>我其实每次从客观的角度来看“众生”的时候，我就觉得很可悲。大多数的高层（level高，薪水高）有生活，有钱，又不用跟技术；而大多数的底层劳动人民每天学技术学的很苦，却又很难有机会往上走，甚至很少机会能够进入一个心仪的公司和环境，这种对比鲜明的景象我已不想再看下去了。</p>
+<p>我其实想了下现实与我构思的理想世界还是有差距的。</p>
+<h2 id="理想世界"><a href="#理想世界" class="headerlink" title="理想世界"></a>理想世界</h2><table>
+<thead>
+<tr>
+<th>LEVEL</th>
+<th style="text-align:center">练级内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-100</td>
+<td style="text-align:center">积累装备：xx证书、学历、实习经验</td>
+</tr>
+<tr>
+<td>0</td>
+<td style="text-align:center">毕业，都装纯洁，什么都不懂</td>
+</tr>
+<tr>
+<td>10</td>
+<td style="text-align:center">拼命学技术 or 只想不做，抱怨lv100</td>
+</tr>
+<tr>
+<td>20</td>
+<td style="text-align:center">积累背景和项目经验＋ 管理lv1+忽悠lv1+社交lv1＋马屁lv1（可选）</td>
+</tr>
+<tr>
+<td>50</td>
+<td style="text-align:center">积累背景和项目经验＋ 管理lv30+忽悠lv30+社交lv30＋马屁lv30（可选）</td>
+</tr>
+<tr>
+<td>???</td>
+<td style="text-align:center">积累背景和项目经验＋ 管理lv???+忽悠lv???+社交lv???＋马屁lv???（可选）</td>
+</tr>
+</tbody>
+</table>
+<p>所以你们也看到了，涨level和技术没有半毛钱关系。。。。但我也不能排除人家当初还是学过技术的对不对</p>
+<h2 id="现实世界"><a href="#现实世界" class="headerlink" title="现实世界"></a>现实世界</h2><table>
+<thead>
+<tr>
+<th>LEVEL</th>
+<th style="text-align:center">练级内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-100</td>
+<td style="text-align:center">积累装备：xx证书、学历、实习经验</td>
+</tr>
+<tr>
+<td>0</td>
+<td style="text-align:center">毕业，都装纯洁，什么都不懂</td>
+</tr>
+<tr>
+<td>10</td>
+<td style="text-align:center">拼命学技术 or 只想不做，抱怨lv100</td>
+</tr>
+<tr>
+<td>20</td>
+<td style="text-align:center">积累背景和项目经验＋ 管理lv1+忽悠lv1+社交lv1＋马屁lv1（可选）+技术积累lv1+持续学习lv1</td>
+</tr>
+<tr>
+<td>50</td>
+<td style="text-align:center">积累背景和项目经验＋ 管理lv30+忽悠lv30+社交lv30＋马屁lv30（可选）+技术积累lv30+持续学习lv30</td>
+</tr>
+<tr>
+<td>???</td>
+<td style="text-align:center">积累背景和项目经验＋ 管理lv???+忽悠lv???+社交lv???＋马屁lv???（可选） +技术积累lv1???+持续学习lv???</td>
+</tr>
+</tbody>
+</table>
+<p>其实在这个社会混很多是必不可少的，但是更多的需要都有技术的积累和持续学习的态度，否则实则太过不公平，不是么？</p>
+<p>测试现在行业几乎很大比例的永远都在lv10，而真正能到lv20以及往上的极少极少。也许很多人看着光鲜亮丽，但事实上也是各种政治斗争的牺牲者，只是你们不知道而已。</p>
+<h2 id="我想表达的"><a href="#我想表达的" class="headerlink" title="我想表达的"></a>我想表达的</h2><p>很多人现在学技术是一种兴趣驱动，但是能否一直坚持，一直去紧跟行业的新技术，一直做到35岁，45岁，55岁甚至更久那就是一种态度了，就是我们说的匠者。也许我们不会那么多的技能，但是如果我们能够做技术，学习技术一直坚持，一直做下去，做到一种自己能力的极致，那么我相信机会肯定会降临的。</p>
+<p>最后与大家共勉的是“所谓真正的能力和技术每个人都是通过努力所得来的，如果说真的有人有天赋，那么仅仅是他们的学习能力比一般人强，缩短了这个努力的时间罢了”。所以你没有每天坚持学习，你没有去实践，你没有去总结自己，每天都过的很舒适，在现在这个社会就算你很有天赋，那么你也永远在lv10，谢谢。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[致那些情商不高的测试]]></title>
+      <url>http://yoursite.com/2016/11/22/toTesters/</url>
+      <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>上周六在网易继2012年之后再次召开了一次很大的测试会议，这次会议在我看来质量很高。不过会后也有很多朋友来找我聊天，我之后会详细说下，正因为这些朋友找我聊的内容，我才想着我是不是回来要写这样一篇文章。不过最近真的记性不好了，所以就到现在才想起来。</p>
+<h2 id="致那些情商不高的测试"><a href="#致那些情商不高的测试" class="headerlink" title="致那些情商不高的测试"></a>致那些情商不高的测试</h2><p>这个社会不是纯纯的吧？测试行业也是一样的，哪个行业都是一样的。没有一个地方是能够让“我只要xxxxx，就能够xxxxx”这句话100%成立的。就算你说你只要自杀，也不见得能够死吧。如果连这件事情都不是100%的，我们为什么能够去认为别的事情就很100%呢？</p>
+<p>会后很多人来和我说“我觉得你三年成长简直是脱胎换骨，而我觉得自己却没有进步”，这绝对不止一个人这样和我说。因为网易的两场沙龙，我是唯一的一个两次都上去演讲的讲师。当然当他们说好这句话，其实我自然会很感兴趣的去问他们哪里觉得自己没有进步，却又哪里觉得我进步很大，因为我自己也觉得自己没有什么进步。聊完之后我大概能够明白这其中的原因。其实原本做技术是个很单纯的事情，只不过放在一个有人，有江湖的地方就不单纯了，而测试这个岗位更是佼佼者。</p>
+<p>首先我们回顾上我刚刚提出的那个假设句，这个世界上技术的牛逼的人多的是吧（牛逼到改变世界的我们就不要比了），那么我们来看看这句话——我只要技术很牛逼，就能够出人头地，能够赚很多钱，就能够做一份很好的工作，balabala。但事实呢？我们大家都知道，事实并不是这样的，但依然还是有很多人会去做这样的假设，这就是我想说的情商低的表现。</p>
+<p>然后我们再来回顾下，这个世界上本科，博士，硕士，海归的人多了去了吧，那么我们来看看这句话——我只要哪里哪里毕业，就能够随心所欲了么？大家也都知道，肯定不是这样的。但是很多人依然会去做这样的假设，这就是我说的情商低的表现。</p>
+<p>好了，到这里基本上大家也都知道那些朋友问我的大概是什么问题了。在我看来，3年我和他们的差别并不在技术上，也许技术上有差别，但是这并不是决定性因素。我在这里想说的是</p>
+<p>请你们多锻炼自己的表达能力。这事情要去做，不是去想，不是去纠结。就比如我曾经2012年的时候演讲40分钟都觉得困难，而现在可以两天讲16个小时</p>
+<p>请你们多扩展自己的视野。看看上面这些问题，哪些人会去相信，大部分是哪些没有拥有的人，比如不觉得自己技术很牛的人，比如说没有本科学历的人，他们特别愿意去相信。但是然并卵其实，最终只不过活在自己的YY中<br>请你们多接触人，活的人，不是充气娃娃。一个人的经历当然是有限的，只有接触很多人，他们的人生才能够丰富我们的经历，不是吗？</p>
+<p>请你们多去写代码，而不是去想着怎么提升写代码的水平。想是没有用的</p>
+<p>最后一点，请你们学会扬长避短，学会表现，而不是一味的去追求一个东西，比如技术。人是高等生物，不是单细胞生物，不要老是单线程。你们看看我，我每年多少事情要忙，但是学习以及公司里晋升，我哪样落下过？<br>好了，如果你们是那些将来要换工作的人，也希望在面试前看下我写的这几点，绝对不要去用我上面写的假设句，没有意义的。因为也许你单纯，也许你身边的人也单纯，也许面试你的人也单纯，但企业，社会永远不会单纯。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[iOS_Zombie]]></title>
+      <url>http://yoursite.com/2016/11/17/iOS-Zombie/</url>
+      <content type="html"><![CDATA[<p>最近我在看“ I am Zombie”，所以我就来看看iOS的这个工具啦，哈哈，一大群Zombies正在逼近！！！</p>
+<h2 id="什么是Zombie"><a href="#什么是Zombie" class="headerlink" title="什么是Zombie"></a>什么是Zombie</h2><p>是的，打开instruments之后其实会看到一个图标，这个图标多么让人激动啊！！哈哈</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/aaaajiangshi.png" alt=""></p>
+<p>我们顺便来看下官方文档的说法</p>
+<blockquote>
+<p>The Zombies template causes persistent memory growth because it changes your environment so that deallocated objects are never technically deallocated. This is expected behavior, but it means that aside from zombie flags and memory address histories, any other statistics provided by the Allocations instrument should be ignored. You also shouldn’t add the Leaks instrument to the Zombies template, as it will produce inaccurate results. For iOS apps, use the Zombies template with the iOS Simulator, rather than a physical device.</p>
+</blockquote>
+<p>不过我在尝试的时候其实还没有看到这段文字，所以我也是用了真机，不过卡的是一塌糊涂。我查了网上大部分的资料，有的会说Zombie不支持真机，其实就是rather than，你懂的，不过的确不建议用，本身调查的问题在这个环境上关系不大，更多的纯粹就是代码上的问题。</p>
+<p>用白话文来解释下吧，取名Zombie其实是有道理的，在iOS中我们经常会有一些对象（虽然iOS在5.0之后引入了ARC）会手动或者自动被ARC销毁掉，但是我们的程序可能并不知道对象不在了，还可能去调用它，导致了EXC_BAD_ACCESS的错误。当然，如果程序简单的话，很容易能够排查出来，但是我们项目中大多是很复杂的，排查起来就有一定的困难。这个时候就会去使用Zombie工具来做辅助。注意，在专项里面工具都是辅助的，没有一个工具是可以说你做了1，2，3，4步骤就知道问题在哪儿，几乎没有，所以专项并不是很多人想的那么简单的。开启Zombie有两种方式，一种是通过instruments来直接使用，网上都会很推荐这种做法，还有一种就是在如下设置中去运行Zombie默认就打包在app中，这种方法很不可取，因为一旦在上线之前忘记关闭这个选项的话可是毁灭性的。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/bbbjiangshi.png" alt=""></p>
+<p>简单来讲，Zombie会去取代那些已经被销毁的对象，让这些对象并不是null的存在，而是僵尸的存在。这样做的好处在于能够给予我们更多的info来定位问题，而不好的话也是显而易见的，上面官方的描述也写的很清楚，一旦开启full on Zombie mode（这个词来自于美剧I am Zombie），那么你的应用的内存会不停的飙升，因为你的对象永远都不会销毁，直到app crash。所以这里大家要注意危险性。</p>
+<h2 id="什么是ARC"><a href="#什么是ARC" class="headerlink" title="什么是ARC"></a>什么是ARC</h2><p>这其实要详细了解，大家可以自行Google，这里我就随便截图一段，科普一下<br>Automatic Reference Counting，自动引用计数，即ARC，可以说是WWDC2011和iOS5所引入的最大的变革和最激动人心的变化。ARC是新的LLVM 3.0编译器的一项特性，使用ARC，可以说一举解决了广大iOS开发者所憎恨的手动内存管理的麻烦。</p>
+<p>在工程中使用ARC非常简单：只需要像往常那样编写代码，只不过永远不写retain,release和autorelease三个关键字就好～这是ARC的基本原则。当ARC开启时，编译器将自动在代码合适的地方插入retain, release和autorelease，而作为开发者，完全不需要担心编译器会做错（除非开发者自己错用ARC了）。好了，ARC相当简单吧～到此为止，本教程结束。</p>
+<h2 id="什么是EXC-BAD-ACCESS"><a href="#什么是EXC-BAD-ACCESS" class="headerlink" title="什么是EXC_BAD_ACCESS"></a>什么是EXC_BAD_ACCESS</h2><p>90%的错误来源在于对一个已经释放的对象进行release操作。不过的确看到这个缺陷，项目一复杂，很难去定位。</p>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>所有说专项的没有案例都是耍流氓，真心觉得这是真理。<br>我千辛万苦的随便找了一个案例，然后发现启动之后就crash，我心都碎了，那么偶尔我们也要来修一次bug不是？基本上我缩小了范围，错误代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;    </div><div class="line"></div><div class="line">    <span class="comment">// Override point for customization after application launch.</span></div><div class="line"></div><div class="line">    <span class="comment">// Add the navigation controller's view to the window and display.</span></div><div class="line">    [self.window addSubview:navigationController.view];</div><div class="line"></div><div class="line">    [self.window makeKeyAndVisible];</div><div class="line"></div><div class="line">    <span class="keyword">return</span> YES;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>错误信息如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="number">2015</span>-<span class="number">09</span>-<span class="number">25</span> <span class="number">21</span>:<span class="number">32</span>:<span class="number">05.749</span> Zombie[<span class="number">24745</span>:<span class="number">854954</span>] *** Terminating app due to uncaught exception <span class="string">'NSInternalInconsistencyException'</span>, reason: <span class="string">'Application windows are expected to have a root view controller at the end of application launch'</span></div></pre></td></tr></table></figure>
+<p>反正我是不懂，经过了Google之后，我发现是iOS本身API的改变，应该如下修改</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;    </div><div class="line"></div><div class="line">    <span class="comment">// Override point for customization after application launch.</span></div><div class="line"></div><div class="line">    <span class="comment">// Add the navigation controller's view to the window and display.</span></div><div class="line">-    [self.window addSubview:navigationController.view];</div><div class="line">+    [self.window setRootViewController:navigationController];</div><div class="line">    [self.window makeKeyAndVisible];</div><div class="line"></div><div class="line">    <span class="keyword">return</span> YES;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>好了，一切就妥妥的了。经过一系列的操作之后我们可以看到：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/cccjiangshi.png" alt=""><br>类似的错误，然后可以看到如下的错误时候的信息<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/dddjiangshi.png" alt=""></p>
+<p>好了，接着让我们开启full on Zombie Mode吧。使用Zombie来启动我们的应用，按照同样的操作，我们可以看到crash的时候会出现一个小的紫色旗子，上面的信息告诉我们，明显是一个消息发给一个已经被干掉的对象。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/c0a9281b6f3cdd9851ddfc36fc7386ff.png" alt=""></p>
+<p>我们可以点击Zombie这条额外信息的右边的小箭头，可以看到如下的信息</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/c69b4152c196a4dc0ca69b129cab5024.png" alt=""></p>
+<p>这里我们可以看到有AutoRelease指向了我们的Zombie project，我们点击进入可以看到：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/6cff1dfd0eeb63447c420914c922d060.png" alt=""></p>
+<p>这里的lastString是一个AutoRelease的变量，而_lastString是指向这个字符串的指针，所以当被自动释放的时候，_lastString就指向了一个null，从而就变成了我们最早看到的那个错误。</p>
+<p>至此，我们其实只要将lastString手动的保留一下retain，这个程序就不会再crash了。不过这个程序的确还是存在很多的内存泄漏，作为之后的案例还是很不错的。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[移动测试人员的未来：测试开发技术的融合]]></title>
+      <url>http://yoursite.com/2016/11/17/test-future/</url>
+      <content type="html"><![CDATA[<p>原链接：<a href="http://www.infoq.com/cn/articles/mobile-testing-future" target="_blank" rel="external">http://www.infoq.com/cn/articles/mobile-testing-future</a></p>
+<p>作者：陈晔</p>
+<p>首先说明，测试包括很多领域，这次谈测试的未来，我只谈移动互联网测试的未来。这些年我和很多公司的同学都做过交流，经过了长时间的交流，基本上对现状有一个清楚的了解，这里就大胆的对未来进行一个预测。</p>
+<p>另外我还想说，测试行业还是一个不成熟的行业，学术界和工业界都存在着大量看不清客观事实的人，同样的也存在大量的扯淡的人，本篇文章希望大家都能够认清楚现在的局势，以便更好的认清方向去学习，从而将行业整体推向一个正确的道路上。</p>
+<h2 id="过去：从极易到极难"><a href="#过去：从极易到极难" class="headerlink" title="过去：从极易到极难"></a>过去：从极易到极难</h2><p>要预测未来，我们首先必须对过去和现状有一个清晰的了解，所以，下面首先介绍一下移动测试过去是什么样的。</p>
+<p>我自己是从09年底开始接触Android无线应用的功能测试，那么就从那个时间开始说起吧。</p>
+<p>09年到11年底属于移动互联网测试在中国的第一个阶段，那个阶段几乎网络上除了Android、iOS的官方文档，不存在其它任何相关的测试技术博客或者文档，这对当初接触这个行业的我们是一个非常大的挑战。</p>
+<p>对于一个未知的领域，为了保证产品质量，测试必然是从功能方面切入进行。不过好在那个时期的App大多都是纯Native的逻辑，并不像现在那么的复杂。但由于开发整体技术的不成熟以及硬件上不充分的支持，我们最常见的其实就是OOM（Out Of Memory），那个时期真的算是习以为常了。</p>
+<p>09年到11年的时候，整个行业的大部分互联网公司都感觉到了移动互联网的到来，这个时候，很多大企业也觉得应该开始储备移动团队和技术基础了，所以开始大范围招人。</p>
+<p>初创企业招入的测试肯定是One Man One Team，一个人就相当于一个团队，而大公司的话，会将自己公司内以往做服务端测试，或者Web测试经验丰富的人，拉过来做移动测试团队的leader，然后开始招兵买马。</p>
+<p>但无论是哪一类公司，测试工作肯定集中在功能测试用例的设计、执行测试用例上，而且非常的累。所以当时如果你会或者说掌握Android Monkey测试以及iOS的Monkey测试的话，那么已经是神一样的人物了，很多公司会争先恐后的抢着要的。（这里我不得不提一句，我面试了那么多的人，大部分人就是知道基础的命令，也不知道Monkey执行的策略包括实现，这些人就不要说掌握或者熟练了。）</p>
+<p>在移动互联网早期，功能测试就被放在了一个很低的位置，直到现在依然没有什么一个很好的改观。</p>
+<p>然后过了快2年，各个公司发现，移动互联网不如自己设想中的赚钱，反而烧钱很快。于是11年下半年部分公司就开始裁员了，而首当其冲的就是测试工程师。在这个阶段中，几乎所有公司都不知道自己要招什么样的人，JD（岗位描述）都会很模糊，会写上要移动互联网测试经验，但不知道具体要什么经验。整整2年就处于这样一个阶段，我称之为移动测试第一阶段。</p>
+<p>接着12年开始到13年底基本上又是两年，进入了第二阶段。</p>
+<p>这个阶段，移动互联网的项目迭代周期也基本定型了，1～2月内一次大迭代，小版本可能每天都有。此时的公司对移动测试的要求也开始具体化——当然，中国是一个跟风严重的国家，比如当初BAT或者各个大公司写出来具体的测试JD，行业的其它公司纷纷开始抄袭，所以这阶段的移动测试的要求基本是从BAT和大公司出来的。</p>
+<p>12年开始，行业对测试人员的招聘要求来了一个180度的转变，Robotium，Monkey，Monkeyrunner，Instrumentation，Objective-C，Java，Python等各种详细的要求接踵而来，整个12年的面试会给测试人员一个感觉———面试测试岗位比面试一个CTO岗位都要累。记得某些公司在面试测试人员之前，首先先要笔试，做各种卷子，包括软件工程，测试，算法，代码，智力题等，从我看来简直变态的可以。</p>
+<p>另一方面，移动互联网的产品本身从Native开始慢慢的转变成部分Native，部分WebView。Native主要用来实现一些类似于设置、本地界面框架的功能，而WebView更多的会做一些活动界面、广告投放的功能。之后Hybrid混合式应用就变成了移动互联网应用的主流实现方式。测试工作也从以往的纯功能性测试，增加到现在的自动化测试、持续集成、碎片化测试等等。移动测试的技术在这段时间也得到了非常大的进步和提升。</p>
+<p>其实在这两年里，还有一个事情让所有人都感觉到非常大的变化，那就是开源的测试技术越来越多。现在很多刚进入移动互联网的测试人会发现单是UI自动化测试就会有几十个框架，根本就不知道选什么。</p>
+<h2 id="现状：业务与工具无法兼得"><a href="#现状：业务与工具无法兼得" class="headerlink" title="现状：业务与工具无法兼得"></a>现状：业务与工具无法兼得</h2><p>最近的一年又有了什么变化呢？</p>
+<p>从我了解的情况看，各个公司的关注点慢慢从功能测试转到专项测试，又从以往单纯去做UI自动化框架的开发发展到了测试平台化，发展到了线上监控。</p>
+<p>前几年，行业大部分公司都在大量招聘业务测试人员，以及所谓的自动化测试工程师。在某些大公司里，整个测试团队分成两部分—————业务团队和工具团队（这里不得不吐槽，其实实际情况是工具组的大部分所谓的测试开发工程师其实就是开发，并没有太多测试的积累）。从2011年开始，百度等公司就开始陆续这样去分团队工作，几年下来的确有着不错的积累，比如各个公司属于自己的框架和平台都搭建起来了，但这样的分工就如双刃剑，让我来和大家说下另外一面吧。</p>
+<p>第一点相信很多人心里也都知道，也就是两个组总是不能非常融洽的合作，总有互相的抱怨。所谓一个巴掌拍不响，双方都存在问题：</p>
+<ul>
+<li>业务方的同学抱怨工具组做的工具不落地，不能触及到业务功能测试的痛点</li>
+<li>工具方的同学不停的输出工具，更多的从架构层代码层去改进工具，却忽略了业务的实际真正的用途</li>
+<li>业务方和工具方的同学互相不服对方，这点很实际。业务同学大多拼体力，工具方大多拼技术，两者薪资会有一定的差别，公司的重视程度也会有一定的差异，这其中不见得一定哪方好哪方不好，得看公司。</li>
+<li>工具组的同学难过的一点就是他们大多并没有自己实际的KPI，更多的是看多少能在业务方落地，也就是说KPI其实是依附于业务方，那么合作就变的尤其重要，但从上面的现状我们看得出来这并非易事。</li>
+</ul>
+<p>第二点可能很多人就未必知道了。在移动互联网，工具组的同学无非做两样东西————二次开发自动化测试框架和测试平台（兼容性，自动化，监控等）。先说框架这个东西，如果仅仅是API层面的框架，那么的确能够长期有效的使用下去。但移动互联网中工具组大多做的是什么类型的框架呢？你猜对了，正是UIAutomation Framework，过程很黄很暴力，我就不多说了，我们来说结果吧。结果就是大多数业务方用着也不是很爽，所以不停的给工具组提需求，而工具组服务的不止一个业务方，为了KPI只能不停的去接需求，加班修改，最后不仅没有满足业务方，工具组团队先跪了，原因是需求根本来不及满足，Bug也根本就修不完，不停的恶性循环。</p>
+<p>所以说，经过这段时间之后，行业里的公司在功能测试上基本都有了一定的积累，然后开始关注应用的性能，因为性能直接关系到用户体验。</p>
+<p>同时，行业也意识到功能测试和自动化应该是测试人员的基本能力，而不是一个加分项。</p>
+<p>所以到了14年，其实很少看到再有公司要招单纯的自动化测试工程师了，就算有，招入进去的也会承担更多的职责。虽然我很难确认这到底是不是一个进步，但是国内测试行业之前一直很混乱，伸手党横行，大多数人属于自己根本不能自理的状态，所以从这个角度来看，整个行业的技术能力要求提升，算是一个非常不错的趋势了。关于测试行业到底有哪一些捣乱的人，可以移步测试行业感谢有你。</p>
+<p>行业现状也能说明这种情况，我能够透露的是，蚂蚁金服从title上面来讲的话，已经不存在“测试工程师”了，全部是“测试开发工程师”，这其实隐约的在暗示点了什么。今年我去了360、百度、JD、OneAPM等公司，同时也和手Q、赶集等同学有了深入的交流。交流下来来看，大家也都隐约的有一种转型。</p>
+<h2 id="未来：找出问题还不够，要定位问题"><a href="#未来：找出问题还不够，要定位问题" class="headerlink" title="未来：找出问题还不够，要定位问题"></a>未来：找出问题还不够，要定位问题</h2><p>了解了移动测试的过去和现状，现在可以大胆的预测未来了，不过，这里也仅仅是未来三年内的情况。</p>
+<p>首先，测试人员肯定是朝着全栈的方向去发展了，这点毫无疑问。而功能（业务）测试，专项测试，自动化测试等都会变成一个测试人员基本的能力，而非加分项。</p>
+<p>而随着网商的发展，各类互联网＋金融的崛起，移动安全的测试将会变成专项测试之后的一个新的关注点。</p>
+<p>有些人可能会担心随着第三方测试服务流行，测试工程师的前途在哪，我想说，测试这个岗位和测试这个工作在移动互联网不会消亡，但综合能力的要求提升很多，将来不会再有单纯的业务测试，也不会再有单纯的自动化测试，以后测试将全部是测试开发工程师，这些人可以快速的去适应各种需求，并且能够通过业务和技术的双向分析从而定位真正所在的问题。</p>
+<p>测试人员自我能力的提升，也不再是单纯的某一方面技术，而是这些技术如何真正的落地，以及怎么结合自己的业务，以及产品的实现框架去排查和定位问题，最终解决问题或者优化产品性能。</p>
+<p>与此同时，开发工程师也会慢慢的被要求承担一部分测试工作（产品自测），不仅能让开发工程师更深入的了解业务，而且本来我们就需要自己去吃自己的狗食（Dog Food）。</p>
+<p>举个例子，随着React Native和Html5的发展，很多公司为了满足应用的需求，会开发私有的RCT和WebView容器。同时，很多业务复杂的公司的客户端，背后对接的不仅仅是一个服务，更多的是服务群。那么这个时候问题就出现了：</p>
+<p>我们发现了一个客户端很卡，或者有某些安全的风险，那么，我们首先需要去从业务角度分析，可能是哪些业务链路上出现问题，接着我们需要去将被测产品拆开，一个一个排查和定位问题。比如</p>
+<ul>
+<li>Native Activity View启动消耗</li>
+<li>RCT转换到Natvie控件的消耗</li>
+<li>WebView自定义容器的消耗</li>
+<li>Html中的CSS，JS，PNG等流量和时间的消耗</li>
+<li>Native业务代码调用RPC，http请求的方法的消耗</li>
+<li>本地请求到得到返回的时间消耗</li>
+<li>数据交互的Json结构是否复杂，json解析的消耗</li>
+<li>本地业务逻辑是否编写恰当</li>
+<li>客户端在智能机上的界面绘制的消耗</li>
+<li>整个架构View是否存在重复绘制</li>
+<li>服务群中互相交互以及透传的逻辑是否恰当</li>
+<li>服务群中的系统超时机制是否恰当</li>
+<li>服务群中每个系统的消耗</li>
+</ul>
+<p>我们会发现，其实我们并不能一下子就能够找到问题在什么地方，而是需要对业务和被测应用技术了解的情况下，去慢慢排除哪些地方没有问题，从而最终定位问题所在。此时的你光有技术，或者你光懂业务，都无法去完成这样一个工作。测试人员很大的一部分价值会体现在这个地方。</p>
+<p>也许看到这里，很多测试同学就要跳起来了，觉得要求怎么那么高，感觉就在扯淡，肯定不是这样。我想说的是：</p>
+<p>第一，目前测试圈很多人以为自己的圈子就是这个行业的全部，但其实测试的内涵比他们想象的要大的多。</p>
+<p>第二，很多人被培训忽悠（什么自称xxx培训第一），觉得单纯的学习技术就可以提升价值，你们自己想想看，测试真的只是一个纯技术岗位吗？</p>
+<p>第三，国内测试原本长时间存活在低要求环境中，导致很多人已经不知道正常的要求是什么了，当行业开始以正确的标准来要求的时候，就感觉无法接受。</p>
+<p>大家只要抛弃成见，自然知道谁对谁错，也会知道应该怎么去面对未来，只要勇于承认，并且快速学习，未来的测试仍然有你的一席之地。</p>
+<p>说到这里，很多测试管理者可能会问，管理者的出路在何方。</p>
+<p>其实对于管理者而言，现在应该已经有所感受了，就是纯管理角色在移动互联网很难存活下去。原因有两个，其一，测试本身的技术定位要求，以及技术的更新速度会倒逼着管理者需要有一定的技术基础，包括对一些新技术有一定的了解，否则如何将合适的人安排在合适的位置上呢？又如何去服众呢？其二，未来的转变不仅仅是测试技术和业务的融合，更多的是就业人员从85后转变成了90后以及95后。以往很多管理者觉得给员工一些钱，一些股票，这些员工就会默默无闻的为公司卖命，为项目去加班。但是随着时代的发展，现在很多的年轻人看重事情变成：工作是否开心以及是否对自己有提升。他们不是不在乎钱，但他们会变的更有自己的想法和追求。面临这样一群人，管理者本身的管理方式也需要有一定的改变，同时需要从公司的流程，业务发展，个人规划，技术发展等各个角度去给出一些引导。</p>
+<p>差不多以上就是我想表达的观点了，也许很多人已经看到了变化，也许很多人没有，但是无论如何，变化总在快速的，不以任何人的意志而转移的进行下去。最后，如何想了解更多移动测试发展的话，可以关注我写的书《大话移动App测试2.0——技术篇》，会在明年上半年出版，这会是全新的一本书。粗略的目录可见： <strong>大话移动App测试2.0一书</strong>。其中我也会将这次我全程参与钱包9.0研发过程中的一些经历和技术写在里面。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[iOS Core Animation (II)]]></title>
+      <url>http://yoursite.com/2016/11/16/CoreAnimationII/</url>
+      <content type="html"><![CDATA[<p>之前是有聊到图层和视图的关系，Core Animation还有其他很多的方式可以用</p>
+<p>本文例子和描述引用了iOS-Core-Animation-Advanced-Techniques</p>
+<h2 id="CAShapeLayer"><a href="#CAShapeLayer" class="headerlink" title="CAShapeLayer"></a>CAShapeLayer</h2><p>CAShapeLayer是一个通过矢量图形而不是bitmap来绘制的图层子类。你指定诸如颜色和线宽等属性，用CGPath来定义想要绘制的图形，最后CAShapeLayer就自动渲染出来了。当然，你也可以用Core Graphics直接向原始的CALyer的内容中绘制一个路径，相比直下，使用CAShapeLayer有以下一些优点：</p>
+<ul>
+<li>渲染快速。CAShapeLayer使用了硬件加速，绘制同一图形会比用Core Graphics快很多。</li>
+<li>高效使用内存。一个CAShapeLayer不需要像普通CALayer一样创建一个寄宿图形，所以无论有多大，都不会占用太多的内存。</li>
+<li>不会被图层边界剪裁掉。一个CAShapeLayer可以在边界之外绘制。你的图层路径不会像在使用Core Graphics的普通CALayer一样被剪裁掉（如我们在第二章所见）。</li>
+<li>不会出现像素化。当你给CAShapeLayer做3D变换时，它不像一个有寄宿图的普通图层一样变得像素化。</li>
+</ul>
+<p>GCPath可以绘制一个简单的图像，这个图像并非是一种直线，也不一定要是一个闭合的图。用一个CAShapeLayer渲染一个简单的火柴人。CAShapeLayer属性是CGPathRef类型，但是我们用UIBezierPath帮助类创建了图层路径，这样我们就不用考虑人工释放CGPath了</p>
+<p>代码见下图：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/49c021ee5368939c69f2dd7cbf5d9751.png" alt="core1"></p>
+<p>我们看到如下的效果：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/3c037c75d4ca07cf02114bd1fe76ec3e.png" alt="core2"></p>
+<h2 id="instruments"><a href="#instruments" class="headerlink" title="instruments"></a>instruments</h2><p>我们除了使用Core Animation提供的一些方法以外，我们也可以在instrments中去使用Core Animation来进行性能的调优。<br>使用了Core Animation提供的例子。我们看到了一个list的demo，默认是带有阴影的图片和文字。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/205b7213c80bd36e4b1dfc818424b3da.gif" alt="core3"></p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/f36ed3d642dc7f0f00d7b4a32bca9037.gif" alt="core3"></p>
+<p>然后我们可以去掉图片和文字的阴影。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">//   cell.imageView.layer.shadowOffset = CGSizeMake(0, 5);</span></div><div class="line"> <span class="comment">//   cell.imageView.layer.shadowOpacity = 0.75;</span></div><div class="line"><span class="comment">//    cell.textLabel.layer.shadowOffset = CGSizeMake(0, 2);</span></div><div class="line"> <span class="comment">//   cell.textLabel.layer.shadowOpacity = 0.5;</span></div></pre></td></tr></table></figure>
+<p>然后我们再重新测试一遍。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/aaaa49c1fcf36fb68c607b.gif" alt="core3"></p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/6__11__2015_15_27.gif" alt="core"></p>
+<p><code>iOS-Core-Animation-Advanced-Techniques</code>是非常好的一个docs，不过测试讲的还是不是很多，更多的是原理的解释和介绍了常用的方法。感谢iOS的文档</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Swift REPL]]></title>
+      <url>http://yoursite.com/2016/11/16/SwiftREPL/</url>
+      <content type="html"><![CDATA[<h2 id="什么是REPL"><a href="#什么是REPL" class="headerlink" title="什么是REPL"></a>什么是REPL</h2><p>当初最早升级Xcode6.1的时候就在Command Line Tool中增加了这个特性来辅助Swift开发，全称叫做Read Eval Print Loop。其实和我们之前提到的groovysh和python是一样的一个特性，属于交互性模式，但是swift这个REPL使用下来却是体验最好的一个。可惜当初在OSX 10.9的版本时候提示需要10.10才可以使用。所以现在我们在OS X Yosemite下就可以正常使用</p>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p>我们在终端中输入xcrun swift即可唤起这个交互模式</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/49686ff843ee6519e2c2f2d09e4cb123.gif" alt="swift1"></p>
+<p>我们来写个简单的例子来看看REPL的一些反馈和效果</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/5129723ab792cdc842fd792bc200fdf4.gif" alt="swift2"></p>
+<p>多行的例子，这里使用了隐性定义字符串的方式。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/d0a906e773eba61e117d4081adeca620.gif" alt="swift3"></p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/111111.gif" alt="swift4"></p>
+<p>另外我们如果定义一个方法的话，这个也是我觉得体验很好的一点，如下</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/222222.gif" alt="swift5"></p>
+<p>另外如果需要使用上面写过的方法或者重新要调试的话，可以通过上下进行整个方法每一行的调用。如下</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/333333.gif" alt="swift6"></p>
+<h2 id="更多REPL的快捷键"><a href="#更多REPL的快捷键" class="headerlink" title="更多REPL的快捷键"></a>更多REPL的快捷键</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">Arrow Keys        Move cursor left/right/up/down</div><div class="line">Control+F        Move cursor right one character, same as right arrow</div><div class="line">Control+B        Move cursor left one character, same as left arrow</div><div class="line">Control+N        Move cursor to end of next line, same as down arrow</div><div class="line">Control+P        Move cursor to end of prior line, same as up arrow</div><div class="line">Control+D        Delete the character under the cursor</div><div class="line">Option+Left        Move cursor to start of prior word</div><div class="line">Option+Right    Move cursor to start of next word</div><div class="line">Control+A        Move cursor to start of current line</div><div class="line">Control+E        Move cursor to end of current line</div><div class="line">Delete            Delete the character to the left of the cursor</div><div class="line">Esc &lt;            Move cursor to start of first line</div><div class="line">Esc &gt;            Move cursor to end of last line</div></pre></td></tr></table></figure>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[我的东西是我的。我给你，你可以拿着。我不给，你不该怨我。]]></title>
       <url>http://yoursite.com/2016/11/16/mineismine/</url>
       <content type="html"><![CDATA[<p>今天我在微信上面转发了一条信息引来了很多的赞。<br>“我的东西是我的。我给你，你可以拿着，我不给，你不该怨我，更不能抢，对你好是珍惜，而不是觉得理所当然。太多人不明白这个道理了”</p>

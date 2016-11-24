@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-11-16T02:27:40.000Z</updated>
+  <updated>2016-11-24T03:26:41.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,398 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>做 iOS 安全测试之前你应该知道的工具 (一)</title>
+    <link href="http://yoursite.com/2016/11/24/iOS-anquan-1/"/>
+    <id>http://yoursite.com/2016/11/24/iOS-anquan-1/</id>
+    <published>2016-11-24T02:37:26.000Z</published>
+    <updated>2016-11-24T03:26:41.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>顺便提一句，iOS的国内安全书我也是遍历了一遍，简直是shit，我只能遍历国外的去了，国内的全部放弃。</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前言还是让我吐槽爽一把吧。我已经碰见很多人上来就问我，用什么工具啊，有没有扫一下就出来的啊，我真的无力吐槽了。我只想说，那你们就不要学习了，也不要上学，更不要上班，就到处讨讨饭不是蛮好的么？多省力啊。专项已经不是那种用工具看一下，扫一下就能够出现结果的了，安全就更不要说了。<strong>就一点，要结合产品的业务特性以及技术实现细节、架构等等才能够分析出来的，不要指望工具，否则你就不要做测试了，做不长久的</strong></p>
+<h2 id="idb"><a href="#idb" class="headerlink" title="idb"></a>idb</h2><p>第一个来介绍的就是idb，idb可以说是我用过到现在最最友好的了，因为有GUI界面。不过安全貌似不是那么的方便，大家自己去Google吧。我从来不认为小白就需要手把手。谁都是小白，就看谁会Google，就这句话。</p>
+<p>首先我们需要在终端中输入idb，只要安装顺利的话，大家会看到如下界面：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/0f53da5a2685d82b0e170f51f75e74f9.png" alt=""></p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/4b2fd9bf5e84615ca9339b4ed48ae7ed.png" alt=""></p>
+<p>是不是觉得就很亲民，我们通过usb或者ssh连接上之后就可以开始使用idb的功能了。（ssh默认密码是alpine）我这里由于之前测试的时候环境没有了，所以我只能用之前的老图了，大家见谅。首先来看下这个。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/4cbe5aecc6ec0a463b9cc53469d92159.jpg" alt=""><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/e85a196caee0ef9345da14980f1439fc.jpg" alt=""></p>
+<p>这里拿点评作为案例，大家可以看到app在device中的基础信息都是已经显示了出来。当然这才是开始。<br>如下图，我们会看到一个url header的list。这个意思我解释一下，其实就是说现在应用中很多都是通过scheme唤起容器或者Activity的，又或者直接通过url打开某些web。那么这里就是说在这个应用中会调用到的url的header，比如dianping://xxxx这样一类就是其中的调用。通过idb可以直接去mock这些url。如下图：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/902f82dedebca97158dad9181741fe15.jpg" alt=""></p>
+<p>再来看这个，类似于sandbox，从图中我们也可以看出来ipa沙箱中的目录结构以及每个文件中的数据结构，当然双击这些数据结构中的数据还是能够看到detail的，大部分是不会加密的。包括字段名字，长度等。这些信息也是能够给予我们很大的帮助<br>Android可以反编译，iOS也是一样的。idb可以说集成了iOS反编译的一些工具让我们直接可以对ipa进行反编译，不过这里都是.h，并没有.m，我估计应该是调用工具的关系，理论上都是可以反编译的。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/fdde270dcd537c6aeda1c0b93f4bae07.jpg" alt=""></p>
+<p>idb还能够截图，抓包等，简直就是多功能一体机啊。我这里就不多说了，大家自己去体会吧。</p>
+<h2 id="otool"><a href="#otool" class="headerlink" title="otool"></a>otool</h2><p>好吧，我承认我low了，我以为这是一个要安装的工具，没有想到是mac自带的。</p>
+<p>官方描述</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">The   otool  command  displays  specified  parts  of  object  files  or</div><div class="line">      libraries.  If the -m option is not used the file arguments may  be  of</div><div class="line">      the  form  libx.a(foo.o), to request information about only that object</div><div class="line">      file and not the entire library.   (Typically  <span class="keyword">this</span>  argument  must  be</div><div class="line">      quoted,  ``libx.a(foo.o)<span class="string">''</span>,  to  get  it past the shell.)  Otool under-</div><div class="line">      stands both Mach-O (Mach object)  files  and  universal  file  formats.</div><div class="line">      <span class="function">Otool can display the specified information in either its <span class="title">raw</span> <span class="params">(numeric)</span></span></div><div class="line">      <span class="title">form</span> <span class="params">(without the -v flag)</span>, or in a symbolic form using macro names  of</div><div class="line">      constants, etc. <span class="params">(with the -v or -V flag)</span>.</div></pre></td></tr></table></figure>
+<p>输入otool我们可以看到很多的参数，如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">Usage: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/otool [-arch arch_type] [-fahlLDtdorSTMRIHGvVcXmqQjCP] [-mcpu=arg] [--version] &lt;object file&gt; ...</div><div class="line">    -f print the fat headers</div><div class="line">    -a print the archive header</div><div class="line">    -h print the mach header</div><div class="line">    -l print the load commands</div><div class="line">    -L print shared libraries used</div><div class="line">    -D print shared library id name</div><div class="line">    -t print the text section (disassemble with -v)</div><div class="line">    -p &lt;routine name&gt;  start dissassemble from routine name</div><div class="line">    -s &lt;segname&gt; &lt;sectname&gt; print contents of section</div><div class="line">    -d print the data section</div><div class="line">    -o print the Objective-C segment</div><div class="line">    -r print the relocation entries</div><div class="line">    -S print the table of contents of a library</div><div class="line">    -T print the table of contents of a dynamic shared library</div><div class="line">    -M print the module table of a dynamic shared library</div><div class="line">    -R print the reference table of a dynamic shared library</div><div class="line">    -I print the indirect symbol table</div><div class="line">    -H print the two-level hints table</div><div class="line">    -G print the data in code table</div><div class="line">    -v print verbosely (symbolically) when possible</div><div class="line">    -V print disassembled operands symbolically</div><div class="line">    -c print argument strings of a core file</div><div class="line">    -X print no leading addresses or headers</div><div class="line">    -m don't use archive(member) syntax</div><div class="line">    -B force Thumb disassembly (ARM objects only)</div><div class="line">    -q use llvm's disassembler (the default)</div><div class="line">    -Q use otool(1)'s disassembler</div><div class="line">    -mcpu=arg use `arg' as the cpu for disassembly</div><div class="line">    -j print opcode bytes</div><div class="line">    -P print the info plist section as strings</div><div class="line">    -C print linker optimization hints</div><div class="line">    --version print the version of /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/otool</div></pre></td></tr></table></figure>
+<p>这里不难看出，原来是xcode自带的commond tool。首先我们来看下怎么用，开始其实我并不知道这个命令后面到底跟的是什么文件类型。然后otool一直提示需要提供object file，最后我才明白这个object file是个什么东西，这里以JD的ipa为例。</p>
+<p>如果是debug签名的.app那么我们右键之后可以看到包的展开，但线上下来的.app默认是没有这个选项的。我们需要先解压缩之后看到如下的界面，这个.app是可以有包展开的。</p>
+<p>展开之后我们可以看到很多文件，需要找到如下高亮的文件，这个文件就是otool可以识别的object file，这点大家要注意。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/f1b1f17efd18638562259fccbcc1dc9f.png" alt=""></p>
+<p>找到了这个可以执行的文件之后，我们就开始落地尝试了。首先我们输入</p>
+<p><code>otool -L ~/Payload/JD4iPhone.app/JD4iPhone</code></p>
+<p>这条命令可以让我们知道这个ipa中引用了哪些库并且是什么版本的，结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">/usr/lib/libstdc++.6.dylib (compatibility version 7.0.0, current version 104.2.0)</div><div class="line">/System/Library/Frameworks/LocalAuthentication.framework/LocalAuthentication (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/CoreData.framework/CoreData (compatibility version 1.0.0, current version 519.15.0)</div><div class="line">/System/Library/Frameworks/AdSupport.framework/AdSupport (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/Foundation.framework/Foundation (compatibility version 300.0.0, current version 1144.17.0)</div><div class="line">/System/Library/Frameworks/CoreAudio.framework/CoreAudio (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/usr/lib/libicucore.A.dylib (compatibility version 1.0.0, current version 53.1.0)</div><div class="line">/System/Library/Frameworks/CoreTelephony.framework/CoreTelephony (compatibility version 1.0.0, current version 2651.0.0)</div><div class="line">/System/Library/Frameworks/Accelerate.framework/Accelerate (compatibility version 1.0.0, current version 4.0.0)</div><div class="line">/System/Library/Frameworks/CoreImage.framework/CoreImage (compatibility version 1.0.0, current version 4.0.0)</div><div class="line">/System/Library/Frameworks/CoreMotion.framework/CoreMotion (compatibility version 1.0.0, current version 1756.0.20)</div><div class="line">/System/Library/Frameworks/AssetsLibrary.framework/AssetsLibrary (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/AddressBookUI.framework/AddressBookUI (compatibility version 1.0.0, current version 33.0.0)</div><div class="line">/System/Library/Frameworks/AddressBook.framework/AddressBook (compatibility version 1.0.0, current version 30.0.0)</div><div class="line">/System/Library/Frameworks/CoreLocation.framework/CoreLocation (compatibility version 1.0.0, current version 1756.0.20)</div><div class="line">/System/Library/Frameworks/MessageUI.framework/MessageUI (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/usr/lib/libiconv.2.dylib (compatibility version 7.0.0, current version 7.0.0)</div><div class="line">/System/Library/Frameworks/CoreText.framework/CoreText (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/ImageIO.framework/ImageIO (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/UIKit.framework/UIKit (compatibility version 1.0.0, current version 3347.44.0)</div><div class="line">/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics (compatibility version 64.0.0, current version 600.0.0)</div><div class="line">/System/Library/Frameworks/QuartzCore.framework/QuartzCore (compatibility version 1.2.0, current version 1.11.0)</div><div class="line">/usr/lib/libsqlite3.dylib (compatibility version 9.0.0, current version 169.2.0)</div><div class="line">/System/Library/Frameworks/SystemConfiguration.framework/SystemConfiguration (compatibility version 1.0.0, current version 700.20.6)</div><div class="line">/System/Library/Frameworks/CFNetwork.framework/CFNetwork (compatibility version 1.0.0, current version 711.3.18)</div><div class="line">/usr/lib/libz.1.dylib (compatibility version 1.0.0, current version 1.2.5)</div><div class="line">/usr/lib/libxml2.2.dylib (compatibility version 10.0.0, current version 10.9.0)</div><div class="line">/System/Library/Frameworks/Security.framework/Security (compatibility version 1.0.0, current version 0.0.0)</div><div class="line">/System/Library/Frameworks/MobileCoreServices.framework/MobileCoreServices (compatibility version 1.0.0, current version 66.0.0)</div><div class="line">/System/Library/Frameworks/OpenGLES.framework/OpenGLES (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox (compatibility version 1.0.0, current version 492.0.0)</div><div class="line">/System/Library/Frameworks/OpenAL.framework/OpenAL (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/AVFoundation.framework/AVFoundation (compatibility version 1.0.0, current version 2.0.0)</div><div class="line">/System/Library/Frameworks/CoreMedia.framework/CoreMedia (compatibility version 1.0.0, current version 1.0.0)</div><div class="line">/System/Library/Frameworks/CoreVideo.framework/CoreVideo (compatibility version 1.2.0, current version 1.8.0)</div><div class="line">/System/Library/Frameworks/MapKit.framework/MapKit (compatibility version 1.0.0, current version 14.0.0)</div><div class="line">/usr/lib/libobjc.A.dylib (compatibility version 1.0.0, current version 228.0.0)</div><div class="line">/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1214.5.1)</div><div class="line">/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation (compatibility version 150.0.0, current version 1144.17.0)</div></pre></td></tr></table></figure>
+<p>当然，这些是不够的，我们继续来看一下这条命令。</p>
+<p><code>otool -v -arch armv7 -s __TEXT __cstring ~/Payload/JD4iPhone.app/JD4iPhone &gt; ipa_Str.txt</code></p>
+<p>我们打开txt之后可以看到如下的内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">0187be4a  addNewAddress</div><div class="line">0187be58  addressDefault</div><div class="line">0187be67  kShowPickSitesMap</div><div class="line">0187be79  kPickViewWillApperNotifaction</div><div class="line">0187be97  kPickViewWillDisapperNotifaction</div><div class="line">0187beb8  kOrderPaymentTypeChangedNotification</div><div class="line">0187bedd  OrderPickSieTypeChangedNotification</div><div class="line">0187bf01  kToOrderPickSieTypeVcNotification</div><div class="line">0187bf23  kSelectedPickSiteNotification</div><div class="line">0187bf41  PayAndShipmentTypeViewController</div><div class="line">0187bf62  DeliveryPayType_Confirm</div><div class="line">0187bf7a  complatePayAndShiment</div><div class="line">0187bf90  OrderInfoViewController</div><div class="line">0187bfa8  pickSites</div><div class="line">0187bfb2  kUpdatePickSiteLocation</div><div class="line">0187bfca  paymentType</div></pre></td></tr></table></figure>
+<p>这其实是会将ipa中在代码中hard code或者配置文件中的字符串都拉出来，一般有几万行，这里的字符串其实就如同Android中我们查看logcat中有没有敏感词是一样的，这里我们也可以去看看在代码中有没有什么私钥或者其他的敏感信息。我们可以通过一些小技巧来做过滤，比如我们在sublime text中find的时候打开正则匹配，使用正则表达式之后可以简单的找到一些符合我们规律的字符串</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;顺便提一句，iOS的国内安全书我也是遍历了一遍，简直是shit，我只能遍历国外的去了，国内的全部放弃。&lt;/p&gt;
+&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;前言还是让我吐槽爽一把
+    
+    </summary>
+    
+    
+      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>测试技术无用论</title>
+    <link href="http://yoursite.com/2016/11/22/testnouse/"/>
+    <id>http://yoursite.com/2016/11/22/testnouse/</id>
+    <published>2016-11-22T08:21:26.000Z</published>
+    <updated>2016-11-22T09:36:02.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>我先声明，有没有用看你自己，任何事情都是有上下文的，不是100%的。请勿断章取义。文中所提到的观点也许你现在不同意，但是相信未来你可能就会同意。不过无论你同意不同意，在我们没有能力改变这一切之前，我们也只能先follow，慢慢的从自己开始改变，不是么？</strong></p>
+<h2 id="对话"><a href="#对话" class="headerlink" title="对话"></a>对话</h2><p>“你思考问题，看问题，做计划要有高度”<br>“我们要有idea，技术不是问题，技术实现的人这个世界一抓一大把”<br>“放眼行业高层，有多少是做技术做上去的？就算做上去的，有多少能够混得风生水起的？”</p>
+<p>也许我们在行业的日常中随处都可以听到这样的话语，也许很多人还在努力学习技术，也不关心那么多七七八八的事儿。但是现在行业就是这样的。</p>
+<h2 id="技术无用论"><a href="#技术无用论" class="headerlink" title="技术无用论"></a>技术无用论</h2><p>我其实每次从客观的角度来看“众生”的时候，我就觉得很可悲。大多数的高层（level高，薪水高）有生活，有钱，又不用跟技术；而大多数的底层劳动人民每天学技术学的很苦，却又很难有机会往上走，甚至很少机会能够进入一个心仪的公司和环境，这种对比鲜明的景象我已不想再看下去了。</p>
+<p>我其实想了下现实与我构思的理想世界还是有差距的。</p>
+<h2 id="理想世界"><a href="#理想世界" class="headerlink" title="理想世界"></a>理想世界</h2><table>
+<thead>
+<tr>
+<th>LEVEL</th>
+<th style="text-align:center">练级内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-100</td>
+<td style="text-align:center">积累装备：xx证书、学历、实习经验</td>
+</tr>
+<tr>
+<td>0</td>
+<td style="text-align:center">毕业，都装纯洁，什么都不懂</td>
+</tr>
+<tr>
+<td>10</td>
+<td style="text-align:center">拼命学技术 or 只想不做，抱怨lv100</td>
+</tr>
+<tr>
+<td>20</td>
+<td style="text-align:center">积累背景和项目经验＋ 管理lv1+忽悠lv1+社交lv1＋马屁lv1（可选）</td>
+</tr>
+<tr>
+<td>50</td>
+<td style="text-align:center">积累背景和项目经验＋ 管理lv30+忽悠lv30+社交lv30＋马屁lv30（可选）</td>
+</tr>
+<tr>
+<td>???</td>
+<td style="text-align:center">积累背景和项目经验＋ 管理lv???+忽悠lv???+社交lv???＋马屁lv???（可选）</td>
+</tr>
+</tbody>
+</table>
+<p>所以你们也看到了，涨level和技术没有半毛钱关系。。。。但我也不能排除人家当初还是学过技术的对不对</p>
+<h2 id="现实世界"><a href="#现实世界" class="headerlink" title="现实世界"></a>现实世界</h2><table>
+<thead>
+<tr>
+<th>LEVEL</th>
+<th style="text-align:center">练级内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-100</td>
+<td style="text-align:center">积累装备：xx证书、学历、实习经验</td>
+</tr>
+<tr>
+<td>0</td>
+<td style="text-align:center">毕业，都装纯洁，什么都不懂</td>
+</tr>
+<tr>
+<td>10</td>
+<td style="text-align:center">拼命学技术 or 只想不做，抱怨lv100</td>
+</tr>
+<tr>
+<td>20</td>
+<td style="text-align:center">积累背景和项目经验＋ 管理lv1+忽悠lv1+社交lv1＋马屁lv1（可选）+技术积累lv1+持续学习lv1</td>
+</tr>
+<tr>
+<td>50</td>
+<td style="text-align:center">积累背景和项目经验＋ 管理lv30+忽悠lv30+社交lv30＋马屁lv30（可选）+技术积累lv30+持续学习lv30</td>
+</tr>
+<tr>
+<td>???</td>
+<td style="text-align:center">积累背景和项目经验＋ 管理lv???+忽悠lv???+社交lv???＋马屁lv???（可选） +技术积累lv1???+持续学习lv???</td>
+</tr>
+</tbody>
+</table>
+<p>其实在这个社会混很多是必不可少的，但是更多的需要都有技术的积累和持续学习的态度，否则实则太过不公平，不是么？</p>
+<p>测试现在行业几乎很大比例的永远都在lv10，而真正能到lv20以及往上的极少极少。也许很多人看着光鲜亮丽，但事实上也是各种政治斗争的牺牲者，只是你们不知道而已。</p>
+<h2 id="我想表达的"><a href="#我想表达的" class="headerlink" title="我想表达的"></a>我想表达的</h2><p>很多人现在学技术是一种兴趣驱动，但是能否一直坚持，一直去紧跟行业的新技术，一直做到35岁，45岁，55岁甚至更久那就是一种态度了，就是我们说的匠者。也许我们不会那么多的技能，但是如果我们能够做技术，学习技术一直坚持，一直做下去，做到一种自己能力的极致，那么我相信机会肯定会降临的。</p>
+<p>最后与大家共勉的是“所谓真正的能力和技术每个人都是通过努力所得来的，如果说真的有人有天赋，那么仅仅是他们的学习能力比一般人强，缩短了这个努力的时间罢了”。所以你没有每天坚持学习，你没有去实践，你没有去总结自己，每天都过的很舒适，在现在这个社会就算你很有天赋，那么你也永远在lv10，谢谢。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;strong&gt;我先声明，有没有用看你自己，任何事情都是有上下文的，不是100%的。请勿断章取义。文中所提到的观点也许你现在不同意，但是相信未来你可能就会同意。不过无论你同意不同意，在我们没有能力改变这一切之前，我们也只能先follow，慢慢的从自己开始改变，不是么？&lt;/s
+    
+    </summary>
+    
+    
+      <category term="other" scheme="http://yoursite.com/tags/other/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>致那些情商不高的测试</title>
+    <link href="http://yoursite.com/2016/11/22/toTesters/"/>
+    <id>http://yoursite.com/2016/11/22/toTesters/</id>
+    <published>2016-11-22T08:15:07.000Z</published>
+    <updated>2016-11-22T08:17:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>上周六在网易继2012年之后再次召开了一次很大的测试会议，这次会议在我看来质量很高。不过会后也有很多朋友来找我聊天，我之后会详细说下，正因为这些朋友找我聊的内容，我才想着我是不是回来要写这样一篇文章。不过最近真的记性不好了，所以就到现在才想起来。</p>
+<h2 id="致那些情商不高的测试"><a href="#致那些情商不高的测试" class="headerlink" title="致那些情商不高的测试"></a>致那些情商不高的测试</h2><p>这个社会不是纯纯的吧？测试行业也是一样的，哪个行业都是一样的。没有一个地方是能够让“我只要xxxxx，就能够xxxxx”这句话100%成立的。就算你说你只要自杀，也不见得能够死吧。如果连这件事情都不是100%的，我们为什么能够去认为别的事情就很100%呢？</p>
+<p>会后很多人来和我说“我觉得你三年成长简直是脱胎换骨，而我觉得自己却没有进步”，这绝对不止一个人这样和我说。因为网易的两场沙龙，我是唯一的一个两次都上去演讲的讲师。当然当他们说好这句话，其实我自然会很感兴趣的去问他们哪里觉得自己没有进步，却又哪里觉得我进步很大，因为我自己也觉得自己没有什么进步。聊完之后我大概能够明白这其中的原因。其实原本做技术是个很单纯的事情，只不过放在一个有人，有江湖的地方就不单纯了，而测试这个岗位更是佼佼者。</p>
+<p>首先我们回顾上我刚刚提出的那个假设句，这个世界上技术的牛逼的人多的是吧（牛逼到改变世界的我们就不要比了），那么我们来看看这句话——我只要技术很牛逼，就能够出人头地，能够赚很多钱，就能够做一份很好的工作，balabala。但事实呢？我们大家都知道，事实并不是这样的，但依然还是有很多人会去做这样的假设，这就是我想说的情商低的表现。</p>
+<p>然后我们再来回顾下，这个世界上本科，博士，硕士，海归的人多了去了吧，那么我们来看看这句话——我只要哪里哪里毕业，就能够随心所欲了么？大家也都知道，肯定不是这样的。但是很多人依然会去做这样的假设，这就是我说的情商低的表现。</p>
+<p>好了，到这里基本上大家也都知道那些朋友问我的大概是什么问题了。在我看来，3年我和他们的差别并不在技术上，也许技术上有差别，但是这并不是决定性因素。我在这里想说的是</p>
+<p>请你们多锻炼自己的表达能力。这事情要去做，不是去想，不是去纠结。就比如我曾经2012年的时候演讲40分钟都觉得困难，而现在可以两天讲16个小时</p>
+<p>请你们多扩展自己的视野。看看上面这些问题，哪些人会去相信，大部分是哪些没有拥有的人，比如不觉得自己技术很牛的人，比如说没有本科学历的人，他们特别愿意去相信。但是然并卵其实，最终只不过活在自己的YY中<br>请你们多接触人，活的人，不是充气娃娃。一个人的经历当然是有限的，只有接触很多人，他们的人生才能够丰富我们的经历，不是吗？</p>
+<p>请你们多去写代码，而不是去想着怎么提升写代码的水平。想是没有用的</p>
+<p>最后一点，请你们学会扬长避短，学会表现，而不是一味的去追求一个东西，比如技术。人是高等生物，不是单细胞生物，不要老是单线程。你们看看我，我每年多少事情要忙，但是学习以及公司里晋升，我哪样落下过？<br>好了，如果你们是那些将来要换工作的人，也希望在面试前看下我写的这几点，绝对不要去用我上面写的假设句，没有意义的。因为也许你单纯，也许你身边的人也单纯，也许面试你的人也单纯，但企业，社会永远不会单纯。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;上周六在网易继2012年之后再次召开了一次很大的测试会议，这次会议在我看来质量很高。不过会后也有很多朋友来找我聊天，我之后会详细说下，正因为
+    
+    </summary>
+    
+    
+      <category term="other" scheme="http://yoursite.com/tags/other/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>iOS_Zombie</title>
+    <link href="http://yoursite.com/2016/11/17/iOS-Zombie/"/>
+    <id>http://yoursite.com/2016/11/17/iOS-Zombie/</id>
+    <published>2016-11-17T01:57:58.000Z</published>
+    <updated>2016-11-17T02:10:05.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近我在看“ I am Zombie”，所以我就来看看iOS的这个工具啦，哈哈，一大群Zombies正在逼近！！！</p>
+<h2 id="什么是Zombie"><a href="#什么是Zombie" class="headerlink" title="什么是Zombie"></a>什么是Zombie</h2><p>是的，打开instruments之后其实会看到一个图标，这个图标多么让人激动啊！！哈哈</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/aaaajiangshi.png" alt=""></p>
+<p>我们顺便来看下官方文档的说法</p>
+<blockquote>
+<p>The Zombies template causes persistent memory growth because it changes your environment so that deallocated objects are never technically deallocated. This is expected behavior, but it means that aside from zombie flags and memory address histories, any other statistics provided by the Allocations instrument should be ignored. You also shouldn’t add the Leaks instrument to the Zombies template, as it will produce inaccurate results. For iOS apps, use the Zombies template with the iOS Simulator, rather than a physical device.</p>
+</blockquote>
+<p>不过我在尝试的时候其实还没有看到这段文字，所以我也是用了真机，不过卡的是一塌糊涂。我查了网上大部分的资料，有的会说Zombie不支持真机，其实就是rather than，你懂的，不过的确不建议用，本身调查的问题在这个环境上关系不大，更多的纯粹就是代码上的问题。</p>
+<p>用白话文来解释下吧，取名Zombie其实是有道理的，在iOS中我们经常会有一些对象（虽然iOS在5.0之后引入了ARC）会手动或者自动被ARC销毁掉，但是我们的程序可能并不知道对象不在了，还可能去调用它，导致了EXC_BAD_ACCESS的错误。当然，如果程序简单的话，很容易能够排查出来，但是我们项目中大多是很复杂的，排查起来就有一定的困难。这个时候就会去使用Zombie工具来做辅助。注意，在专项里面工具都是辅助的，没有一个工具是可以说你做了1，2，3，4步骤就知道问题在哪儿，几乎没有，所以专项并不是很多人想的那么简单的。开启Zombie有两种方式，一种是通过instruments来直接使用，网上都会很推荐这种做法，还有一种就是在如下设置中去运行Zombie默认就打包在app中，这种方法很不可取，因为一旦在上线之前忘记关闭这个选项的话可是毁灭性的。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/bbbjiangshi.png" alt=""></p>
+<p>简单来讲，Zombie会去取代那些已经被销毁的对象，让这些对象并不是null的存在，而是僵尸的存在。这样做的好处在于能够给予我们更多的info来定位问题，而不好的话也是显而易见的，上面官方的描述也写的很清楚，一旦开启full on Zombie mode（这个词来自于美剧I am Zombie），那么你的应用的内存会不停的飙升，因为你的对象永远都不会销毁，直到app crash。所以这里大家要注意危险性。</p>
+<h2 id="什么是ARC"><a href="#什么是ARC" class="headerlink" title="什么是ARC"></a>什么是ARC</h2><p>这其实要详细了解，大家可以自行Google，这里我就随便截图一段，科普一下<br>Automatic Reference Counting，自动引用计数，即ARC，可以说是WWDC2011和iOS5所引入的最大的变革和最激动人心的变化。ARC是新的LLVM 3.0编译器的一项特性，使用ARC，可以说一举解决了广大iOS开发者所憎恨的手动内存管理的麻烦。</p>
+<p>在工程中使用ARC非常简单：只需要像往常那样编写代码，只不过永远不写retain,release和autorelease三个关键字就好～这是ARC的基本原则。当ARC开启时，编译器将自动在代码合适的地方插入retain, release和autorelease，而作为开发者，完全不需要担心编译器会做错（除非开发者自己错用ARC了）。好了，ARC相当简单吧～到此为止，本教程结束。</p>
+<h2 id="什么是EXC-BAD-ACCESS"><a href="#什么是EXC-BAD-ACCESS" class="headerlink" title="什么是EXC_BAD_ACCESS"></a>什么是EXC_BAD_ACCESS</h2><p>90%的错误来源在于对一个已经释放的对象进行release操作。不过的确看到这个缺陷，项目一复杂，很难去定位。</p>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>所有说专项的没有案例都是耍流氓，真心觉得这是真理。<br>我千辛万苦的随便找了一个案例，然后发现启动之后就crash，我心都碎了，那么偶尔我们也要来修一次bug不是？基本上我缩小了范围，错误代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;    </div><div class="line"></div><div class="line">    <span class="comment">// Override point for customization after application launch.</span></div><div class="line"></div><div class="line">    <span class="comment">// Add the navigation controller's view to the window and display.</span></div><div class="line">    [self.window addSubview:navigationController.view];</div><div class="line"></div><div class="line">    [self.window makeKeyAndVisible];</div><div class="line"></div><div class="line">    <span class="keyword">return</span> YES;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>错误信息如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="number">2015</span>-<span class="number">09</span>-<span class="number">25</span> <span class="number">21</span>:<span class="number">32</span>:<span class="number">05.749</span> Zombie[<span class="number">24745</span>:<span class="number">854954</span>] *** Terminating app due to uncaught exception <span class="string">'NSInternalInconsistencyException'</span>, reason: <span class="string">'Application windows are expected to have a root view controller at the end of application launch'</span></div></pre></td></tr></table></figure>
+<p>反正我是不懂，经过了Google之后，我发现是iOS本身API的改变，应该如下修改</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;    </div><div class="line"></div><div class="line">    <span class="comment">// Override point for customization after application launch.</span></div><div class="line"></div><div class="line">    <span class="comment">// Add the navigation controller's view to the window and display.</span></div><div class="line">-    [self.window addSubview:navigationController.view];</div><div class="line">+    [self.window setRootViewController:navigationController];</div><div class="line">    [self.window makeKeyAndVisible];</div><div class="line"></div><div class="line">    <span class="keyword">return</span> YES;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>好了，一切就妥妥的了。经过一系列的操作之后我们可以看到：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/cccjiangshi.png" alt=""><br>类似的错误，然后可以看到如下的错误时候的信息<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/dddjiangshi.png" alt=""></p>
+<p>好了，接着让我们开启full on Zombie Mode吧。使用Zombie来启动我们的应用，按照同样的操作，我们可以看到crash的时候会出现一个小的紫色旗子，上面的信息告诉我们，明显是一个消息发给一个已经被干掉的对象。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/c0a9281b6f3cdd9851ddfc36fc7386ff.png" alt=""></p>
+<p>我们可以点击Zombie这条额外信息的右边的小箭头，可以看到如下的信息</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/c69b4152c196a4dc0ca69b129cab5024.png" alt=""></p>
+<p>这里我们可以看到有AutoRelease指向了我们的Zombie project，我们点击进入可以看到：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/6cff1dfd0eeb63447c420914c922d060.png" alt=""></p>
+<p>这里的lastString是一个AutoRelease的变量，而_lastString是指向这个字符串的指针，所以当被自动释放的时候，_lastString就指向了一个null，从而就变成了我们最早看到的那个错误。</p>
+<p>至此，我们其实只要将lastString手动的保留一下retain，这个程序就不会再crash了。不过这个程序的确还是存在很多的内存泄漏，作为之后的案例还是很不错的。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近我在看“ I am Zombie”，所以我就来看看iOS的这个工具啦，哈哈，一大群Zombies正在逼近！！！&lt;/p&gt;
+&lt;h2 id=&quot;什么是Zombie&quot;&gt;&lt;a href=&quot;#什么是Zombie&quot; class=&quot;headerlink&quot; title=&quot;什么是Zombie
+    
+    </summary>
+    
+    
+      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>移动测试人员的未来：测试开发技术的融合</title>
+    <link href="http://yoursite.com/2016/11/17/test-future/"/>
+    <id>http://yoursite.com/2016/11/17/test-future/</id>
+    <published>2016-11-17T01:49:02.000Z</published>
+    <updated>2016-11-17T01:52:41.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>原链接：<a href="http://www.infoq.com/cn/articles/mobile-testing-future" target="_blank" rel="external">http://www.infoq.com/cn/articles/mobile-testing-future</a></p>
+<p>作者：陈晔</p>
+<p>首先说明，测试包括很多领域，这次谈测试的未来，我只谈移动互联网测试的未来。这些年我和很多公司的同学都做过交流，经过了长时间的交流，基本上对现状有一个清楚的了解，这里就大胆的对未来进行一个预测。</p>
+<p>另外我还想说，测试行业还是一个不成熟的行业，学术界和工业界都存在着大量看不清客观事实的人，同样的也存在大量的扯淡的人，本篇文章希望大家都能够认清楚现在的局势，以便更好的认清方向去学习，从而将行业整体推向一个正确的道路上。</p>
+<h2 id="过去：从极易到极难"><a href="#过去：从极易到极难" class="headerlink" title="过去：从极易到极难"></a>过去：从极易到极难</h2><p>要预测未来，我们首先必须对过去和现状有一个清晰的了解，所以，下面首先介绍一下移动测试过去是什么样的。</p>
+<p>我自己是从09年底开始接触Android无线应用的功能测试，那么就从那个时间开始说起吧。</p>
+<p>09年到11年底属于移动互联网测试在中国的第一个阶段，那个阶段几乎网络上除了Android、iOS的官方文档，不存在其它任何相关的测试技术博客或者文档，这对当初接触这个行业的我们是一个非常大的挑战。</p>
+<p>对于一个未知的领域，为了保证产品质量，测试必然是从功能方面切入进行。不过好在那个时期的App大多都是纯Native的逻辑，并不像现在那么的复杂。但由于开发整体技术的不成熟以及硬件上不充分的支持，我们最常见的其实就是OOM（Out Of Memory），那个时期真的算是习以为常了。</p>
+<p>09年到11年的时候，整个行业的大部分互联网公司都感觉到了移动互联网的到来，这个时候，很多大企业也觉得应该开始储备移动团队和技术基础了，所以开始大范围招人。</p>
+<p>初创企业招入的测试肯定是One Man One Team，一个人就相当于一个团队，而大公司的话，会将自己公司内以往做服务端测试，或者Web测试经验丰富的人，拉过来做移动测试团队的leader，然后开始招兵买马。</p>
+<p>但无论是哪一类公司，测试工作肯定集中在功能测试用例的设计、执行测试用例上，而且非常的累。所以当时如果你会或者说掌握Android Monkey测试以及iOS的Monkey测试的话，那么已经是神一样的人物了，很多公司会争先恐后的抢着要的。（这里我不得不提一句，我面试了那么多的人，大部分人就是知道基础的命令，也不知道Monkey执行的策略包括实现，这些人就不要说掌握或者熟练了。）</p>
+<p>在移动互联网早期，功能测试就被放在了一个很低的位置，直到现在依然没有什么一个很好的改观。</p>
+<p>然后过了快2年，各个公司发现，移动互联网不如自己设想中的赚钱，反而烧钱很快。于是11年下半年部分公司就开始裁员了，而首当其冲的就是测试工程师。在这个阶段中，几乎所有公司都不知道自己要招什么样的人，JD（岗位描述）都会很模糊，会写上要移动互联网测试经验，但不知道具体要什么经验。整整2年就处于这样一个阶段，我称之为移动测试第一阶段。</p>
+<p>接着12年开始到13年底基本上又是两年，进入了第二阶段。</p>
+<p>这个阶段，移动互联网的项目迭代周期也基本定型了，1～2月内一次大迭代，小版本可能每天都有。此时的公司对移动测试的要求也开始具体化——当然，中国是一个跟风严重的国家，比如当初BAT或者各个大公司写出来具体的测试JD，行业的其它公司纷纷开始抄袭，所以这阶段的移动测试的要求基本是从BAT和大公司出来的。</p>
+<p>12年开始，行业对测试人员的招聘要求来了一个180度的转变，Robotium，Monkey，Monkeyrunner，Instrumentation，Objective-C，Java，Python等各种详细的要求接踵而来，整个12年的面试会给测试人员一个感觉———面试测试岗位比面试一个CTO岗位都要累。记得某些公司在面试测试人员之前，首先先要笔试，做各种卷子，包括软件工程，测试，算法，代码，智力题等，从我看来简直变态的可以。</p>
+<p>另一方面，移动互联网的产品本身从Native开始慢慢的转变成部分Native，部分WebView。Native主要用来实现一些类似于设置、本地界面框架的功能，而WebView更多的会做一些活动界面、广告投放的功能。之后Hybrid混合式应用就变成了移动互联网应用的主流实现方式。测试工作也从以往的纯功能性测试，增加到现在的自动化测试、持续集成、碎片化测试等等。移动测试的技术在这段时间也得到了非常大的进步和提升。</p>
+<p>其实在这两年里，还有一个事情让所有人都感觉到非常大的变化，那就是开源的测试技术越来越多。现在很多刚进入移动互联网的测试人会发现单是UI自动化测试就会有几十个框架，根本就不知道选什么。</p>
+<h2 id="现状：业务与工具无法兼得"><a href="#现状：业务与工具无法兼得" class="headerlink" title="现状：业务与工具无法兼得"></a>现状：业务与工具无法兼得</h2><p>最近的一年又有了什么变化呢？</p>
+<p>从我了解的情况看，各个公司的关注点慢慢从功能测试转到专项测试，又从以往单纯去做UI自动化框架的开发发展到了测试平台化，发展到了线上监控。</p>
+<p>前几年，行业大部分公司都在大量招聘业务测试人员，以及所谓的自动化测试工程师。在某些大公司里，整个测试团队分成两部分—————业务团队和工具团队（这里不得不吐槽，其实实际情况是工具组的大部分所谓的测试开发工程师其实就是开发，并没有太多测试的积累）。从2011年开始，百度等公司就开始陆续这样去分团队工作，几年下来的确有着不错的积累，比如各个公司属于自己的框架和平台都搭建起来了，但这样的分工就如双刃剑，让我来和大家说下另外一面吧。</p>
+<p>第一点相信很多人心里也都知道，也就是两个组总是不能非常融洽的合作，总有互相的抱怨。所谓一个巴掌拍不响，双方都存在问题：</p>
+<ul>
+<li>业务方的同学抱怨工具组做的工具不落地，不能触及到业务功能测试的痛点</li>
+<li>工具方的同学不停的输出工具，更多的从架构层代码层去改进工具，却忽略了业务的实际真正的用途</li>
+<li>业务方和工具方的同学互相不服对方，这点很实际。业务同学大多拼体力，工具方大多拼技术，两者薪资会有一定的差别，公司的重视程度也会有一定的差异，这其中不见得一定哪方好哪方不好，得看公司。</li>
+<li>工具组的同学难过的一点就是他们大多并没有自己实际的KPI，更多的是看多少能在业务方落地，也就是说KPI其实是依附于业务方，那么合作就变的尤其重要，但从上面的现状我们看得出来这并非易事。</li>
+</ul>
+<p>第二点可能很多人就未必知道了。在移动互联网，工具组的同学无非做两样东西————二次开发自动化测试框架和测试平台（兼容性，自动化，监控等）。先说框架这个东西，如果仅仅是API层面的框架，那么的确能够长期有效的使用下去。但移动互联网中工具组大多做的是什么类型的框架呢？你猜对了，正是UIAutomation Framework，过程很黄很暴力，我就不多说了，我们来说结果吧。结果就是大多数业务方用着也不是很爽，所以不停的给工具组提需求，而工具组服务的不止一个业务方，为了KPI只能不停的去接需求，加班修改，最后不仅没有满足业务方，工具组团队先跪了，原因是需求根本来不及满足，Bug也根本就修不完，不停的恶性循环。</p>
+<p>所以说，经过这段时间之后，行业里的公司在功能测试上基本都有了一定的积累，然后开始关注应用的性能，因为性能直接关系到用户体验。</p>
+<p>同时，行业也意识到功能测试和自动化应该是测试人员的基本能力，而不是一个加分项。</p>
+<p>所以到了14年，其实很少看到再有公司要招单纯的自动化测试工程师了，就算有，招入进去的也会承担更多的职责。虽然我很难确认这到底是不是一个进步，但是国内测试行业之前一直很混乱，伸手党横行，大多数人属于自己根本不能自理的状态，所以从这个角度来看，整个行业的技术能力要求提升，算是一个非常不错的趋势了。关于测试行业到底有哪一些捣乱的人，可以移步测试行业感谢有你。</p>
+<p>行业现状也能说明这种情况，我能够透露的是，蚂蚁金服从title上面来讲的话，已经不存在“测试工程师”了，全部是“测试开发工程师”，这其实隐约的在暗示点了什么。今年我去了360、百度、JD、OneAPM等公司，同时也和手Q、赶集等同学有了深入的交流。交流下来来看，大家也都隐约的有一种转型。</p>
+<h2 id="未来：找出问题还不够，要定位问题"><a href="#未来：找出问题还不够，要定位问题" class="headerlink" title="未来：找出问题还不够，要定位问题"></a>未来：找出问题还不够，要定位问题</h2><p>了解了移动测试的过去和现状，现在可以大胆的预测未来了，不过，这里也仅仅是未来三年内的情况。</p>
+<p>首先，测试人员肯定是朝着全栈的方向去发展了，这点毫无疑问。而功能（业务）测试，专项测试，自动化测试等都会变成一个测试人员基本的能力，而非加分项。</p>
+<p>而随着网商的发展，各类互联网＋金融的崛起，移动安全的测试将会变成专项测试之后的一个新的关注点。</p>
+<p>有些人可能会担心随着第三方测试服务流行，测试工程师的前途在哪，我想说，测试这个岗位和测试这个工作在移动互联网不会消亡，但综合能力的要求提升很多，将来不会再有单纯的业务测试，也不会再有单纯的自动化测试，以后测试将全部是测试开发工程师，这些人可以快速的去适应各种需求，并且能够通过业务和技术的双向分析从而定位真正所在的问题。</p>
+<p>测试人员自我能力的提升，也不再是单纯的某一方面技术，而是这些技术如何真正的落地，以及怎么结合自己的业务，以及产品的实现框架去排查和定位问题，最终解决问题或者优化产品性能。</p>
+<p>与此同时，开发工程师也会慢慢的被要求承担一部分测试工作（产品自测），不仅能让开发工程师更深入的了解业务，而且本来我们就需要自己去吃自己的狗食（Dog Food）。</p>
+<p>举个例子，随着React Native和Html5的发展，很多公司为了满足应用的需求，会开发私有的RCT和WebView容器。同时，很多业务复杂的公司的客户端，背后对接的不仅仅是一个服务，更多的是服务群。那么这个时候问题就出现了：</p>
+<p>我们发现了一个客户端很卡，或者有某些安全的风险，那么，我们首先需要去从业务角度分析，可能是哪些业务链路上出现问题，接着我们需要去将被测产品拆开，一个一个排查和定位问题。比如</p>
+<ul>
+<li>Native Activity View启动消耗</li>
+<li>RCT转换到Natvie控件的消耗</li>
+<li>WebView自定义容器的消耗</li>
+<li>Html中的CSS，JS，PNG等流量和时间的消耗</li>
+<li>Native业务代码调用RPC，http请求的方法的消耗</li>
+<li>本地请求到得到返回的时间消耗</li>
+<li>数据交互的Json结构是否复杂，json解析的消耗</li>
+<li>本地业务逻辑是否编写恰当</li>
+<li>客户端在智能机上的界面绘制的消耗</li>
+<li>整个架构View是否存在重复绘制</li>
+<li>服务群中互相交互以及透传的逻辑是否恰当</li>
+<li>服务群中的系统超时机制是否恰当</li>
+<li>服务群中每个系统的消耗</li>
+</ul>
+<p>我们会发现，其实我们并不能一下子就能够找到问题在什么地方，而是需要对业务和被测应用技术了解的情况下，去慢慢排除哪些地方没有问题，从而最终定位问题所在。此时的你光有技术，或者你光懂业务，都无法去完成这样一个工作。测试人员很大的一部分价值会体现在这个地方。</p>
+<p>也许看到这里，很多测试同学就要跳起来了，觉得要求怎么那么高，感觉就在扯淡，肯定不是这样。我想说的是：</p>
+<p>第一，目前测试圈很多人以为自己的圈子就是这个行业的全部，但其实测试的内涵比他们想象的要大的多。</p>
+<p>第二，很多人被培训忽悠（什么自称xxx培训第一），觉得单纯的学习技术就可以提升价值，你们自己想想看，测试真的只是一个纯技术岗位吗？</p>
+<p>第三，国内测试原本长时间存活在低要求环境中，导致很多人已经不知道正常的要求是什么了，当行业开始以正确的标准来要求的时候，就感觉无法接受。</p>
+<p>大家只要抛弃成见，自然知道谁对谁错，也会知道应该怎么去面对未来，只要勇于承认，并且快速学习，未来的测试仍然有你的一席之地。</p>
+<p>说到这里，很多测试管理者可能会问，管理者的出路在何方。</p>
+<p>其实对于管理者而言，现在应该已经有所感受了，就是纯管理角色在移动互联网很难存活下去。原因有两个，其一，测试本身的技术定位要求，以及技术的更新速度会倒逼着管理者需要有一定的技术基础，包括对一些新技术有一定的了解，否则如何将合适的人安排在合适的位置上呢？又如何去服众呢？其二，未来的转变不仅仅是测试技术和业务的融合，更多的是就业人员从85后转变成了90后以及95后。以往很多管理者觉得给员工一些钱，一些股票，这些员工就会默默无闻的为公司卖命，为项目去加班。但是随着时代的发展，现在很多的年轻人看重事情变成：工作是否开心以及是否对自己有提升。他们不是不在乎钱，但他们会变的更有自己的想法和追求。面临这样一群人，管理者本身的管理方式也需要有一定的改变，同时需要从公司的流程，业务发展，个人规划，技术发展等各个角度去给出一些引导。</p>
+<p>差不多以上就是我想表达的观点了，也许很多人已经看到了变化，也许很多人没有，但是无论如何，变化总在快速的，不以任何人的意志而转移的进行下去。最后，如何想了解更多移动测试发展的话，可以关注我写的书《大话移动App测试2.0——技术篇》，会在明年上半年出版，这会是全新的一本书。粗略的目录可见： <strong>大话移动App测试2.0一书</strong>。其中我也会将这次我全程参与钱包9.0研发过程中的一些经历和技术写在里面。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;原链接：&lt;a href=&quot;http://www.infoq.com/cn/articles/mobile-testing-future&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://www.infoq.com/cn/articles/mobi
+    
+    </summary>
+    
+    
+      <category term="other" scheme="http://yoursite.com/tags/other/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>iOS Core Animation (II)</title>
+    <link href="http://yoursite.com/2016/11/16/CoreAnimationII/"/>
+    <id>http://yoursite.com/2016/11/16/CoreAnimationII/</id>
+    <published>2016-11-16T06:54:24.000Z</published>
+    <updated>2016-11-16T07:06:09.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>之前是有聊到图层和视图的关系，Core Animation还有其他很多的方式可以用</p>
+<p>本文例子和描述引用了iOS-Core-Animation-Advanced-Techniques</p>
+<h2 id="CAShapeLayer"><a href="#CAShapeLayer" class="headerlink" title="CAShapeLayer"></a>CAShapeLayer</h2><p>CAShapeLayer是一个通过矢量图形而不是bitmap来绘制的图层子类。你指定诸如颜色和线宽等属性，用CGPath来定义想要绘制的图形，最后CAShapeLayer就自动渲染出来了。当然，你也可以用Core Graphics直接向原始的CALyer的内容中绘制一个路径，相比直下，使用CAShapeLayer有以下一些优点：</p>
+<ul>
+<li>渲染快速。CAShapeLayer使用了硬件加速，绘制同一图形会比用Core Graphics快很多。</li>
+<li>高效使用内存。一个CAShapeLayer不需要像普通CALayer一样创建一个寄宿图形，所以无论有多大，都不会占用太多的内存。</li>
+<li>不会被图层边界剪裁掉。一个CAShapeLayer可以在边界之外绘制。你的图层路径不会像在使用Core Graphics的普通CALayer一样被剪裁掉（如我们在第二章所见）。</li>
+<li>不会出现像素化。当你给CAShapeLayer做3D变换时，它不像一个有寄宿图的普通图层一样变得像素化。</li>
+</ul>
+<p>GCPath可以绘制一个简单的图像，这个图像并非是一种直线，也不一定要是一个闭合的图。用一个CAShapeLayer渲染一个简单的火柴人。CAShapeLayer属性是CGPathRef类型，但是我们用UIBezierPath帮助类创建了图层路径，这样我们就不用考虑人工释放CGPath了</p>
+<p>代码见下图：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/49c021ee5368939c69f2dd7cbf5d9751.png" alt="core1"></p>
+<p>我们看到如下的效果：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/3c037c75d4ca07cf02114bd1fe76ec3e.png" alt="core2"></p>
+<h2 id="instruments"><a href="#instruments" class="headerlink" title="instruments"></a>instruments</h2><p>我们除了使用Core Animation提供的一些方法以外，我们也可以在instrments中去使用Core Animation来进行性能的调优。<br>使用了Core Animation提供的例子。我们看到了一个list的demo，默认是带有阴影的图片和文字。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/205b7213c80bd36e4b1dfc818424b3da.gif" alt="core3"></p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/f36ed3d642dc7f0f00d7b4a32bca9037.gif" alt="core3"></p>
+<p>然后我们可以去掉图片和文字的阴影。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">//   cell.imageView.layer.shadowOffset = CGSizeMake(0, 5);</span></div><div class="line"> <span class="comment">//   cell.imageView.layer.shadowOpacity = 0.75;</span></div><div class="line"><span class="comment">//    cell.textLabel.layer.shadowOffset = CGSizeMake(0, 2);</span></div><div class="line"> <span class="comment">//   cell.textLabel.layer.shadowOpacity = 0.5;</span></div></pre></td></tr></table></figure>
+<p>然后我们再重新测试一遍。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/aaaa49c1fcf36fb68c607b.gif" alt="core3"></p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/6__11__2015_15_27.gif" alt="core"></p>
+<p><code>iOS-Core-Animation-Advanced-Techniques</code>是非常好的一个docs，不过测试讲的还是不是很多，更多的是原理的解释和介绍了常用的方法。感谢iOS的文档</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;之前是有聊到图层和视图的关系，Core Animation还有其他很多的方式可以用&lt;/p&gt;
+&lt;p&gt;本文例子和描述引用了iOS-Core-Animation-Advanced-Techniques&lt;/p&gt;
+&lt;h2 id=&quot;CAShapeLayer&quot;&gt;&lt;a href=&quot;#CAS
+    
+    </summary>
+    
+    
+      <category term="IOS" scheme="http://yoursite.com/tags/IOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Swift REPL</title>
+    <link href="http://yoursite.com/2016/11/16/SwiftREPL/"/>
+    <id>http://yoursite.com/2016/11/16/SwiftREPL/</id>
+    <published>2016-11-16T02:32:09.000Z</published>
+    <updated>2016-11-16T02:42:19.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="什么是REPL"><a href="#什么是REPL" class="headerlink" title="什么是REPL"></a>什么是REPL</h2><p>当初最早升级Xcode6.1的时候就在Command Line Tool中增加了这个特性来辅助Swift开发，全称叫做Read Eval Print Loop。其实和我们之前提到的groovysh和python是一样的一个特性，属于交互性模式，但是swift这个REPL使用下来却是体验最好的一个。可惜当初在OSX 10.9的版本时候提示需要10.10才可以使用。所以现在我们在OS X Yosemite下就可以正常使用</p>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p>我们在终端中输入xcrun swift即可唤起这个交互模式</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/49686ff843ee6519e2c2f2d09e4cb123.gif" alt="swift1"></p>
+<p>我们来写个简单的例子来看看REPL的一些反馈和效果</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/5129723ab792cdc842fd792bc200fdf4.gif" alt="swift2"></p>
+<p>多行的例子，这里使用了隐性定义字符串的方式。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/d0a906e773eba61e117d4081adeca620.gif" alt="swift3"></p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/111111.gif" alt="swift4"></p>
+<p>另外我们如果定义一个方法的话，这个也是我觉得体验很好的一点，如下</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/222222.gif" alt="swift5"></p>
+<p>另外如果需要使用上面写过的方法或者重新要调试的话，可以通过上下进行整个方法每一行的调用。如下</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/333333.gif" alt="swift6"></p>
+<h2 id="更多REPL的快捷键"><a href="#更多REPL的快捷键" class="headerlink" title="更多REPL的快捷键"></a>更多REPL的快捷键</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">Arrow Keys        Move cursor left/right/up/down</div><div class="line">Control+F        Move cursor right one character, same as right arrow</div><div class="line">Control+B        Move cursor left one character, same as left arrow</div><div class="line">Control+N        Move cursor to end of next line, same as down arrow</div><div class="line">Control+P        Move cursor to end of prior line, same as up arrow</div><div class="line">Control+D        Delete the character under the cursor</div><div class="line">Option+Left        Move cursor to start of prior word</div><div class="line">Option+Right    Move cursor to start of next word</div><div class="line">Control+A        Move cursor to start of current line</div><div class="line">Control+E        Move cursor to end of current line</div><div class="line">Delete            Delete the character to the left of the cursor</div><div class="line">Esc &lt;            Move cursor to start of first line</div><div class="line">Esc &gt;            Move cursor to end of last line</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;什么是REPL&quot;&gt;&lt;a href=&quot;#什么是REPL&quot; class=&quot;headerlink&quot; title=&quot;什么是REPL&quot;&gt;&lt;/a&gt;什么是REPL&lt;/h2&gt;&lt;p&gt;当初最早升级Xcode6.1的时候就在Command Line Tool中增加了这个特性来辅助Swi
+    
+    </summary>
+    
+    
+      <category term="swift" scheme="http://yoursite.com/tags/swift/"/>
+    
+  </entry>
   
   <entry>
     <title>我的东西是我的。我给你，你可以拿着。我不给，你不该怨我。</title>
@@ -497,539 +889,6 @@
     
     
       <category term="gradle" scheme="http://yoursite.com/tags/gradle/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>gradle 集成修改 Android Manifest.xml 打多个包实践</title>
-    <link href="http://yoursite.com/2016/11/07/gradle-Androidmanifest/"/>
-    <id>http://yoursite.com/2016/11/07/gradle-Androidmanifest/</id>
-    <published>2016-11-07T03:33:31.000Z</published>
-    <updated>2016-11-07T03:38:20.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>其实这次我想好好把gradle 构建android工程生成的文件好好看看的，但是实在太多了，而且网络上资料有限，故而就放在下次吧。</p>
-<p>这次做了一些新的尝试，然后也看了下一些之前没有关心的文件是啥用。</p>
-<h2 id="gradle-wrapper-jar"><a href="#gradle-wrapper-jar" class="headerlink" title="gradle-wrapper.jar"></a>gradle-wrapper.jar</h2><p>首先其实之前就看到有这个jar包，但是还没有去关心过到底是啥用。<br>Gradle Wrapper 是一种更加方便的使用gradle的方法，他包括了为支持windows的批处理脚本和支持类unix的shell脚本。这些脚本是你，在不安装gradle时候，也可以用gradle。安装wrapper只需要在你的build.gradle文件中添加如果下代码。<br>我们来看下结构</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">└── initial</div><div class="line">    └── gradlew</div><div class="line">    └──gradlew.bat</div><div class="line">    └── gradle</div><div class="line">       └── wrapper</div><div class="line">           └── gradle-wrapper.jar</div><div class="line">           └── gradle-wrapper.properties</div></pre></td></tr></table></figure>
-<p>现在已经可以用Wrapper构建你的工程了。你将和之前一样，运行gradle build命令构建工程。<br>./gradlew build<br>第一行执行Gradle的版，他讲下载和缓存执行版本gradle的二进制文件。 Gradle Wrapper 文件将和代码一样提交给版本控制器，这样任何人，获取代码后，不用安装gradle，就可以构建工程。</p>
-<p>这个的确会非常方便，总体感觉以后再也不用编写什么打包脚本了。直接checkout，运行指定gradle命令即可。</p>
-<h2 id="多个项目"><a href="#多个项目" class="headerlink" title="多个项目"></a>多个项目</h2><p>在gradle项目根目录下面我们也可以看到有一个settings.gradle的文件，默认是有<br>include ‘:app’<br>假设我们有三个项目，分别是</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">  MyProject/</div><div class="line"></div><div class="line">| settings.gradle</div><div class="line"></div><div class="line">app/</div><div class="line">| build.gradle</div><div class="line"></div><div class="line">app2/</div><div class="line">| build.gradle</div><div class="line"></div><div class="line">app3/</div><div class="line">| build.gradle</div></pre></td></tr></table></figure>
-<p>那么我们需要修改settings.gradle，变成include ‘:app’, ‘:app2′, ‘:app3′</p>
-<h2 id="1-0-rc的坑（转）"><a href="#1-0-rc的坑（转）" class="headerlink" title="1.0 rc的坑（转）"></a>1.0 rc的坑（转）</h2><ul>
-<li><p>Error:(26, 0) Gradle DSL method not found: ‘runProguard()’问题，这里是runProguard()方法被替换了，把runProguard改为minifyEnabled即可，<a href="http://stackoverflow.com/questions/27016385/error26-0-gradle-dsl-method-not-found-runproguard" target="_blank" rel="external">http://stackoverflow.com/questions/27016385/error26-0-gradle-dsl-method-not-found-runproguard</a></p>
-</li>
-<li><p>“Could not find property ‘packageApplication’ on com.android.build.gradle.internal.api.ApplicationVariantImpl_Decorated”问题，这个属性被取消了，这里是替换要输出的APK的名称，<a href="http://stackoverflow.com/questions/27209188/could-not-find-property-packageapplication-on-com-android-build-gradle-interna" target="_blank" rel="external">http://stackoverflow.com/questions/27209188/could-not-find-property-packageapplication-on-com-android-build-gradle-interna</a></p>
-</li>
-<li><p>“Could not find property ‘processManifest’ on com.android.build.gradle.internal.api.ApplicationVariantImpl”问题，这里是由于manifest merger改动了，解决方法如下：<a href="http://stackoverflow.com/questions/27302965/could-not-find-property-processmanifest-on-com-android-build-gradle-internal-a" target="_blank" rel="external">http://stackoverflow.com/questions/27302965/could-not-find-property-processmanifest-on-com-android-build-gradle-internal-a</a></p>
-</li>
-<li><p>android studio中的plugin也发生了改变，将”apply plugin: ‘android’”改为”apply plugin: ‘com.android.application’”</p>
-</li>
-</ul>
-<p>monkey：不过1.0坑真的很多，大家自己去尝试就知道了。主要是stackoverflow上面的东西太旧。</p>
-<h2 id="修改app和root-project中两个build-gradle"><a href="#修改app和root-project中两个build-gradle" class="headerlink" title="修改app和root project中两个build.gradle"></a>修改app和root project中两个build.gradle</h2><p>我们创建好Android application之后，可以在app目录和根目录下都看到build.gradle文件，这两个文件分别会从app层面和多个project层面进行build的管控。<br>我们先来看下根目录的gradle.build文件。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//其实这里已经有了标识，告诉大家这个是可以管控多个模块的</span></div><div class="line"><span class="comment">// Top-level build file where you can add configuration options common to all sub-projects/modules.</span></div><div class="line"></div><div class="line"><span class="comment">//编译脚本</span></div><div class="line">buildscript &#123;</div><div class="line">    repositories &#123;</div><div class="line"><span class="comment">//这里可以是maven，jcenter等</span></div><div class="line">        jcenter()</div><div class="line">    &#125;</div><div class="line">    dependencies &#123;</div><div class="line">        classpath <span class="string">'com.android.tools.build:gradle:1.0.0'</span></div><div class="line"></div><div class="line">        <span class="comment">// <span class="doctag">NOTE:</span> Do not place your application dependencies here; they belong</span></div><div class="line">        <span class="comment">// in the individual module build.gradle files</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"><span class="comment">// 1.0 rc之后这个需要修改</span></div><div class="line">apply plugin: <span class="string">'com.android.application'</span></div><div class="line"></div><div class="line"></div><div class="line">android &#123;</div><div class="line">    compileSdkVersion <span class="number">21</span></div><div class="line">    buildToolsVersion <span class="string">"20.0.0"</span></div><div class="line"></div><div class="line"><span class="comment">//这里需要设置资源文件，否则会报错，文件找不到</span></div><div class="line">    sourceSets &#123;</div><div class="line">        main &#123;</div><div class="line">            manifest.srcFile <span class="string">'AndroidManifest.xml'</span></div><div class="line">            java.srcDirs = [<span class="string">'src'</span>]</div><div class="line">            resources.srcDirs = [<span class="string">'src/main/res'</span>]</div><div class="line">            aidl.srcDirs = [<span class="string">'src'</span>]</div><div class="line">            renderscript.srcDirs = [<span class="string">'src'</span>]</div><div class="line">            res.srcDirs = [<span class="string">'res/main/res'</span>]</div><div class="line">            assets.srcDirs = [<span class="string">'assets'</span>]</div><div class="line">        &#125;</div><div class="line">        instrumentTest.setRoot(<span class="string">'tests'</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    defaultConfig &#123;</div><div class="line">        applicationId <span class="string">"com.example.monkey.myapplication"</span></div><div class="line">        minSdkVersion <span class="number">10</span></div><div class="line">        targetSdkVersion <span class="number">21</span></div><div class="line">        versionCode <span class="number">1</span></div><div class="line">        versionName <span class="string">"1.0"</span></div><div class="line">    &#125;</div><div class="line"><span class="comment">//增加混淆</span></div><div class="line">    buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">            <span class="function">minifyEnabled <span class="keyword">false</span></span></div><div class="line">            proguardFiles <span class="title">getDefaultProguardFile</span><span class="params">(<span class="string">'proguard-android.txt'</span>)</span>, 'proguard-rules.pro'</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="comment">//这个是解决lint报错的代码</span></div><div class="line">    lintOptions &#123;</div><div class="line">        abortOnError <span class="keyword">false</span></div><div class="line">    &#125;</div><div class="line">  <span class="comment">// 增加签名</span></div><div class="line">    signingConfigs &#123;</div><div class="line">        myConfigs &#123;</div><div class="line">            <span class="function">storeFile <span class="title">file</span><span class="params">(<span class="string">"/Users/monkey/.android/debug.keystore"</span>)</span></span></div><div class="line">            keyAlias "..."</div><div class="line">            keyPassword "..."</div><div class="line">            storePassword "..."</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">allprojects &#123;</div><div class="line">    repositories &#123;</div><div class="line">        jcenter()</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">//替换AndroidManifest.xml的REPLACE_KEY字符串为渠道名称</span></div><div class="line">android.applicationVariants.all &#123; variant -&gt;</div><div class="line">    variant.outputs.each &#123; output -&gt;</div><div class="line">        output.processManifest.doLast &#123;</div><div class="line">            <span class="comment">//v1.11之前这里用的copy&#123;&#125;，我换成了文件操作，这样可以在v1.11版本正常运行，并保持文件夹整洁</span></div><div class="line">            <span class="comment">//$&#123;buildDir&#125;是指build文件夹</span></div><div class="line">            <span class="comment">//$&#123;variant.dirName&#125;是flavor/buildtype，例如GooglePlay/release，运行时会自动生成</span></div><div class="line">            <span class="comment">//下面的路径是类似这样：build/intermediates/manifests/GooglePlay/release/AndroidManifest.xml</span></div><div class="line">            def manifestFile = <span class="string">"$&#123;buildDir&#125;/intermediates/manifests/full/$&#123;variant.dirName&#125;/AndroidManifest.xml"</span></div><div class="line"></div><div class="line">            <span class="comment">//将字符串REPLACE_KEY替换成flavor的名字</span></div><div class="line">            def updatedContent = <span class="keyword">new</span> File(manifestFile).getText(<span class="string">'UTF-8'</span>).replaceAll(<span class="string">"REPLACE_KEY"</span>, <span class="string">"$&#123;variant.productFlavors[0].name&#125;"</span>)</div><div class="line">            <span class="keyword">new</span> File(manifestFile).write(updatedContent, <span class="string">'UTF-8'</span>)</div><div class="line"></div><div class="line">            <span class="comment">//将此次flavor的AndroidManifest.xml文件指定为我们修改过的这个文件</span></div><div class="line">            variant.processResources.manifestFile = file(<span class="string">"$&#123;buildDir&#125;/intermediates/manifests/full/$&#123;variant.dirName&#125;/AndroidManifest.xml"</span>)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>接着看下app下面的build.gradle<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//增加application的apply</span></div><div class="line">apply plugin: <span class="string">'com.android.application'</span></div><div class="line"></div><div class="line">android &#123;</div><div class="line"><span class="comment">//配置sdk版本</span></div><div class="line">    compileSdkVersion <span class="number">21</span></div><div class="line">    buildToolsVersion <span class="string">"20.0.0"</span></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">    defaultConfig &#123;</div><div class="line">        applicationId <span class="string">"com.example.monkey.myapplication"</span></div><div class="line">        minSdkVersion <span class="number">10</span></div><div class="line">        targetSdkVersion <span class="number">21</span></div><div class="line">        versionCode <span class="number">1</span></div><div class="line">        versionName <span class="string">"1.0"</span></div><div class="line">    &#125;</div><div class="line">    buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">            <span class="function">minifyEnabled <span class="keyword">false</span></span></div><div class="line">            proguardFiles <span class="title">getDefaultProguardFile</span><span class="params">(<span class="string">'proguard-android.txt'</span>)</span>, 'proguard-rules.pro'</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//这个是解决lint报错的代码</span></div><div class="line">    lintOptions &#123;</div><div class="line">        abortOnError <span class="keyword">false</span></div><div class="line">    &#125;</div><div class="line">    signingConfigs &#123;</div><div class="line">        myConfigs &#123;</div><div class="line">            <span class="function">storeFile <span class="title">file</span><span class="params">(<span class="string">"/Users/monkey/.android/debug.keystore"</span>)</span></span></div><div class="line">            keyAlias "..."</div><div class="line">            keyPassword "..."</div><div class="line">            storePassword "..."</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"><span class="comment">//增加多个打包渠道配置</span></div><div class="line">    productFlavors &#123;</div><div class="line">        qqqq &#123;</div><div class="line">            applicationId = <span class="string">'com.monkey.qqq'</span></div><div class="line">        &#125;</div><div class="line">        hhhhh &#123;</div><div class="line">            applicationId=<span class="string">'com.monkey.hhh'</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    <span class="function">compile <span class="title">fileTree</span><span class="params">(dir: <span class="string">'libs'</span>, include: [<span class="string">'*.jar'</span>])</span></span></div><div class="line">    compile 'com.android.support:appcompat-v7:21.0.3'</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>我们使用gradlew进行编译之后，我们可以在如下目录下中找到分别为了打不同包所用的Android Manifest.xml文件。</p>
-<p>同时我们也可以在outputs中的apk看到我们编译出的多个apk，但这里只是package name不同，渠道的meta data并没有修改，但是方法是一样的。</p>
-<p>最后的给个编译report。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line">ec2-<span class="number">54</span>-<span class="number">67</span>-<span class="number">1</span>-<span class="number">101</span>:monkeyApplication monkey$ ./gradlew app:assembleDebug</div><div class="line">:app:preBuild</div><div class="line">:app:compileHhhhhDebugNdk UP-TO-DATE</div><div class="line">:app:preHhhhhDebugBuild</div><div class="line">:app:checkHhhhhDebugManifest</div><div class="line">:app:preHhhhhReleaseBuild</div><div class="line">:app:preQqqqDebugBuild</div><div class="line">:app:preQqqqReleaseBuild</div><div class="line">:app:prepareComAndroidSupportAppcompatV72103Library UP-TO-DATE</div><div class="line">:app:prepareComAndroidSupportSupportV42103Library UP-TO-DATE</div><div class="line">:app:prepareHhhhhDebugDependencies</div><div class="line">:app:compileHhhhhDebugAidl UP-TO-DATE</div><div class="line">:app:compileHhhhhDebugRenderscript UP-TO-DATE</div><div class="line">:app:generateHhhhhDebugBuildConfig UP-TO-DATE</div><div class="line">:app:generateHhhhhDebugAssets UP-TO-DATE</div><div class="line">:app:mergeHhhhhDebugAssets UP-TO-DATE</div><div class="line">:app:generateHhhhhDebugResValues UP-TO-DATE</div><div class="line">:app:generateHhhhhDebugResources UP-TO-DATE</div><div class="line">:app:mergeHhhhhDebugResources UP-TO-DATE</div><div class="line">:app:processHhhhhDebugManifest UP-TO-DATE</div><div class="line">:app:processHhhhhDebugResources UP-TO-DATE</div><div class="line">:app:generateHhhhhDebugSources UP-TO-DATE</div><div class="line">:app:compileHhhhhDebugJava UP-TO-DATE</div><div class="line">:app:preDexHhhhhDebug UP-TO-DATE</div><div class="line">:app:dexHhhhhDebug UP-TO-DATE</div><div class="line">:app:processHhhhhDebugJavaRes UP-TO-DATE</div><div class="line">:app:validateDebugSigning</div><div class="line">:app:packageHhhhhDebug UP-TO-DATE</div><div class="line">:app:zipalignHhhhhDebug UP-TO-DATE</div><div class="line">:app:assembleHhhhhDebug UP-TO-DATE</div><div class="line">:app:compileQqqqDebugNdk UP-TO-DATE</div><div class="line">:app:checkQqqqDebugManifest</div><div class="line">:app:prepareQqqqDebugDependencies</div><div class="line">:app:compileQqqqDebugAidl UP-TO-DATE</div><div class="line">:app:compileQqqqDebugRenderscript UP-TO-DATE</div><div class="line">:app:generateQqqqDebugBuildConfig UP-TO-DATE</div><div class="line">:app:generateQqqqDebugAssets UP-TO-DATE</div><div class="line">:app:mergeQqqqDebugAssets UP-TO-DATE</div><div class="line">:app:generateQqqqDebugResValues UP-TO-DATE</div><div class="line">:app:generateQqqqDebugResources UP-TO-DATE</div><div class="line">:app:mergeQqqqDebugResources UP-TO-DATE</div><div class="line">:app:processQqqqDebugManifest UP-TO-DATE</div><div class="line">:app:processQqqqDebugResources UP-TO-DATE</div><div class="line">:app:generateQqqqDebugSources UP-TO-DATE</div><div class="line">:app:compileQqqqDebugJava UP-TO-DATE</div><div class="line">:app:preDexQqqqDebug UP-TO-DATE</div><div class="line">:app:dexQqqqDebug UP-TO-DATE</div><div class="line">:app:processQqqqDebugJavaRes UP-TO-DATE</div><div class="line">:app:packageQqqqDebug UP-TO-DATE</div><div class="line">:app:zipalignQqqqDebug UP-TO-DATE</div><div class="line">:app:assembleQqqqDebug UP-TO-DATE</div><div class="line">:app:assembleDebug UP-TO-DATE</div><div class="line"></div><div class="line">BUILD SUCCESSFUL</div><div class="line"></div><div class="line">Total time: <span class="number">8.73</span> secs</div></pre></td></tr></table></figure>
-<p>总体来讲，gradle的编译会比以往的mvn的pom配置文件来的更灵活，可配置性更强。关于更多的配置见之后的文章吧</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;其实这次我想好好把gradle 构建android工程生成的文件好好看看的，但是实在太多了，而且网络上资料有限，故而就放在下次吧。&lt;/p&gt;
-&lt;p&gt;这次做了一些新的尝试，然后也看了下一些之前没有关心的文件是啥用。&lt;/p&gt;
-&lt;h2 id=&quot;gradle-wrapper-jar&quot;
-    
-    </summary>
-    
-    
-      <category term="Gradle" scheme="http://yoursite.com/tags/Gradle/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何做好移动互联网应用测试</title>
-    <link href="http://yoursite.com/2016/11/06/howtostudytest/"/>
-    <id>http://yoursite.com/2016/11/06/howtostudytest/</id>
-    <published>2016-11-06T04:54:14.000Z</published>
-    <updated>2016-11-06T04:55:58.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>首先很高兴的是移动测试会第八期在ucloud的赞助下非常非常圆满的成功了。人真的越来越多，妹子也越来越漂亮了。同时感谢小A和永达以及小马试驾创业公司的支持。移动测试会虽然最早是我个人创立的，但是一个人的能力毕竟有限，所以这第八期说明了团结就是力量：），也希望之后大家更多的来支持我们，本次活动的链接：<a href="http://www.douban.com/event/22861768/" target="_blank" rel="external">http://www.douban.com/event/22861768/</a></p>
-<p>11月8号支付宝上海要开始一天的专场招聘，所以最近我面试也非常的频繁。今天的活动我也碰见了一些朋友来咨询我，所以在这里我想小小的谈论下如何进行移动无线应用的测试学习。</p>
-<p>为什么我定位移动无线互联网的测试，还是应用的测试呢，因为我个人就是做应用测试的，所以我系统测试也做过，不过不深入，所以我就不想去讨论自己不熟悉的领域了。其实在很久前我画过一张技能树的图，也许比较粗糙，但是也还是有价值的。blog链接见：<a href="http://blog.sina.com.cn/s/blog_7022adbf0101b31w.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_7022adbf0101b31w.html</a></p>
-<p>在之前的文章中也已经提到过了行业中的几类人，那么我们应该怎么如何客观的学习呢？请不要觉得自己已经工作很多时间就不愿意往下看了，反正看了你也不少块肉。请跟着以下的文字慢慢阅读，问问自己达到几点，不要自欺欺人就好。</p>
-<p>现在不会做测试的拼命到处问怎么做测试，现在在手动测试的拼命问怎么做自动化，现在做自动化的拼命问怎么写测试框架，现在写测试框架的拼命让团队使用，现在写框架并且让团队使用的拼命问除了维护框架还有什么别的可以做，现在没有事情做的拼命在问到底测试做什么呢？</p>
-<p>不知道每天会有多少人，每秒钟会有多少人会去问怎么做自动化，多少人会去问自己发展方向是什么，学习方向又是什么。我很明确的说，你没有方向原因在于你的无知，人最大的敌人就是恐惧和无知，两者相辅相成，最终就是一事无成。你问那么多有什么用，踏踏实实的先开始学有什么不好。<br>比如你要学习移动互联网的无线应用测试了，比如你要开始学习Android的应用测试了。那么首先第一步你先看google 提供的文档吧，sdk文档不说详细，先浏览一遍吧。然后既然你是一个做测试的，我们就说正常的道路，你至少先将文档中与test这个关键字相关的工具也好，框架也好看一下吧。不懂的可以随时google或者百度来帮助我们阅读完sdk的docs。什么？你从来不看官方文档？android是谁生的？你连亲爹妈都不看，那么你看啥？看后妈？然后抱怨怎么看不懂？你怪谁？</p>
-<p>ok，假设你老老实实的看完了，然后你说你了解你们产品的业务了，你就可以做应用的功能测试了吗？非也，试问大部分测试真的觉得自己够资格去做功能测试吗？觉得功能测试很简单吗？问起来很多人都很自信满满的说自己非常了解业务。ok，试问，你的app中每个功能对应哪些接口你知道吗？这些接口会有什么核心参数知道吗？试问，你的产品的核心代码你有阅读过吗？你的产品前端app对应的后台服务的代码你有阅读过吗？你说你测试的产品有视频是吧，视频格式有哪些？常见分辨率有哪几种？常见码流有哪些？如果这些你都不知道并不代表你不回做功能测试或者业务测试，而是你根本无法深层次的去设计测试用例，那么请问你这算会功能测试了吗？还有的同学和我说用户体验测试，ok，继续问，请问你看过google提供的android的UI Design Guide吗？也许你没有看过，也许你根本不知道，不管是哪条，那么还谈什么用户体验呢？简单来讲，我们做一个测试很简单，要深入做很困难，就如同今天移动测试会上茉莉说的wifi测试，也许让也许人去测试wifi测试也会测试，但是深入呢？我们做测试要踏踏实实，不要浮躁，浮躁只会让你继续sb，但是不会阻止别人nb。</p>
-<p>ok，假设功能测试的点你都清楚了，然后你说你技术多多少少知道点，然后你就可以去做应用的自动化测试了吗？非也。我们一个一个来看。大部分先来做的是UI Automation，ok，appium我在这边就不说了，也许2w字都吐槽吐不完，我就说robotium。那么你第一步是先看下robotium官方网站的sample和wiki，不要到处问例子或者直接上来就导入jar包去做。了解完毕之后，那么可以继续深入的去了解junit 和instrumentation，了解这两者能够让你对robotium更了解并且在写用例的时候更得心应手。然后你会写了sample，能够跑通就算ok了么？非也，那么接着碰见的问题就是如何管理suite，如何管理数据，比如testng，如何做参数配置，比如config.xml，如何进行用例的架构的维护，使用op等。接着如何将其集成到持续集成中？如果你仔细看过instrumentationtestrunner的官方文档你就不会问了。接着除了native的，也许会碰见自定义控件的自动化，最后还有webview和h5的自动化等。那么这些前提是你要先去了解这个自定义控件以及webview到底是什么吧，而不是直接拿robotium自定义的api直接食用，然后抱怨说，啊呀这个怎么跑不通。最后记得一定要结合业务去做设计和断言。<br>接着很多人还会觉得很牛逼的去找到BDD的框架，gem安装，套用cucumber和robotium。但是又会发现各种问题，在做这个事情之前继续试问，ruby gem管理你去学习了么？cucumber是啥知道了么？BDD框架源码结构有看过吗？step怎么封装知道吗？官方的github的wiki和issue有过一遍吗？都没有？那么你还问啥，先去看再做讨论。</p>
-<p>为什么我那么强调学习能力和态度，因为移动互联网的测试已经不是一个工具或者平台能够制霸的时代了。移动互联网现在更多的是注重实用开源框架，注重灵活的使用工具和代码来提升自己的效率，而不是拿来一个工具学会怎么用，然后就给你一个结果告诉你缺陷在什么地方。故而不是再去想什么“怎么做性能自动化测试”这种问题。无论你用360这种app也好，或者别的工具也罢，首先你拿到的数据并非是你公司团队想要的，其次请问这个数据你知道是怎么获取的吗？这个工具告诉你，cpu，内存，电量，流量，GPU绘制消耗，或者crash信息你就信啊？那么请问要你有啥用？你说你连数据怎么来的如果都不知道这个信息你敢用来作为测试报告吗？我们至少得自己去学习一下怎么获取这些数据吧，然后你编写service也好，使用shell也罢将这些做成自动化工具，那么也是有理有据。否则请问你真的会做自动化测试吗？最后记得一定要结合业务，那么势必要详细的了解业务，请看上面。可详见：<a href="https://github.com/monkeytest15/AndroidPerformanceTest_Python" target="_blank" rel="external">https://github.com/monkeytest15/AndroidPerformanceTest_Python</a></p>
-<p>接着来说安全测试也是一样。不要去想“有什么工具能够做安全测试啊？”。好了，这个问题我就不展开讨论了额，否则很多人肯定会觉得我在鄙视他们的智商。安全的测试和大部分人知道的测试根本就是两个领域，不要妄想你连上面几点都不知道的情况下就去做安全测试，真的不是我看不起你们。</p>
-<p>其实我们需要想象我们掌握的知识点是一个一个积木，而现在你先去看哪些积木你还没有，你先去获得。就比如java都不怎么会，然后就说自己要去做自动化，android都不了解就说要做自动化。没有太大必要。积木一个一个去搭，然后方向自然而然的就有了。目前学习移动无线的应用测试没有什么一定的路，每个人所在公司不同，所处业务不同，不要去问别人，最重要的是自己静下心来，记住，是静下心来问自己，自己真的不懂，如果自己是什么都不懂，那么就踏踏实实的从语言的学习，android本身的文档，工具等一个一个去学，不要浮躁。只要踏实了，不会没有方向，方向永远在你的心中。</p>
-<p>最后想强调一点的是，请眼光放长远，站在更高的高度看问题，不要做了10年还在做UI自动化，而且还根本做的不深入。记住，UI只不过是自动化中的冰山一角，你要去看的还有很多。不要局限自己，不要让公司局限你，除非你一辈子就打算在这个公司养老了。如果你不赞同我，那么随意，本来我就不指望所有人都点赞。</p>
-<p>by monkey</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;首先很高兴的是移动测试会第八期在ucloud的赞助下非常非常圆满的成功了。人真的越来越多，妹子也越来越漂亮了。同时感谢小A和永达以及小马试驾创业公司的支持。移动测试会虽然最早是我个人创立的，但是一个人的能力毕竟有限，所以这第八期说明了团结就是力量：），也希望之后大家更多的来
-    
-    </summary>
-    
-    
-      <category term="移动无线测试" scheme="http://yoursite.com/tags/%E7%A7%BB%E5%8A%A8%E6%97%A0%E7%BA%BF%E6%B5%8B%E8%AF%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>iOS 逆天框架 FLEX</title>
-    <link href="http://yoursite.com/2016/11/04/ios-flex/"/>
-    <id>http://yoursite.com/2016/11/04/ios-flex/</id>
-    <published>2016-11-04T06:35:40.000Z</published>
-    <updated>2016-11-04T07:02:41.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>今天无意之间看到了一个框架还是很逆天的，从首页的gif看就非常的逆天。<br>github的网站：<a href="https://github.com/Flipboard/FLEX" target="_blank" rel="external">https://github.com/Flipboard/FLEX</a></p>
-<p>FLEX是一个需要注入式的一种框架，从描述来看，功能非常多。主要来讲的话能够对正在运行的应用进行样式的修改和控件的读取。</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/9549d16c6a342eeff046b314b24ed06a.gif" alt="gif"></p>
-<p>FLEX会赐予你SuperPower！！！</p>
-<ol>
-<li>可以查看控件的坐标和属性</li>
-<li>看任何一个对象的属性和成员变量</li>
-<li>动态修改属性和成员变量</li>
-<li>动态的调用实例和类方法<br>etc…</li>
-</ol>
-<p>FLEX正因为是注入式的，所以不需要在链接LLDB或者Xocde，或者是远程的调试服务器，它可以在本地随时随地的进行自有的操作和调试</p>
-<p>具体的一些主要功能点我们通过以下几个图来看下：</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/120c625da15bc3f6416ffbcce24782da.gif" alt="gif2"></p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gif3.gif" alt="gif3"></p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/git4.gif" alt="gif4"></p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gif5.gif" alt="gif5"></p>
-<p>FLEX的设置也非常简单。在Build Settings中点击“＋”，选择Add User-Defined Settings</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/2d9bbd9b94c89365465d6459d8f615ec.png" alt="flex1"></p>
-<p>根据你打包的debug或者release属性进行相应的FLEX＊设置即可。</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/0722ea8935a0d4542610d32979c4e0b1.png" alt="flex2"></p>
-<p>在你的项目中，你想使用FLEX的代码的地方加入#if DEBUG</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/e41310de1e83e9a93e4522a4b3754dce.png" alt="flex3"></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;今天无意之间看到了一个框架还是很逆天的，从首页的gif看就非常的逆天。&lt;br&gt;github的网站：&lt;a href=&quot;https://github.com/Flipboard/FLEX&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://githu
-    
-    </summary>
-    
-    
-      <category term="iOS测试" scheme="http://yoursite.com/tags/iOS%E6%B5%8B%E8%AF%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>九年来，移动互联测试有什么重要进展</title>
-    <link href="http://yoursite.com/2016/11/03/nineyears/"/>
-    <id>http://yoursite.com/2016/11/03/nineyears/</id>
-    <published>2016-11-03T07:16:00.000Z</published>
-    <updated>2016-11-06T04:40:59.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>看完<a href="http://daily.zhihu.com/story/8662398" target="_blank" rel="external">十年来，编程领域有什么重要进展</a>之后，好多人说还是想看看测试有什么进展。好吧，我就来“临摹”下。虽然我作为88年的老腊肉也没有工作九年，但估计也没有人比我合适来写了。不过总觉得让我这样一个要转行的人来写也不是那么合适了。</p>
-<h2 id="从业人员数量"><a href="#从业人员数量" class="headerlink" title="从业人员数量"></a>从业人员数量</h2><p>好吧，人家都从代码，标准上来讲，测试我能想到的第一个就是人员数量了。在2008年的时候行业内测试人员占比是很少的，更不要说移动互联网了。记得那个时候微软的很多员工说我很看好Android，旁人只当笑话。我在2009年底面试的时候看到了Android G1手机，完全都没有认知，更不要说知道什么移动互联网了。</p>
-<p>但到现在，移动互联网测试越来越多，无论是传统行业，互联网等企业，技术基本上都已经离不开移动互联网。随着时间的推移，每一年也有越来越多的应届生会去选择移动互联网测试岗位。</p>
-<p>明显可以感觉得到现在测试人员的数量越来越多，为了顺应潮流称自己是移动互联网测试的就更多了，但相对水平和素质也越来越层次不齐。不过总体来讲，移动互联网人员的从业数量在9年内几乎是几何倍数的增长，所以我放在了第一位。</p>
-<h2 id="培训机构层出不穷"><a href="#培训机构层出不穷" class="headerlink" title="培训机构层出不穷"></a>培训机构层出不穷</h2><p>其实我真的不想把测试写的那么low，但我还是要实事求是的。在移动互联网之前可能51CTO，51Testing，51xxx都是几家独大的，但在移动互联网时代，尤其是在2014年开始，在线教育，网络直播的兴起，越来越多的草根培训机构层出不穷。相应的，前互联网时代的那些机构却并没有很快的跟上移动互联网的脚步。2013年左右开始私人的培训机构开始越来越多，2015年开始针对测试培训创业的也开始逐渐增多。</p>
-<p>就移动互联网的9年来说，国内的测试培训机构到今天为止的状态可以说是叹为观止。当然这里其实不仅仅只针对测试，前端，后端，编程语言等都是如此。可以说这就是移动互联网本身所带来的一种变革。</p>
-<h2 id="人员要求"><a href="#人员要求" class="headerlink" title="人员要求"></a>人员要求</h2><p>2008年的时候我就不提了，估计公司里都不知道怎么定义移动互联网。<br>​<br>2009年前对于测试的要求就是你好好做功能测试，覆盖功能点，写不写用例等大多数公司都不是很关心，或者不是很懂</p>
-<p>2010年很多大公司还是正规化，需要编写正式的用例。但从业人员要求基本上也是能够会运行Android Monkey的Level</p>
-<p>2011年大家跌爬滚打开始摸索自动化，但总体还是比较关注用例积累和设计的</p>
-<p>2012年是一个分水岭，直接从功能跳跃到了自动化。UI自动化在当时火的不要不要的</p>
-<p>2013年对于自动化的要求更加变本加厉，不但要会使用更要会二次开发</p>
-<p>2014年从点扩展到了面，从自动化的使用扩展到了持续集成的了解和运用</p>
-<p>2015年功能，自动化都告了一个段落，整体开始测试平台化，工具化，技术上开始转移到了无线客户端的专项测试上</p>
-<p>2016年安全元年，全栈也好，敏捷也罢也都到了一个白热化阶段，要求测试不但要懂开发，还要懂业务，还要懂架构等等等。正应了我在2012年的时候说的那句话“应聘测试岗位比CTO都要难”。</p>
-<p>总体来讲，短短9年的时间，移动互联网测试的技能，素质要求简直是升华了好几次，不得不说大家现在对于测试的理解已经远远不是当初那种“门槛低，点点点”那种境界了。虽然很多人平时的工作依然还在点点点，但你们都有CTO的潜质啊喂。</p>
-<p>PS：虽然整体国内的要求在突飞猛进，但大家对于测试的理解依然没有太大的进步。同时测试这个行业整体人员的素质也没有太大的进步。未来还是很令人堪忧的。</p>
-<h2 id="技术"><a href="#技术" class="headerlink" title="技术"></a>技术</h2><p>前几天我还问一位小哥为什么测试大会没有去，小哥回答我说测试大会有啥好去的，技术都是开发这边演进过来的。这话其实本质上也没有错，不过移动互联网技术本身从各个方面上还是进展非常多的。</p>
-<p>早期2009年底我刚开始做的时候，除了Android的官方文档以外，几乎没有任何的社区和博客有记载关于移动互联的测试技术（开发技术倒是蛮多的）</p>
-<p>2011年前基本上都是使用原生工具较多，应用本身复杂程度比较有限，同时开源工具也不是很多</p>
-<p>2011年之后Robotium等一大批UI测试自动化框架开始多了起来，网络上关于测试的技术文章也开始逐步增多。同时一大批测试网站，社区也崭露头角</p>
-<p>2012年之后应用本身复杂程度大幅度提升，移动互联测试很清楚的分成了App和OS两部分。同时开源测试框架，开源测试工具层出不穷。当时很火的并且做的不错的有Emmagee、athrun等等框架。同时测试活动对于代码的依赖和使用开始了一个新的篇章</p>
-<p>2013年过后移动互联所涉及到的技术已经开始有了本质的变化，客户端的内容更多的开始依赖服务端的架构和设计，大家的关注也从一个客户端到了整个一套系统的关注。曾经的Web测试技术，API测试技术，Server测试技术也都慢慢的融入了移动互联。这也是之后为什么测试的关注点会从一个点发展到一个面的根本原因</p>
-<p>截止到现在，技能树可见：<a href="https://zhuanlan.zhihu.com/p/23379241?refer=c_53429125。" target="_blank" rel="external">https://zhuanlan.zhihu.com/p/23379241?refer=c_53429125。</a><br>移动互联网本身的测试工具已经非常多，开源的框架和工具也在github上面遍地开花，另外技术本身已经出现了很多的组合使用。这一切与9年前可以说是天壤之别。现在测试技术可谓遍布各个网站，测试测试栈也几乎可以打通了整个常用的编程语言以及前后端系统。夸张点说现在的移动互联网的测试技术可以说也到了让很多人望而生畏的地步了。</p>
-<h2 id="测试意识"><a href="#测试意识" class="headerlink" title="测试意识"></a>测试意识</h2><p>这点的确是个很有趣的现象，但可能本质上和移动互联网关系并不是非常大，在我看来移动互联网只不过是加速了这一现象的发生。还是需要分成两个方面来讲，学术界和工业界</p>
-<p>早在2009-2012年间吧，整个测试行业可以这两方都有非常明显的活动。</p>
-<ul>
-<li>学术界：办协会，做会刊，登报纸。扩散各种测试用例设计的方法，理念。从国外引入各种新的概念和设计思维等等。当然测试毕竟也是研发过程中的一个环节，所以敏捷、DevOps的一些理论也都不会放过。</li>
-<li>工业界：工业界的同学其实真的忙的都和狗一样，哪里有空去研究别的呀。不过之前几年基本上都是在学习移动互联的新知识，大力研究UI自动化中。（这里对不起狗了，狗其实比我们要轻松多了）</li>
-</ul>
-<p>他们的关注点都在一些通用的方法论上，但这些在2013年之后基本上就消失殆尽了。一来这些在行业中慢慢的很难去赚钱了，二来移动互联网加速了整个国内互联网的各种属性，理论本身也很难去有落地实践的可能性了。但我觉得大家不得不承认一点，学术界在高校中被称之为“未来科学”是有道理的，因为他们在意识层面上的确比工业界的人们要先进的多。</p>
-<p>测试真正意义上的自动化可能是自动化的终极目标，测试本身我们可以简单的分成“测试前”、“测试中”和“测试后”，但现在看来工业界基本上都还在“测试中”这个环节折腾，测试的自动化有通过软件框架实现的，也有通过opencv摄像头＋硬件实现的。但无论是哪一种基本上都还在“测试执行自动化”。</p>
-<p>在早些年工业界很少有人去关心“测试数据，用例设计自动化”以及“测试结果分析，定位，质量自动化”这两个概念，但学术界很多人在研究，甚至国外已经研究了几十年了。近几年才慢慢开始有相关的实践在大公司中落地，比如咸鱼在前年demo的基于脑图的用例生成、遍历技术、线上数据双引擎、大数据质量大盘等等。相信这些在未来都是工业界测试技术可以突破的点。</p>
-<p>总而言之呢，移动互联网在这几年里的测试意识基本上是：<br>功能–&gt;UI自动化–&gt;接口自动化–&gt;Native、WebView、底层分层测试–&gt;持续集成–&gt;专项测试–&gt;平台话、智能化（数据准备、遍历、问题定位）–&gt;质量（贯穿整个系统和整个研发流程）</p>
-<p>其实回过头看看，还是比较可怕的。</p>
-<h2 id="活动"><a href="#活动" class="headerlink" title="活动"></a>活动</h2><p>这的确还是有本质变化的，早几年除了ChinaTest和51XXX的一些活动以外基本上就没有什么针对测试的活动和大会了。经过了这几年洗礼之后，行业我们能够看到不仅仅有很多的测试专属会议以外，BAT也会时不时的有一些技术交流大会，同时开发的各种大会也合入了很多测试的topic在其中。（我都当过讲师，我骄傲我自豪～）</p>
-<p>总体来讲早几年我还苦于没有人交流所以自创了“移动测试会”这样一个沙龙活动来主动和大家交流。现在的同学们就非常幸福了，因为交流的平台和渠道实在太多太多了。</p>
-<h2 id="测试定位"><a href="#测试定位" class="headerlink" title="测试定位"></a>测试定位</h2><p>这里的定位其实在别人眼中的定位，虽然我觉得可能这点上并没有太大的进展，但至少也是从0到1迈出了这样一步——公司里应该要有测试这个岗位和角色。不过国内基本上95%以上的公司和人都分不清楚QA和测试的区别，可悲可叹啊。</p>
-<p>移动互联网中，早期其实大部分公司都是不需要测试的，毕竟测试并不能帮助产品从无到有</p>
-<p>中期的时候呢，为了保证产品质量，引入了一部分传统互联网的测试来做移动互联网，但后来发现不行。一来移动互联网并没有想象中那么赚钱，所以在过程中很多公司其实有过一次测试的裁员。二来发现传统互联网的测试根本就hold不住移动互联网的产品，所以基本上后来就招聘那些有经验的移动互联网测试了</p>
-<p>后期，也就是差不多现在这个时间段。测试和开发、运维等都开始融合了，测试本身的定位也从原本的测试保证到了质量保证。这也算是符合中国国情的一种定位吧。</p>
-<p>简单来讲，这也算是一个很突出的进步了。测试这个角色其实在这几年间就是一个催化剂的作用，让人和企业都慢慢的意识到了测试的重要性，意识到了质量的重要性，意识到了测试并不是想象中的那么简单这样几个点。在我看来这些就足够了。</p>
-<p>话说很多人会问我人员数量上，技术上都有提升了，素质上对应也应该有提升啊。我只想说，不好意思，在我看来人员素质上没有任何提升。9年前测试在抱怨薪资低，qq群里每天水，然后做伸手党，9年后的今天依然如此，没有任何区别。我倒是可以考虑再写写“9年来，测试行业有什么没有任何进展”</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;看完&lt;a href=&quot;http://daily.zhihu.com/story/8662398&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;十年来，编程领域有什么重要进展&lt;/a&gt;之后，好多人说还是想看看测试有什么进展。好吧，我就来“临摹”下。虽然我作为8
-    
-    </summary>
-    
-    
-      <category term="个人回忆录" scheme="http://yoursite.com/tags/%E4%B8%AA%E4%BA%BA%E5%9B%9E%E5%BF%86%E5%BD%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>测试到质量转变</title>
-    <link href="http://yoursite.com/2016/11/03/testtoquilty/"/>
-    <id>http://yoursite.com/2016/11/03/testtoquilty/</id>
-    <published>2016-11-03T06:39:40.000Z</published>
-    <updated>2016-11-03T07:08:10.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>今年我也不知道为什么会突发奇想来讲这个topic，这与我前几年风格非常不符。但也许这正是我觉得2016年应该说的东西吧，事实证明三场大会讲完之后，很多人第一次私下来找我要PPT，同时也觉得这个topic并不是几个小时能讲完的，所以我在这里还是浓缩的写篇文章说明下吧。</p>
-<h2 id="移动互联网测试常见问题"><a href="#移动互联网测试常见问题" class="headerlink" title="移动互联网测试常见问题"></a>移动互联网测试常见问题</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/d5258e61993c68112dc35118c3a9596d.png" alt="test1"></p>
-<p>这基本上就是我今年去别的公司的时候别人问我的问题。其实总体来讲大家现在还是有很大进步的，既关注了整体策略也关注了技术细节。但让我奇怪的是其实大部分人关注的还是别人怎么做，但缺少的就是从自己公司的产品业务和团队情况去思考问题。这不得不让我想到“别人家的xxx”这样一个场景。当初做这个ppt的时候我就是希望贴近主题尽量从全面的去阐述测试到质量的变化。</p>
-<p>反正总体来讲，还是觉得大家太过焦躁，我们总是偶尔的很积极的想去了解，想去学习，但这不可持续发展，这就好像我们会去存很多pdf和网站，但从来不看是一个道理。</p>
-<h2 id="关于测试人员"><a href="#关于测试人员" class="headerlink" title="关于测试人员"></a>关于测试人员</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/7199fe8b43aa452371f32ad198a167f4.png" alt="test2"></p>
-<p>关于人员我想从图中的四个方面进行阐述。毕竟现在整个行业对于测试的要求其实已经不仅仅停留在“你会什么”，“你懂什么”，“你有多少能力”这个level了。取而代之的更多的是“你潜力多少”，“你是否拥有持续学习的能力”等等。所以在关于测试人员中我也顺便提到了“KPI”和“招聘”</p>
-<p>但我在这里不得不强调的就还是所谓的“测试技术”，因为现在基本上行业风气就是大家追求“开发技术”，而不是“测试技术”，我们需要有测试思想和质量意识的去做事儿，而不是仅仅像开发一样去开发某些产品。所以这一切的前提还是需要我们从测试跳出来到质量来思考问题才会有答案。</p>
-<h2 id="一专多能"><a href="#一专多能" class="headerlink" title="一专多能"></a>一专多能</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/8159752a051b3d37b41bc282cbaf1c06.png" alt="test3"></p>
-<p>之前有很多文章讨论过所谓的“全栈”，其实至少从现在来看，“全栈”真正的意义随着时间的推移也开始浮出水面——快速学习的能力和驱动持续学习的兴趣。<br>第二点其实想表述的就是如果我们走出测试来看质量的话，几乎所有事情都不是单纯的测试个体或团队能够完成的。我们需要走出那个“你提需求，别人实现”的时代，取而代之的是“你提需求，你牵头来实现”。我们需要去利用合适的资源去做合适的事情，而不是什么都自己来做。</p>
-<p>在大会上有很多人会问，一个团队是否都应该是这样一专多能，全栈的人。在我的理解里，一个团队中其实肯定不能全栈的人，也不可能都是全栈的工程师。但这里其实特别的去强调了“定位问题”。举个例子来讲，我们在平时测试的过程中发现了一个问题，我们需要有能力去判断这个问题是前端还是后端的，如果是后端的，那么通过各个系统日志和调用关系需要去明白问题出在什么系统上。如果是前端，那么我们需要去发现是框架层的，还是组建层的，还是业务方等等。也就是说其实无论你是功能测试、自动化测试或者其他更牛逼的测试类型，定位问题都是通用的要求。</p>
-<h2 id="KPI"><a href="#KPI" class="headerlink" title="KPI"></a>KPI</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/bd6b69ad672b08c8ce2735f374834ae7.png" alt="test4"></p>
-<p>KPI这边的问题其实就是老生常谈了。但基本上现在都从那么几个点。</p>
-<ul>
-<li>业务占比最大。首先还是要保证产品业务的质量。这个在KPI上可以量化，但在移动互联网大多关注P0的缺陷会比较多，剩下的功能问题，小问题漏测等其实都是比较常见的。</li>
-<li>技术提升。唯一强调的就是技术提升本身需要落地，同时需要给出来使用某技术前后的具体效果的数据对比，一定也是可量化的。一切不落地的技术提升都是耍流氓啊亲</li>
-<li>团队协作。指主动分享、能否主动的牵头解决问题等等。</li>
-</ul>
-<p>基本上也会有细节的不同，但大方向是差不多的</p>
-<h2 id="人员招聘"><a href="#人员招聘" class="headerlink" title="人员招聘"></a>人员招聘</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/2747eb6d71db43c5368b584e9c0f5fbc.png" alt="test5"></p>
-<p>其实这是我理想状态下的招聘，现在行业中虽然是有这样的趋势，但还是有点偏差的。不过现在一些大公司的确更看重看问题的角度和解决问题的方式。而不像前几年比较死板的去考验技术。这点我相信今年只要跳槽的同学都深有体会的。</p>
-<h2 id="测试技术"><a href="#测试技术" class="headerlink" title="测试技术"></a>测试技术</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/f3c1c1ff817949981b27eabc26d63717.png" alt="test6"></p>
-<p>这个就是留给大家思考吧。大家在追求所谓的技术的同时，也关注关注测试吧。测试的一些基础，理念，方法等。我不希望若干年之后说起技术大家都是开发技术，对测试技术却浑然不知，届时到底自己是测试还是开发也许就谁都分不清楚了。</p>
-<h2 id="质量"><a href="#质量" class="headerlink" title="质量"></a>质量</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/7a7ec87c29be866979b568016e6b1257.png" alt="test7"></p>
-<p>其实我知道大部分人还是需要这张图的。后面的PPT我也实在写不动了。<a href="https://pan.baidu.com/s/1jIAUQua" target="_blank" rel="external">ppt链接</a>。接下来自己看吧，有啥问题在这里留言就好。相信这个话题还是值得大家来讨论的。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;今年我也不知道为什么会突发奇想来讲这个topic，这与我前几年风格非常不符。但也许这正是我觉得2016年应该说的东西吧，事实证明三场大会讲完之后，很多人第一次私下来找我要PPT，同时也觉得这个topic并不是几个小时能讲完的，所以我在这里还是浓缩的写篇文章说明下吧。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="测试到质量" scheme="http://yoursite.com/tags/%E6%B5%8B%E8%AF%95%E5%88%B0%E8%B4%A8%E9%87%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>移动无线测试技能树</title>
-    <link href="http://yoursite.com/2016/11/02/MobileSkill/"/>
-    <id>http://yoursite.com/2016/11/02/MobileSkill/</id>
-    <published>2016-11-02T11:39:11.000Z</published>
-    <updated>2016-11-02T11:41:14.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>###-常用IDE</p>
-<pre><code>- Android
-    - ADT
-    - Android Studio
-- iOS
-    - Xcode
-- Common
-    - Atom
-    - Sublime Text
-    - Vim
-    - Visual Studio Code
-</code></pre><p>###-基础知识</p>
-<pre><code>- Android
-    - 掌握Android开发基础技能     
-- iOS
-    - 掌握iOS开发基础技能
-- web
-    - 掌握web开发基础技能
-- api
-    - 掌握api相关基础知识
-- 测试
-    - 掌握基本的测试用例设计方法和思想
-</code></pre><p>###-常见应用模式</p>
-<pre><code>- Native
-- Hybrid
-- H5 App
-- ReactNative 
-</code></pre><p>###-常用工具</p>
-<pre><code>- Android
-    - Android sdk manager
-    - adb
-    - ddms
-    - ant
-    - aapt
-    - emulator
-    - Genymotion
-    - hierarchyviewer
-    - monitor
-    - monkey
-    - monkeyrunner
-    - uiautomatorviewer
-- iOS
-    - lldb
-    - iExplorer
-    - libimobiledevice 套件
-    - codesign
-    - instruments
-    - xcodebuild
-    - atos
-    - xcrun
-</code></pre><p>###-常用UI Automation框架</p>
-<pre><code>- Android
-    - Instrumentation
-    - uiautomator2.0
-    - Athrun
-    - Robotium
-    - Monkey
-    - Monkeyrunner
-    - uiautomator
-    - Selendroid
-    - Calabash-Android
-    - monkeytalk
-    - UiAutomation
-    - Espresso
-    - cafe
-- iOS
-    - UIAutomation（旧）
-    - XCUITesting
-    - KIF
-    - Frank
-    - Appium
-    - ios-driver
-    - WebdriverAgent
-    - Mechanic.js
-    - monkeytalk
-    - Calabash-iOS
-    - TuneupJs
-    - ynm3k
-- Appium
-- Macaca
-</code></pre><p>###-常用单元测试框架</p>
-<pre><code>- Android
-    - robolectric
-    - Instrumentation
-    - Mockito
-    - RxJava
-- iOS
-    - OCUnit
-    - GHUnit
-    - XCTest 
-    - OCMock
-    - OCMockito
-    - Expecta
-    - OCHamcrest
-</code></pre><p>###-常用性能工具</p>
-<pre><code>- 抓包
-    - Charles
-    - fiddler
-    - burpsuites
-    - tcpdump
-    - anyproxy
-- 弱网模拟
-    - iOS developer mode
-    - ATC
-    - Charles
-- memory
-    - Android
-        - MAT
-        - ddms
-        - Memory Monitor
-        - Allocation Tracker
-        - LeakCanary
-        - dumpsys
-        - procrank
-        - top
-    - iOS
-        - Memory Leaks
-- Scan
-    - Android
-        - findbugs
-        - lint
-        - infer
-        - CheckStyle
-        - PMD
-    - iOS
-        - scan-build
-        - oclint
-        - infer
-        - deployment
--other
-    - Common
-        - 安捷伦
-        - tcpdump
-        - wireshark
-        - 高速(慢速)摄像机
-        - 埋点
-        - 腾讯GT
-        - 网易Emmagee
-    - Android
-        - gfxinfo
-        - dumpsys
-        - traceview
-        - systrace
-        - GameBench
-        - battery-historian
-    - iOS
-        - Core Animation(instruments)
-        - Network(instruments)
-        - TimeProfiler(instruments)
-        - Zombies(instruments)
-</code></pre><p>###-安全</p>
-<pre><code>- Android
-    - Drozer
-    - apktool
-    - dex2jar
-    - proguard
-    - 加固
-    - exported/permission
-    - AndBug
-    - androguard
-    - Xposed
-
-- iOS
-    - IDB
-    - iRET
-    - DVIA
-    - LibiMobileDevice
-    - otool
-</code></pre><p>###-覆盖率</p>
-<pre><code>- Android
-    - Jacoco
-    - EMMA
-- iOS
-    - gcov
-</code></pre><p>###-动态更新</p>
-<pre><code>- Android
-    - Dexposed（二次开发之后）
-    - Robust
-    - android-frontia
-    - Nuwa
-    - HotFix
-    - RocooFix
-    - DroidFix
-    - AndFix 
-- iOS
-    - JSPatch
-    - WaxPatch
-- ota
-- ReactNative
-- weex
-</code></pre><p>###-abtest</p>
-<pre><code>- AB Tester
-- AppAdhocOptimizer
-- Google Website Optimizer
-- Visual Website Optimizer
-</code></pre><p>###-常用灰度测试工具</p>
-<pre><code>- testflight
-- 蒲公英
-- fir
-- pre
-</code></pre><p>###-常用云测平台</p>
-<pre><code>- testin
-- MQC
-- MTC
-</code></pre><p>###-常用持续集成平台／相关工具</p>
-<pre><code>- Jenkins
-- Travis CI 
-- Android
-    - mvn
-    - gradle
-- iOS
-    - xctool
-    - Cocoapods
-</code></pre><p>###-多语言开发应用</p>
-<pre><code>- SL4A
-- gomobile
-</code></pre><p>###-多设备远程管理平台</p>
-<pre><code>- STF
-</code></pre><p>###-自动遍历工具</p>
-<pre><code>- AppCrawle
-</code></pre><p>###-软技能</p>
-<pre><code>- 知识管理/总结分享
-- 沟通技巧/团队协作
-- 需求管理/PM
-- 交互设计/可用性/可访问性知识
-- 快速的学习能力
-</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;###-常用IDE&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;- Android
-    - ADT
-    - Android Studio
-- iOS
-    - Xcode
-- Common
-    - Atom
-    - Sublime Text
-    - Vim
-    
-    
-    </summary>
-    
-    
-      <category term="无线测试" scheme="http://yoursite.com/tags/%E6%97%A0%E7%BA%BF%E6%B5%8B%E8%AF%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Monkey的7年回忆，也是空杯的开始</title>
-    <link href="http://yoursite.com/2016/10/30/Monkey_Seven_Memory/"/>
-    <id>http://yoursite.com/2016/10/30/Monkey_Seven_Memory/</id>
-    <published>2016-10-29T16:35:05.000Z</published>
-    <updated>2016-10-29T17:41:41.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>  可能认识我很久的朋友都还记得当初那个刚工作了几年就在行业中各种乱蹦的那个我，一晃眼我工作竟然都7年了。其实朋友圈里我说我已经做了7年了（2009年10月-至今），很多朋友还是很诧异的。其实我自己也经常会有一种错觉，那就是感觉自己年龄在增长，工作年限在增加，而朋友们放佛一直都很年轻，一直没有变老。让我无意间一直会告诉自己，不能落后，要努力前进，追上我的朋友们。但事实上的确大家都在变老，大家也都在前进，我仅仅是为了不让自己落后而前进着。</p>
-<h2 id="自嘲"><a href="#自嘲" class="headerlink" title="自嘲"></a>自嘲</h2><p>  依稀记得高中三年，英语没有及格过。当时找了很多补课的老师，我就是所有学生中英语最差的那个。记得老师说陈晔这个同学吧，发挥的好应该可以上个好的一本，发挥的不好估计就最多二本了。记得高考结束查成绩的时候是某一个夏天，我和外婆住在一起，很晚的时候大家都已经在互相告知能够查成绩了，我也没有办法的打开电脑上网查分数。看到分数的那一刻其实我心里是有预期的，但对我外婆来讲可能打击就非常大了。最终结果是分数刚好能够进一个比较差的专科。我从我外婆的表情中可以得到一个信息————这孩子这辈子已经毁了一大半了。那一晚我没心没肺的睡着了，但我估计我外婆一宿没睡。</p>
-<p>  记得刚找到测试这份工作的时候是在一家创业公司，一做就是做了两年。这两年中我快乐，忙碌，抑郁，焦虑，几乎什么都有，就是没有去思考。我一直忙于业务，功能，间接性会每天工作到凌晨2点，然后一个人打个小黑车到家楼下的牛肉面馆吃个夜宵，接着回到空荡荡的屋子。偶然的几次会不停的反问自己，这样辛苦为了什么，自己有成长吗？这样委屈为了什么？然而每次都是没有结果的。</p>
-<p>  那个时候网络上并没有太多的资料，我在微博上逛游了好久之后看到了段念和左耳朵耗子这样的大神，我也甚至不知深浅的会引用他们的文字并加以自己的评论。那个时候如果知道之后段念能为我的书写序，能和耗子成为同事的话，估计自己要乐疯了。是的，就是这样的。</p>
-<p>  创业公司辞职之后，我有半年找不到工作。我每天会接到很多电话，但最终都是以学历不行告终，是的，半年都是如此，甚至连面试的机会都没有。我那个时候并不奢望BAT，但至少想有一份工作。</p>
-<p>  记得有一天我在上海田林路的一个十字路口告诉自己，我想在这个行业做点什么，我想帮助这个行业更快速的发展。但与此同时看着眼前的高楼大厦，看着来来往往的人群，再审视了失业的自己。不禁觉得太自嘲了，相比眼前的景色，我再渺小不过了，相比这个行业那么多从业者，我甚至还没有找到工作。是的，没有人认识我，我也不认识谁。</p>
-<h2 id="为了生存"><a href="#为了生存" class="headerlink" title="为了生存"></a>为了生存</h2><p>  有一段时间觉得自己不能再窝在公司里了，也想多找人交流交流，想看看外面的世界，也想多知道别人怎么想怎么做的。自己在上海这样一个城市，工作3年了，半年失业，月薪都没有超过7k，心里也是非常着急的。当时2012年年初吧，上海根本就没有什么比较好的交流活动。我就想着自己是不是能自己举办一些交流会，同时也在网上寻求各种交流的机会。虽然现在看来当初这个决定是理所当然的，但对于当初的我来讲简直就是一个不可想象的决定。是的，我决定走出来，去认识大家，让大家认识我。</p>
-<p>  我有一个很好的朋友，认识了快15，6年了。某一天我请他去星爸爸喝咖啡，我告诉他我找他没有别的事儿，就是告诉他下我准备自己去闯荡一番，虽然我不知道行业的凶险到底如何，但毕竟面临的是自己未知的事物。当时我记得我原话是这样说的：</p>
-<blockquote>
-<p>机缘巧合，我可能接下来会在网络上开始尝试做一些分享，在上海线下会尝试举办一些活动。我工作3年了，但我没有意识到自己的进步，我想变得更好，更厉害，所以我选择这样一个途径。当然，我今天找你并非只是告诉你这样一件事情，而是希望你能看着我，如果哪一天我已经忘记了我的初衷，忘记了我的原点，如果哪一天我完全被利益蒙蔽了双眼，那请你来告诉我曾经某一天我找过你，我说过这样一段话</p>
-</blockquote>
-<p>  从那天之后，我开始自己尝试着做在线的分享，起初半年都是免费的，后来慢慢的一次分享50块钱。那个时候依稀记得自己非常开心，拿着50块钱可以买点自己喜欢的游戏，也会给老婆买点吃的。最辛苦的其实莫过于线下活动，可能有些朋友还记得我创立的“移动测试会”这样一个沙龙，沙龙秉持的一个原则就是免费，有人愿意来，一起交流分享我就非常开心了。那个时候每次找沙龙的场地几乎都不同，有时候在上海体育馆附近，有时候在上海南站附近，我自己出钱租场地，买饮料给前来的朋友，我老婆一段时间挺着大肚子帮我做签到记录等。也许从当时看来这是非常纯粹的为了交流，学习，但从现在反观，这一切其实就是为了生存，没有当初的选择，就不会有今天你们认识的Monkey。</p>
-<p>  我从来没有说过情怀就是免费，我认为情怀就是需要坚持那些自己觉得应该坚持的东西，去坚持那些这个世界上已经很多人失去的东西。但赚钱是为了生存，同时也是体现自己劳动成果的一部分。这两者并没有什么冲突的地方，真正的冲突不在这里，而在于每个人的心。我认为我的情怀就在于我贯穿了自己最初的想法，我成为了国内移动互联网测试发展的一个催化剂，并且坚持了7年。</p>
-<h2 id="空杯"><a href="#空杯" class="headerlink" title="空杯"></a>空杯</h2><p>  是的，连我自己都不曾想到，华东理工的一名老师的一句话让我冲动的写出了花费一年时间的《大话移动App测试》这样看似狂妄的一本书。很多人和我说这本书写的多么不好多么不好，至少事实这本书目前也已经卖掉了14000+册。但我对这本书有自己独特的见解。我曾经晚上在新天地和一个朋友在Costa喝咖啡。朋友问我</p>
-<blockquote>
-<p>不久你的书就要出版了，你觉得会卖的好还是不好？</p>
-<p>我说“说实话，无论从文笔和技术内容上来讲这本书肯定不能算好，对一些人有帮助是肯定的，但可能很多人也会觉得非常幼稚。但我个人却认为这本书在现在基本上不可能发挥它的价值，等到国内什么时候大家对于测试都有一个正确认知的时候，如果还有人能记得这本书的话，那届时我相信大家会明白它的价值和我想表达的意思的。</p>
-</blockquote>
-<p>  是的，这就是我的评价。</p>
-<p>  之后就是各种不可思议的事情，《大话移动App测试2.0》和《互联网产品测试故事汇》两本书陆续出版，这得感谢恒温和小兔这样两个真心帮助我的朋友。对于我这样一个高考语文没有及格的人来讲，28岁有3本由清华大学出版社出版的书，至少以后能有资本和我女儿吹牛皮了</p>
-<p>  我参与的公开课，沙龙活动也开始走出上海，遍布了南京，杭州，北京，深圳，成都，长沙，武汉等各个地区。其实对于我来讲，每次也更像一次旅游，毕竟在这之前我从来没有离开过上海这样一个城市。但感谢给我这些机会人和组织，也让我认识到更多的朋友。</p>
-<p>  让我开心的也是这些选择让自己能够有机会前往各个企业进行交流学习，BAT，360，滴滴，银行，JD等企业都让我学习到了很多。之后很多时候也有行业的小伙伴想和我一起去，我说只要有空的都一起过去就ok。谁会拒绝交流学习呢</p>
-<p>  现在越来越多的新朋友认识了我，渠道也开始多样化起来。线上线下的活动，知乎Live，微信公众号，书等等。我很多时候都记不起眼前和我打招呼的人是谁，大家是真的要谅解我。😄</p>
-<p>  但是现在，我不想循规蹈矩的在去做以前这些事儿了，我也不想再停留在现在的Level和做事习惯上了。就好像当初我站在十字路口一样，我想重新做出一些选择，重新规划自己想要做的事情。与当时不同的就是，我不再是我一个人，我的人脉，我的资历，我的技术手段都是我可以利用的工具。<strong>记得之前有一位对我来讲很重要的朋友和我说，一个人一生也许选择很重要，也许果断的作出选择很重要，但更重要的是懂得放下，懂得舍去，舍得舍得，有舍才有得。</strong>也许当我们沉迷在自己已有的境界中的时候同时也是束缚了自己，不是吗？</p>
-<p>  人生还很长，我觉得一个人最失败的地方就是什么都靠自己，不懂的利用资源。如果我下一个7年相比现在没有什么改变，那甚至谈不上活过。前几天我在作出选择的时候，很多人在和我谈人生的意义，我说我觉得我的意义就在于至少我要让这个世界看到我活过，在这个世界上有我活着过的痕迹，我可不想哪一天突然走了之后，在这个世界上甚至找不到我活着过的痕迹，甚至找不到我这个人活着的价值。这并不悲哀，而是悲伤。</p>
-<p>  <strong>很多事情你不做，总有别人在做。就好像我一直认为移动互联网测试圈子，哪怕没有我的存在，但这7年行业所发生的事情依然都会发生，只不过做这些事儿的不是我，而是张三李四。事情永远都会有自己的规律，有没有意义取决于是不是自己在主导。</strong>  </p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;  可能认识我很久的朋友都还记得当初那个刚工作了几年就在行业中各种乱蹦的那个我，一晃眼我工作竟然都7年了。其实朋友圈里我说我已经做了7年了（2009年10月-至今），很多朋友还是很诧异的。其实我自己也经常会有一种错觉，那就是感觉自己年龄在增长，工作年限在增加，而朋友们放佛一
-    
-    </summary>
-    
-    
-      <category term="个人回忆录" scheme="http://yoursite.com/tags/%E4%B8%AA%E4%BA%BA%E5%9B%9E%E5%BF%86%E5%BD%95/"/>
     
   </entry>
   

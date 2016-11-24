@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://yoursite.com">
+  <title>iOS_Zombie | Monkey`s Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="最近我在看“ I am Zombie”，所以我就来看看iOS的这个工具啦，哈哈，一大群Zombies正在逼近！！！
+什么是Zombie是的，打开instruments之后其实会看到一个图标，这个图标多么让人激动啊！！哈哈
+
+我们顺便来看下官方文档的说法
+
+The Zombies template causes persistent memory growth because it changes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS_Zombie">
+<meta property="og:url" content="http://yoursite.com/2016/11/17/iOS-Zombie/index.html">
+<meta property="og:site_name" content="Monkey`s Note">
+<meta property="og:description" content="最近我在看“ I am Zombie”，所以我就来看看iOS的这个工具啦，哈哈，一大群Zombies正在逼近！！！
+什么是Zombie是的，打开instruments之后其实会看到一个图标，这个图标多么让人激动啊！！哈哈
+
+我们顺便来看下官方文档的说法
+
+The Zombies template causes persistent memory growth because it changes">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/aaaajiangshi.png">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/bbbjiangshi.png">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/cccjiangshi.png">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/dddjiangshi.png">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/c0a9281b6f3cdd9851ddfc36fc7386ff.png">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/c69b4152c196a4dc0ca69b129cab5024.png">
+<meta property="og:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/6cff1dfd0eeb63447c420914c922d060.png">
+<meta property="og:updated_time" content="2016-11-17T02:10:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS_Zombie">
+<meta name="twitter:description" content="最近我在看“ I am Zombie”，所以我就来看看iOS的这个工具啦，哈哈，一大群Zombies正在逼近！！！
+什么是Zombie是的，打开instruments之后其实会看到一个图标，这个图标多么让人激动啊！！哈哈
+
+我们顺便来看下官方文档的说法
+
+The Zombies template causes persistent memory growth because it changes">
+<meta name="twitter:image" content="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/aaaajiangshi.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Monkey`s Note" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/assets/img/favicon.ico">
+  
+  <link rel="stylesheet" href="/main.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/blogImg/litten.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/photos">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">标签</a>
+    			
+    			
+            
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+		        
+					<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+		        
+					<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/blogImg/litten.png" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/photos">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-iOS-Zombie" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS_Zombie
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近我在看“ I am Zombie”，所以我就来看看iOS的这个工具啦，哈哈，一大群Zombies正在逼近！！！</p>
+<h2 id="什么是Zombie"><a href="#什么是Zombie" class="headerlink" title="什么是Zombie"></a>什么是Zombie</h2><p>是的，打开instruments之后其实会看到一个图标，这个图标多么让人激动啊！！哈哈</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/aaaajiangshi.png" alt=""></p>
+<p>我们顺便来看下官方文档的说法</p>
+<blockquote>
+<p>The Zombies template causes persistent memory growth because it changes your environment so that deallocated objects are never technically deallocated. This is expected behavior, but it means that aside from zombie flags and memory address histories, any other statistics provided by the Allocations instrument should be ignored. You also shouldn’t add the Leaks instrument to the Zombies template, as it will produce inaccurate results. For iOS apps, use the Zombies template with the iOS Simulator, rather than a physical device.</p>
+</blockquote>
+<p>不过我在尝试的时候其实还没有看到这段文字，所以我也是用了真机，不过卡的是一塌糊涂。我查了网上大部分的资料，有的会说Zombie不支持真机，其实就是rather than，你懂的，不过的确不建议用，本身调查的问题在这个环境上关系不大，更多的纯粹就是代码上的问题。</p>
+<p>用白话文来解释下吧，取名Zombie其实是有道理的，在iOS中我们经常会有一些对象（虽然iOS在5.0之后引入了ARC）会手动或者自动被ARC销毁掉，但是我们的程序可能并不知道对象不在了，还可能去调用它，导致了EXC_BAD_ACCESS的错误。当然，如果程序简单的话，很容易能够排查出来，但是我们项目中大多是很复杂的，排查起来就有一定的困难。这个时候就会去使用Zombie工具来做辅助。注意，在专项里面工具都是辅助的，没有一个工具是可以说你做了1，2，3，4步骤就知道问题在哪儿，几乎没有，所以专项并不是很多人想的那么简单的。开启Zombie有两种方式，一种是通过instruments来直接使用，网上都会很推荐这种做法，还有一种就是在如下设置中去运行Zombie默认就打包在app中，这种方法很不可取，因为一旦在上线之前忘记关闭这个选项的话可是毁灭性的。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/bbbjiangshi.png" alt=""></p>
+<p>简单来讲，Zombie会去取代那些已经被销毁的对象，让这些对象并不是null的存在，而是僵尸的存在。这样做的好处在于能够给予我们更多的info来定位问题，而不好的话也是显而易见的，上面官方的描述也写的很清楚，一旦开启full on Zombie mode（这个词来自于美剧I am Zombie），那么你的应用的内存会不停的飙升，因为你的对象永远都不会销毁，直到app crash。所以这里大家要注意危险性。</p>
+<h2 id="什么是ARC"><a href="#什么是ARC" class="headerlink" title="什么是ARC"></a>什么是ARC</h2><p>这其实要详细了解，大家可以自行Google，这里我就随便截图一段，科普一下<br>Automatic Reference Counting，自动引用计数，即ARC，可以说是WWDC2011和iOS5所引入的最大的变革和最激动人心的变化。ARC是新的LLVM 3.0编译器的一项特性，使用ARC，可以说一举解决了广大iOS开发者所憎恨的手动内存管理的麻烦。</p>
+<p>在工程中使用ARC非常简单：只需要像往常那样编写代码，只不过永远不写retain,release和autorelease三个关键字就好～这是ARC的基本原则。当ARC开启时，编译器将自动在代码合适的地方插入retain, release和autorelease，而作为开发者，完全不需要担心编译器会做错（除非开发者自己错用ARC了）。好了，ARC相当简单吧～到此为止，本教程结束。</p>
+<h2 id="什么是EXC-BAD-ACCESS"><a href="#什么是EXC-BAD-ACCESS" class="headerlink" title="什么是EXC_BAD_ACCESS"></a>什么是EXC_BAD_ACCESS</h2><p>90%的错误来源在于对一个已经释放的对象进行release操作。不过的确看到这个缺陷，项目一复杂，很难去定位。</p>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>所有说专项的没有案例都是耍流氓，真心觉得这是真理。<br>我千辛万苦的随便找了一个案例，然后发现启动之后就crash，我心都碎了，那么偶尔我们也要来修一次bug不是？基本上我缩小了范围，错误代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;    </div><div class="line"></div><div class="line">    <span class="comment">// Override point for customization after application launch.</span></div><div class="line"></div><div class="line">    <span class="comment">// Add the navigation controller's view to the window and display.</span></div><div class="line">    [self.window addSubview:navigationController.view];</div><div class="line"></div><div class="line">    [self.window makeKeyAndVisible];</div><div class="line"></div><div class="line">    <span class="keyword">return</span> YES;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>错误信息如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="number">2015</span>-<span class="number">09</span>-<span class="number">25</span> <span class="number">21</span>:<span class="number">32</span>:<span class="number">05.749</span> Zombie[<span class="number">24745</span>:<span class="number">854954</span>] *** Terminating app due to uncaught exception <span class="string">'NSInternalInconsistencyException'</span>, reason: <span class="string">'Application windows are expected to have a root view controller at the end of application launch'</span></div></pre></td></tr></table></figure>
+<p>反正我是不懂，经过了Google之后，我发现是iOS本身API的改变，应该如下修改</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;    </div><div class="line"></div><div class="line">    <span class="comment">// Override point for customization after application launch.</span></div><div class="line"></div><div class="line">    <span class="comment">// Add the navigation controller's view to the window and display.</span></div><div class="line">-    [self.window addSubview:navigationController.view];</div><div class="line">+    [self.window setRootViewController:navigationController];</div><div class="line">    [self.window makeKeyAndVisible];</div><div class="line"></div><div class="line">    <span class="keyword">return</span> YES;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>好了，一切就妥妥的了。经过一系列的操作之后我们可以看到：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/cccjiangshi.png" alt=""><br>类似的错误，然后可以看到如下的错误时候的信息<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/dddjiangshi.png" alt=""></p>
+<p>好了，接着让我们开启full on Zombie Mode吧。使用Zombie来启动我们的应用，按照同样的操作，我们可以看到crash的时候会出现一个小的紫色旗子，上面的信息告诉我们，明显是一个消息发给一个已经被干掉的对象。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/c0a9281b6f3cdd9851ddfc36fc7386ff.png" alt=""></p>
+<p>我们可以点击Zombie这条额外信息的右边的小箭头，可以看到如下的信息</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/c69b4152c196a4dc0ca69b129cab5024.png" alt=""></p>
+<p>这里我们可以看到有AutoRelease指向了我们的Zombie project，我们点击进入可以看到：</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/6cff1dfd0eeb63447c420914c922d060.png" alt=""></p>
+<p>这里的lastString是一个AutoRelease的变量，而_lastString是指向这个字符串的指针，所以当被自动释放的时候，_lastString就指向了一个null，从而就变成了我们最早看到的那个错误。</p>
+<p>至此，我们其实只要将lastString手动的保留一下retain，这个程序就不会再crash了。不过这个程序的确还是存在很多的内存泄漏，作为之后的案例还是很不错的。</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/17/iOS-Zombie/" class="archive-article-date">
+  	<time datetime="2016-11-17T01:57:58.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-17</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/11/22/toTesters/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          致那些情商不高的测试
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/17/test-future/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">移动测试人员的未来：测试开发技术的融合</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+	    <a class="jiathis_button_twitter"></a>
+	    <a class="jiathis_button_plus"></a> 
+	    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="iOS-Zombie" data-title="iOS_Zombie" data-url="http://yoursite.com/2016/11/17/iOS-Zombie/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"litten-hexo"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/Android性能/" style="font-size: 10px;">Android性能</a> <a href="/tags/Appium/" style="font-size: 10px;">Appium</a> <a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Gradle/" style="font-size: 13.33px;">Gradle</a> <a href="/tags/Groovy/" style="font-size: 10px;">Groovy</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/IOS/" style="font-size: 10px;">IOS</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 13.33px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/android性能测试/" style="font-size: 10px;">android性能测试</a> <a href="/tags/espresso/" style="font-size: 13.33px;">espresso</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/swift/" style="font-size: 13.33px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 13.33px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 13.33px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 13.33px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
+    			</div>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Litten，&lt;br&gt;毕业于华科，就职于鹅厂&lt;br&gt;&lt;br&gt;热爱大海与冷笑话，&lt;br/&gt;目前是一枚前端&lt;br/&gt;&lt;br/&gt;胆小认生，不易相处，&lt;br&gt;年轻无为，卖马为生。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

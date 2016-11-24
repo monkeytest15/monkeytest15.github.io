@@ -139,6 +139,459 @@
       <div class="body-wrap">
         
   
+    <article id="post-GradleDIY" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/14/GradleDIY/">Android Gradle 自定义效果控件案例</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近感叹啊。。国内VPN又开始各种不稳了。Android Studio也好，SDK也罢，好吧，又都卡住了。再这样下去，没有办法活了。。。</p>
+<p>使用的案例：<a href="https://github.com/monkeytest15/CircularReveal" target="_blank" rel="external">https://github.com/monkeytest15/CircularReveal</a></p>
+<p>首先我们先来说下Gradle本身引用aar的三种方式：</p>
+<blockquote>
+<p>jcenter()或者maven</p>
+<p>本地直接引用aar</p>
+<p>打包aar之前，本地library直接的引用</p>
+</blockquote>
+<p>checkout这个案例之后，很容易看出来属于第三种。当然在该项目的文档中也给出了如何本地直接引入aar以及怎么远程引用。也就是说自定义控件的效果可通过多种方式进行直接使用。</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gradle3.png" alt="gradle3"></p>
+<p>在CircularReveal中定义了两个自定义的布局，AndroidManifest文件中也能够看得出来gradle中library和app module的区别。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;manifest package="io.codetail.view"&gt;</div><div class="line"></div><div class="line">    &lt;application /&gt;</div><div class="line"></div><div class="line">&lt;/manifest&gt;</div></pre></td></tr></table></figure>
+<p>library的AndroidManifest还是非常简单的。我们参考上面提到的Android Gradle 模块化开发实例 Demo的方法，我们可以直接编译出我们自定义的布局的aar文件，然后直接本地引用。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gradle4.png" alt="gradle3"></p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gradle5.gif" alt="gradle5"></p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/14/GradleDIY/" class="archive-article-date">
+  	<time datetime="2016-11-14T07:38:47.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-14</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Gradle/">Gradle</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-groovy-dis" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/14/groovy-dis/">Groovy 的现状见解</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><ul>
+<li>软件开发：</li>
+</ul>
+<p>国内做grails大多是lancer和小公司为主，散落的很多；这个，jvm上各个语言都差不多。<br>大公司，thoughtworks，百度，阿里都有，BAT大多做擦边项目（比如阿里也有rails team，一直再被逼转java, nodejs） 使用领域主要是网页（grails强项），少量做api开发和其他的（比如swing等，没错！swing仍然坚挺）。还有就是用来写一些工具的东西，由于与测试和环境的共通性，放到测试里说 grails做快速开发的原型还是不错的，因为动态的特性，加上ROO，：）<br>另外：groovy for android正在快速崛起，很多尝过gradle甜头的，开始探索了（我这的安卓就在这么干）</p>
+<ul>
+<li>业务设计</li>
+</ul>
+<p>这个是groovy的强项，得益于groovy的script engine，拿groovy做模版做dsl的大有人在（比如java上有很多做jvm javascript）的；比如写模型，写分析程序，写算法（尼玛SQL都能写贝叶斯公式呢）<br>scala的actor和match是神器：）</p>
+<ul>
+<li>测试：</li>
+</ul>
+<p>几个方面groovy都远远胜过java和其他语言（以前我非常狂妄的对上司说java是马，ruby是驴，jruby……），关键是groovy是java的私生子，没有其他jvm语言的兼容性问题： groovy很多自带的语言特性，先天对测试友好（比如groovy自己的sql）<br>groovy的闭包等特性，做mock stub就是大杀气<br>groovy的mop纯动态特性，非常适合解决java里一些繁琐的问题<br>groovy的构建工具gant, gradle对编程的出色支持<br>groovy的scipt template engine适合简化一切任务<br>所有jvm上的库，groovy都能无缝调用和简化<br>groovy不需要编译，特别适合写一些工具脚本，比如jmx管理！！！！别惊异，还真有人这么干，运维有，做jvm的也有，现在跑到南湾区的阿里撒加就是各中好手</p>
+<ul>
+<li>圈子</li>
+</ul>
+<p>groovy生产上，国内，应用的不比scala少（因为scala的门槛较高；scala + jvm），反而OTP等国内应用的较多）；但是都比较散；相比之下，圈子就有集中的特性了： 最大的圈子是在西安。以前国内定期聚会都在那里。以前groovyq的老窝也在那里。北京，成都也有（有thoughtworks布道的地方都有）。 教学上，少量学校有尝试作为教学语言，主要原因是门槛比java低，便于理解（随便举个，你让新手理解Java迭代器vs 闭包上的迭代器试试） 测试圈子里就更少，我认识的也聊聊数人（北京，西安，合肥，呵呵，我圈子小么。。），可能和测试的圈子有特性，本身测试行业，对代码深刻理解的人少，一口气把23设计模式报出来的都不多 lancer圈子算一个。 最后：jdk7,8,里很多特性是groovy和scalar上先出来的，并且很明显妈妈把私生子的东西学去了。</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/14/groovy-dis/" class="archive-article-date">
+  	<time datetime="2016-11-14T07:27:32.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-14</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Groovy/">Groovy</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-appium-python" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/14/appium-python/">Appium Python Client 简单解析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>目录</p>
+<p>我们clone下来之后，能够在Appium目录下看到如下的结构</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">├── __init__.py</div><div class="line">├── common</div><div class="line">│   ├── __init__.py</div><div class="line">│   └── exceptions.py</div><div class="line">├── saucetestcase.py</div><div class="line">└── webdriver</div><div class="line">    ├── __init__.py</div><div class="line">    ├── common</div><div class="line">    │   ├── __init__.py</div><div class="line">    │   ├── mobileby.py</div><div class="line">    │   ├── multi_action.py</div><div class="line">    │   └── touch_action.py</div><div class="line">    ├── connectiontype.py</div><div class="line">    ├── errorhandler.py</div><div class="line">    ├── mobilecommand.py</div><div class="line">    ├── switch_to.py</div><div class="line">    ├── webdriver.py</div><div class="line">    └── webelement.py</div></pre></td></tr></table></figure>
+<p>就如python本身语言一样还是比较清晰的，其中一层common目录以及saucetestcase我就不多说了，这个自己理解下就很简单了，其实大部分的篇幅还是注释，对作者表示致敬。</p>
+<p>文件查看</p>
+<p>那么自然我们就来详细看下webdrvier下面的文件了。一个一个来看吧。</p>
+<blockquote>
+<p>init.py<br>嗯，python工程、模块运行安装基础文件，该文件为空，但必须存在</p>
+<p>mobileby.py</p>
+</blockquote>
+<p>部分代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">from selenium.webdriver.common.<span class="function">by <span class="keyword">import</span> By</span></div><div class="line"></div><div class="line"></div><div class="line">class <span class="title">MobileBy</span><span class="params">(By)</span>:</div><div class="line">    IOS_UIAUTOMATION = <span class="string">'-ios uiautomation'</span></div><div class="line">    ANDROID_UIAUTOMATOR = <span class="string">'-android uiautomator'</span></div><div class="line">    ACCESSIBILITY_ID = <span class="string">'accessibility id'</span></div></pre></td></tr></table></figure>
+<p>这个文件在这里就是对寻找控件的方式做了一个定义，当然其实看到这里，我不知道有没有同学就有疑问了，你能看懂这个是一个类，但这个类的参数By到底是个啥。好吧，其实我也不懂，但是我求助了webdriver的docs，By的定义如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">These are the attributes which can be used to locate elements. See the Locating Elements chapter <span class="keyword">for</span> example usages.</div><div class="line"></div><div class="line">The By implementation.</div></pre></td></tr></table></figure>
+<p>我初步理解了下，就是定位元素的一种方式，但是到底有哪些方式呢，其实还是没有看懂，所以进一步的看了下扩展。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class selenium.webdriver.common.by.By</div><div class="line">Bases: object</div><div class="line"></div><div class="line">Set of supported locator strategies.</div><div class="line"></div><div class="line">classmethod is_valid(by)</div><div class="line">CLASS_NAME = 'class name'</div><div class="line">CSS_SELECTOR = 'css selector'</div><div class="line">ID = 'id'</div><div class="line">LINK_TEXT = 'link text'</div><div class="line">NAME = 'name'</div><div class="line">PARTIAL_LINK_TEXT = 'partial link text'</div><div class="line">TAG_NAME = 'tag name'</div><div class="line">XPATH = 'xpath'</div></pre></td></tr></table></figure>
+<p>定义的方式还是很多的，当然这个大家会在后面感觉到更熟悉的，我们接着往下看。</p>
+<p>部分代码</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">import copy</div><div class="line"></div><div class="line">from appium.webdriver.mobilecommand import MobileCommand as Command</div><div class="line"></div><div class="line"></div><div class="line">class MultiAction(object):</div><div class="line">    def __init__(self, driver, element=None):</div><div class="line">        self._driver = driver</div><div class="line">        self._element = element</div><div class="line">        self._touch_actions = []</div><div class="line"></div><div class="line">    def add(self, *touch_actions):</div><div class="line">        """Add TouchAction objects to the MultiAction, to be performed later.</div><div class="line"></div><div class="line">        :Args:</div><div class="line">         - touch_actions - one or more TouchAction objects describing a chain of actions to be performed by one finger</div><div class="line"></div><div class="line">        :Usage:</div><div class="line">            a1 = TouchAction(driver)</div><div class="line">            a1.press(el1).move_to(el2).release()</div><div class="line">            a2 = TouchAction(driver)</div><div class="line">            a2.press(el2).move_to(el1).release()</div><div class="line"></div><div class="line">            MultiAction(driver).add(a1, a2)</div><div class="line">        """</div><div class="line">        for touch_action in touch_actions:</div><div class="line">            if self._touch_actions is None:</div><div class="line">                self._touch_actions = []</div><div class="line"></div><div class="line">            # deep copy, so that once they are in here, the user can't muck about</div><div class="line">            self._touch_actions.append(copy.deepcopy(touch_action))</div><div class="line"></div><div class="line">    def perform(self):</div><div class="line">        """Perform the actions stored in the object.</div><div class="line"></div><div class="line">        :Usage:</div><div class="line">            a1 = TouchAction(driver)</div><div class="line">            a1.press(el1).move_to(el2).release()</div><div class="line">            a2 = TouchAction(driver)</div><div class="line">            a2.press(el2).move_to(el1).release()</div><div class="line"></div><div class="line">            MultiAction(driver).add(a1, a2).perform()</div><div class="line">        """</div><div class="line">        self._driver.execute(Command.MULTI_ACTION, self.json_wire_gestures)</div><div class="line"></div><div class="line">        # clean up and be ready for the next batch</div><div class="line">        self._touch_actions = []</div><div class="line"></div><div class="line">        return self</div></pre></td></tr></table></figure>
+<p>其实这边其实第一个我表示我就没有理解，这个copy的模块有啥用，查看了下代码，其中使用到了深度复制deepcopy，从官方文档的解释来看像是连带着对象的属性也都会全部复制过来，并且开一个新的内存进行存放，应该是更有效率。从文件名字我们可以知道这是一个定义多操作的文件，然后从类的初始化我们能够看到很熟悉的参数，appium一个操作通常的参数，driver、element、action，首先定义了一个添加的方法，为了让单一的步骤肯定进行叠加，然后出现了perform这个重要的方法，这个方法是让用户去定义一个操作链，这个也就是这个所谓的多操作。那么其实看到这里我表示我又不是很这个_drvier.execute到底是个什么方法呢，继续查看了webdriver官方文档。如下解释</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">execute(driver_command, params=None)</div><div class="line">Sends a command to be executed by a command.CommandExecutor.</div><div class="line"></div><div class="line">Args:   </div><div class="line">driver_command: The name of the command to execute as a string.</div><div class="line">params: A dictionary of named parameters to send with the command.</div><div class="line">Returns:    </div><div class="line">The command’s JSON response loaded into a dictionary object.</div></pre></td></tr></table></figure>
+<p>那么就解释通了，两个参数，一个命令一个参数列表。同时也知道了原来返回的是一个字典，怪不得我看别的代码的时候不是很明白这个语法，接着看之后的文件分析就知道了，后面很多的操作封装都会用到这个方法的返回。</p>
+<p>既然这个文件中引入了<br><code>from appium.webdriver.mobilecommand import MobileCommand as Command</code></p>
+<p>那么我们就随着这个来讲下MobileCommand。<br>部分源码</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">class MobileCommand(object):</div><div class="line">    CONTEXTS = 'getContexts',</div><div class="line">    GET_CURRENT_CONTEXT = 'getCurrentContext',</div><div class="line">    SWITCH_TO_CONTEXT = 'switchToContext'</div><div class="line">    TOUCH_ACTION = 'touchAction'</div><div class="line">    MULTI_ACTION = 'multiAction'</div><div class="line">    OPEN_NOTIFICATIONS = 'openNotifications'</div><div class="line">    GET_NETWORK_CONNECTION = 'getNetworkConnection'</div><div class="line">    SET_NETWORK_CONNECTION = 'setNetworkConnection'</div><div class="line">    GET_AVAILABLE_IME_ENGINES = 'getAvailableIMEEngines'</div><div class="line">    IS_IME_ACTIVE = 'isIMEActive'</div><div class="line">    ACTIVATE_IME_ENGINE = 'activateIMEEngine'</div><div class="line">    DEACTIVATE_IME_ENGINE = 'deactivateIMEEngine'</div><div class="line">    GET_ACTIVE_IME_ENGINE = 'getActiveEngine'</div><div class="line">    TOGGLE_LOCATION_SERVICES = 'toggleLocationServices'</div></pre></td></tr></table></figure>
+<p>这个文件我不想讲了。。太过简单，没有东西可讲了。。。。。</p>
+<p>switch_to.py<br>部分代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">from selenium.webdriver.remote.switch_to <span class="keyword">import</span> SwitchTo</div><div class="line"></div><div class="line">from .<span class="function">mobilecommand <span class="keyword">import</span> MobileCommand</span></div><div class="line"></div><div class="line"></div><div class="line">class <span class="title">MobileSwitchTo</span><span class="params">(SwitchTo)</span>:</div><div class="line">    def <span class="title">context</span><span class="params">(self, context_name)</span>:</div><div class="line">        """</div><div class="line">        Sets the context <span class="keyword">for</span> the current session.</div><div class="line"></div><div class="line">        :Args:</div><div class="line">         - context_name: The name of the context to <span class="keyword">switch</span> to.</div><div class="line"></div><div class="line">        :Usage:</div><div class="line">            driver.switch_to.<span class="title">context</span><span class="params">(<span class="string">'WEBVIEW_1'</span>)</span></div><div class="line">        """</div><div class="line">        self._driver.<span class="title">execute</span><span class="params">(MobileCommand.SWITCH_TO_CONTEXT, &#123;<span class="string">'name'</span>: context_name&#125;)</span></div></pre></td></tr></table></figure>
+<p>其实我先是去查了switch_to，但是我不是很明白为啥文档里啥都没有写。然后我看了下Appium的文档，虽然明白这个是native和webview的一种切换，并且现在已经放入了Selenium3的规范中，但是还是不是很明白这个类的作用，直到我看到了下面的Sample</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function">def <span class="title">test_move_back_to_native_context</span><span class="params">(self)</span>:</span></div><div class="line">    self.<span class="title">_enter_webview</span><span class="params">()</span></div><div class="line">    self.driver.switch_to.<span class="title">context</span><span class="params">(None)</span></div><div class="line">    self.<span class="title">assertEqual</span><span class="params">(<span class="string">'NATIVE_APP'</span>, self.driver.current_context)</span></div><div class="line"></div><div class="line">def <span class="title">_enter_webview</span><span class="params">(self)</span>:</div><div class="line">    btn = self.driver.find_element_by_name(<span class="string">'buttonStartWebviewCD'</span>)</div><div class="line">    btn.click()</div><div class="line">    self.driver.switch_to.context(<span class="string">'WEBVIEW'</span>)</div></pre></td></tr></table></figure>
+<p>但是这个是不是可以自定义我还没有研究过，从例子看应该是可以的。</p>
+<p>webdriver.py<br>其实到这个文件了已经是个集合了，我们回过头来看self.execute这个方法，其实现在就能够明白了，只要返回值的后面会有[‘value’]，因为一个字典嘛。不查文档果然是看不懂的，当然也有很多方法直接返回一个字典的。具体我就不贴了，大家自己看了。</p>
+<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>其实结构还是蛮清晰的，但是就是流程，代码层面一步一步怎么走还不是很清晰，需要进一步看Sample再来理解了。不过总体我感觉比其他语言好理解点。因为其实就是一个Client嘛。哈哈</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/14/appium-python/" class="archive-article-date">
+  	<time datetime="2016-11-14T06:00:18.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-14</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Appium/">Appium</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-espresso-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/14/espresso-2/">Gradle Project With Espresso2.0</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>就最近Google进行了SDK的更新，同样的提供了部分框架的更新以及合入了部分的框架。这里的Espresso就是其中的一个。详细的我们可以查看这次support library的更新：<a href="http://developer.android.com/tools/testing-support-library/index.html" target="_blank" rel="external">http://developer.android.com/tools/testing-support-library/index.html</a></p>
+<p>既然Espresso被合入的话，那么是不是和以前的使用方式不同呢，就进行一下新的尝试。不过令人高兴的是在code.google上面2天前也对于Espresso2.0进行了相对应的doc更新，真的非常贴心，详细可见：<a href="https://code.google.com/p/android-test-kit/wiki/EspressoSetupInstructions" target="_blank" rel="external">https://code.google.com/p/android-test-kit/wiki/EspressoSetupInstructions</a></p>
+<p>例子的代码见：<a href="https://github.com/monkeytest15/Espresso2.0-demo/tree/master" target="_blank" rel="external">https://github.com/monkeytest15/Espresso2.0-demo/tree/master</a></p>
+<p>这里也再一张2.0更新的总结图<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espress1.png" alt="espresso1"></p>
+<h2 id="尝试"><a href="#尝试" class="headerlink" title="尝试"></a>尝试</h2><p>那么我们接下来同样的使用AS新建一个Gradle的工程，在这个例子中我起名是Espress_V2</p>
+<p>——–我是分割线君——–<br>详细设置如下<br>App目录下的build.gradle文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">apply plugin: <span class="string">'com.android.application'</span></div><div class="line"></div><div class="line">android &#123;</div><div class="line">    compileSdkVersion <span class="number">21</span></div><div class="line">    buildToolsVersion <span class="string">"21.1.2"</span></div><div class="line"></div><div class="line">    defaultConfig &#123;</div><div class="line">        applicationId <span class="string">"com.example.monkey.espresso_v2"</span></div><div class="line">        minSdkVersion <span class="number">16</span></div><div class="line">        targetSdkVersion <span class="number">21</span></div><div class="line">        versionCode <span class="number">1</span></div><div class="line">        versionName <span class="string">"1.0"</span></div><div class="line">        testInstrumentationRunner <span class="string">"android.support.test.runner.AndroidJUnitRunner"</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">    buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">            <span class="function">minifyEnabled <span class="keyword">false</span></span></div><div class="line">            proguardFiles <span class="title">getDefaultProguardFile</span><span class="params">(<span class="string">'proguard-android.txt'</span>)</span>, 'proguard-rules.pro'</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    packagingOptions&#123;</div><div class="line">        exclude <span class="string">'LICENSE.txt'</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    <span class="comment">// App's dependencies, including test</span></div><div class="line">    compile <span class="string">'com.android.support:support-annotations:21.0.3'</span></div><div class="line">    <span class="function">compile <span class="title">fileTree</span><span class="params">(dir: <span class="string">'libs'</span>, include: [<span class="string">'*.jar'</span>])</span></span></div><div class="line">    compile 'com.android.support:appcompat-v7:21.0.3'</div><div class="line">    <span class="comment">//Espresso Testing-only dependencies</span></div><div class="line">    androidTestCompile <span class="title">files</span><span class="params">(<span class="string">'libs/espresso-1.1-bundled.jar'</span>)</span></div><div class="line">    androidTestCompile <span class="title">files</span><span class="params">(<span class="string">'libs/testrunner-1.1*.jar'</span>)</span></div><div class="line">    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'</div><div class="line">    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'</div><div class="line">    androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.3.1'</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>这里要注意的是新的这个testrunner的更新，否则会报出各种错误，而且这个设置的确和以前不同。android.support.test.runner.AndroidJUnitRunner</strong></p>
+<p><strong>test class的编写</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.example.monkey.espresso_v2;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">import</span> android.test.ActivityInstrumentationTestCase2;</div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> android.support.test.espresso.Espresso.onView;</div><div class="line"></div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> android.support.test.espresso.assertion.ViewAssertions.matches;</div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> android.support.test.espresso.matcher.ViewMatchers.isDisplayed;</div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> android.support.test.espresso.matcher.ViewMatchers.withText;</div><div class="line"><span class="keyword">import</span> com.robotium.solo.Solo;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * &lt;a href="http://d.android.com/tools/testing/testing_android.html"&gt;Testing Fundamentals&lt;/a&gt;</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ApplicationTest</span> <span class="keyword">extends</span> <span class="title">ActivityInstrumentationTestCase2</span>&lt;<span class="title">MainActivity</span>&gt; </span>&#123;</div><div class="line"></div><div class="line"></div><div class="line">    Solo solo;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ApplicationTest</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>(MainActivity.class);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUp</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        <span class="keyword">super</span>.setUp();</div><div class="line">        solo = <span class="keyword">new</span> Solo(getInstrumentation(), getActivity());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testHelloWorld</span><span class="params">()</span> </span>&#123;</div><div class="line">        String TextViewString = getActivity().getString(R.string.hello_world);</div><div class="line"></div><div class="line">        onView(withText(TextViewString)).check(matches(isDisplayed()));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里可以看出来已经可以直接引用SDK中的包了。</p>
+<h2 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h2><p><strong>第一个就是我上面提到的TestRunner的更新</strong><br><strong>第二个就是如下的设置</strong><br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espresso2.png" alt="espresso2"></p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>AS其实还是非常贴心的，尤其在测试方面。来一张直接通过AS进行执行测试的结果图：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espresso3.png" alt="espresso2"></p>
+<p>AS也支持结果的report输出，包括各种我们需要的格式，多贴心。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espresso4.png" alt="espresso2"></p>
+<p>另外最后我也通过了终端的方式进行了再次的测试，如下结果（这个也是自动化必须的），同时我们的报告可以在这个路径下找到<br>~/app/build/outputs/reports。<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/espresso5.png" alt="espresso2"></p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/14/espresso-2/" class="archive-article-date">
+  	<time datetime="2016-11-14T05:20:41.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-14</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/espresso/">espresso</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-AndroidAppSize" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/09/AndroidAppSize/">Android 获取应用的大小</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近在搭建兼容性性能平台，目前架构图还是内部才能够看到，具体之后做完我会开放出来。<br>其中一个就是需要去获取Android应用的大小，我们现在自身的apk还是会做的尽量小，但是用了一段时间之后apk的占用量就会越来越大，自然这个也是性能测试需要监控的数据之一。</p>
+<p>在这里我们用到了如下的：<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/android1.png" alt="android1"></p>
+<p>核心代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PkgSizeObserver</span> <span class="keyword">extends</span> <span class="title">IPackageStatsObserver</span>.<span class="title">Stub</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onGetStatsCompleted</span><span class="params">(PackageStats pStats, <span class="keyword">boolean</span> succeeded)</span></span></div><div class="line">            <span class="keyword">throws</span> RemoteException &#123;</div><div class="line">        <span class="comment">// TODO Auto-generated method stub</span></div><div class="line">        cachesize = pStats.cacheSize;</div><div class="line">        datasize = pStats.dataSize;</div><div class="line">        codesize = pStats.codeSize;</div><div class="line">        totalsize = cachesize + datasize + codesize;</div><div class="line">        Log.i(TAG, <span class="string">"cachesize---&gt;"</span> + cachesize + <span class="string">" datasize----&gt;"</span></div><div class="line">                + datasize + <span class="string">" codeSize----&gt;"</span> + codesize);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以及</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">queryPacakgeSize</span><span class="params">(String pkgName)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">    <span class="keyword">if</span> (pkgName != <span class="keyword">null</span>) &#123;</div><div class="line">        PackageManager pm = getPackageManager();</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            Method getPackageSizeInfo = pm.getClass().getDeclaredMethod(</div><div class="line">                    <span class="string">"getPackageSizeInfo"</span>, String.class, </div><div class="line">                    IPackageStatsObserver.class);</div><div class="line"></div><div class="line">            getPackageSizeInfo.invoke(pm, pkgName,</div><div class="line">                    , <span class="keyword">new</span> PkgSizeObserver());</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception ex) &#123;</div><div class="line">            Log.e(TAG, <span class="string">"NoSuchMethodException"</span>);</div><div class="line">            ex.printStackTrace();</div><div class="line">            <span class="keyword">throw</span> ex;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接着就发现一个问题，2.3的版本的确可以用。但是4.2以及以上版本就报错了。经过调查发现 PackageManager.getPackageSizeInfo(String packageName, IPackageStatsObserver observer)不可用，改为PackageManager.getPackageSizeInfo(String packageName, int userHandle, IPackageStatsObserver observer)。<br>所以我们代码需要做如下的修改：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">queryPacakgeSize</span><span class="params">(String pkgName)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        <span class="keyword">if</span> (pkgName != <span class="keyword">null</span>) &#123;</div><div class="line">            PackageManager pm = getPackageManager();</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                Method getPackageSizeInfo = pm.getClass().getDeclaredMethod(</div><div class="line">-                       <span class="string">"getPackageSizeInfo"</span>, String.class, </div><div class="line">+                       <span class="string">"getPackageSizeInfo"</span>, String.class, <span class="keyword">int</span>.class,</div><div class="line">                        IPackageStatsObserver.class);</div><div class="line"></div><div class="line">                getPackageSizeInfo.invoke(pm, pkgName,</div><div class="line">-                       , <span class="keyword">new</span> PkgSizeObserver());</div><div class="line">+                       Process.myUid() / <span class="number">100000</span>, <span class="keyword">new</span> PkgSizeObserver());</div><div class="line"></div><div class="line">            &#125; <span class="keyword">catch</span> (Exception ex) &#123;</div><div class="line">                Log.e(TAG, <span class="string">"NoSuchMethodException"</span>);</div><div class="line">                ex.printStackTrace();</div><div class="line">                <span class="keyword">throw</span> ex;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>然后我install到了Nexus5 Android5.0上面，点击一个应用之后看到如下Log，说明成功了～～～<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/android2.png" alt="android2"><br>这个会作为我监听apk中的一个模块存在～～～</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/09/AndroidAppSize/" class="archive-article-date">
+  	<time datetime="2016-11-09T05:58:01.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-09</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android性能/">Android性能</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-iOS-anquan" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/08/iOS-anquan/">iOS 微信 信息都是明文的！！！</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="微信版本"><a href="#微信版本" class="headerlink" title="微信版本"></a>微信版本</h2><p>iOS上面的weixin 6.1.1，其实这个问题很早就有了</p>
+<h2 id="问题所在"><a href="#问题所在" class="headerlink" title="问题所在"></a>问题所在</h2><p>不需要越狱，不需要用户名密码，微信DB的message没有加密</p>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>我们首先链接手机，打开如下界面，选择到微信，找到DB<br><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/iOSanquan1.png" alt="iOSanquan"></p>
+<p>接着我们打开这个MM.sqlite，可以看到如下界面</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/iOSanquan2.png" alt="iOSanquan2"></p>
+<p>chat开头的这些表都是我们的聊天的分类</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/iOSanquan3.png" alt="iOSanquan3"></p>
+<p>接着我们随便打开一个chat就能够看到如下信息</p>
+<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/iOSanquan4.png" alt="iOSanquan4"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>但是不管怎么样，加密总比不加密的好，另外这样的话，等于我拿到任何一个手机都可以直接看到聊天记录，或者在越狱之后，我通过alpine到任何一台手机上，然后拿到里面的这个文件。不知道除了聊天记录以外，红包记录有没有呢。。＝ ＝。。银行卡记录。。。</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/08/iOS-anquan/" class="archive-article-date">
+  	<time datetime="2016-11-08T05:27:25.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-08</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-noway" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/08/noway/">我只是没有退路，所以才做到这个程度</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天在下飞机之后看到了这篇文章，起初是被文章标题所吸引的，看着看着共鸣就实在太多了。</p>
+<h2 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h2><p>在这里我先饮用下文章最后的一段话。</p>
+<blockquote>
+<p>有时候，我们很容易就把优秀和勤奋混淆。有些人是轻而易举，更多的人是很努力，才能看上去轻而易举。很多人之所以不优秀，只是因为他们有太多出路，而不需要太过勤奋。你试试把退路都断了，其实你也能做到这个程度。</p>
+</blockquote>
+<p>我不说我自己多么优秀，但是到现在也有了五湖四海的朋友。许多很早就认识了我，许多人许多今天刚认识我，但可以肯定的是，对我的认识和看法各有不同。不过无论在大家眼中我是怎么样的一个人，我自己知道的是我绝对不能算一个能够“轻而易举”的人，更不能算一个“努力”的人，最多最多算一个“运气好”的人。</p>
+<h2 id="学生时代"><a href="#学生时代" class="headerlink" title="学生时代"></a>学生时代</h2><p>我记得我的初中是在一所区重点所读，但浑浑噩噩3年过去，很多同学都上了自己梦想的高中，我却去了一所体育专长的高中，从我那个时候看来我根本不适合读书，整天都在网吧玩游戏</p>
+<p>记得高中的时候，也和很多人一样我也曾经梦想着考上各种高大上的大学，但是随着时间的推迟，我也知道我根本也不是这块料，从最早想考一本到最后的二本直到最后查询成绩的当晚看到自己落榜，只去了一所非常烂的专科的时候，才发现这一切是那么的真实。</p>
+<p>我家庭并不富裕，去了专科之后，也和其他同学一样，每天不怎么上课就在玩dota。一玩就是几年玩过去了，当初金融危机找工作的景象现在都历历在目。无论什么工作，每当寝室里面一个人说自己找到工作，自己的心里就会咯噔一下，然后问自己怎么办，幻想着自己能够找到什么工作。</p>
+<h2 id="打工和最初的工作"><a href="#打工和最初的工作" class="headerlink" title="打工和最初的工作"></a>打工和最初的工作</h2><p>我依稀记得在大三（专科的最后一年），有空我就出去打工，也算为自己争取一点生活费。办完健康证在超市里面做试吃员，社会就是那么的现实，每天给我半个小时的吃饭时间，必须在楼梯上蹲着吃，然后试吃的量必须达标否则不给钱。但我依然坚持了下来，为什么？因为没有退路，也许，至少那个时候没有人觉得我很优秀吧。。。。</p>
+<p>最后找工作的时候，看过我书后序的人都知道，我最早的一份工作是硬件维修，每天至少出外勤去3家公司维修房顶的天线，先不说苦不苦，危险性极大，没有任何保险措施，每个月500元.为什么？因为没有退路。</p>
+<p>某次工伤之后我实在没有办法，选择了一家创业公司，老板问我“测试你做不做？”。我问“测试是做什么的？”，老板答“就是玩玩游戏的，不难”。然后我就走上了这条道路。2个月的试用期，最后的考题是“顺利的跑通monkey”。我最终还是没有完成这个指标，因为我实在不知道怎么做这些东西。虽然我最终没有被开除，但拿着是身边同龄开发工程师1/5的工资在工作，我觉得非常自卑和没有脸面，但为什么我愿意做下去？因为我没有退路。</p>
+<h2 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h2><p>如果你能够看到这里，相信你能够明白我最初说的那些话，我根本不够聪明，我根本也不够努力，一切只是因为我一直觉得我没有退路，人要生存，这就是本能。而所谓的运气仅仅是我最初进入的是一家纯移动互联网公司。这里引用我之前和云层的一段对话。<br>“云层：我觉得你在你的年龄能够走到现在几乎就是奇迹”<br>”我：我自己很清楚，如果和我的背景和我的出身一样的人，能和我现在一样的话在测试行业可能很难出现第二个，但很大一部分原因是我第一份正式工作就是做Android的。如果我像大部分测试一样先做了web、server等测试，那么也许我现在还是伸手党，我工作10年也走不到现在的程度”<br>“云层：是的，没错”</p>
+<p>一切只是因为没有退路，我们要永远不要去认为自己是优秀的，努力的，甚至有天赋的人。</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/08/noway/" class="archive-article-date">
+  	<time datetime="2016-11-08T03:11:37.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-08</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/other/">other</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-AndroiGPU" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -330,733 +783,9 @@
 
 
   
-    <article id="post-gradle-Androidmanifest" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/07/gradle-Androidmanifest/">gradle 集成修改 Android Manifest.xml 打多个包实践</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>其实这次我想好好把gradle 构建android工程生成的文件好好看看的，但是实在太多了，而且网络上资料有限，故而就放在下次吧。</p>
-<p>这次做了一些新的尝试，然后也看了下一些之前没有关心的文件是啥用。</p>
-<h2 id="gradle-wrapper-jar"><a href="#gradle-wrapper-jar" class="headerlink" title="gradle-wrapper.jar"></a>gradle-wrapper.jar</h2><p>首先其实之前就看到有这个jar包，但是还没有去关心过到底是啥用。<br>Gradle Wrapper 是一种更加方便的使用gradle的方法，他包括了为支持windows的批处理脚本和支持类unix的shell脚本。这些脚本是你，在不安装gradle时候，也可以用gradle。安装wrapper只需要在你的build.gradle文件中添加如果下代码。<br>我们来看下结构</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">└── initial</div><div class="line">    └── gradlew</div><div class="line">    └──gradlew.bat</div><div class="line">    └── gradle</div><div class="line">       └── wrapper</div><div class="line">           └── gradle-wrapper.jar</div><div class="line">           └── gradle-wrapper.properties</div></pre></td></tr></table></figure>
-<p>现在已经可以用Wrapper构建你的工程了。你将和之前一样，运行gradle build命令构建工程。<br>./gradlew build<br>第一行执行Gradle的版，他讲下载和缓存执行版本gradle的二进制文件。 Gradle Wrapper 文件将和代码一样提交给版本控制器，这样任何人，获取代码后，不用安装gradle，就可以构建工程。</p>
-<p>这个的确会非常方便，总体感觉以后再也不用编写什么打包脚本了。直接checkout，运行指定gradle命令即可。</p>
-<h2 id="多个项目"><a href="#多个项目" class="headerlink" title="多个项目"></a>多个项目</h2><p>在gradle项目根目录下面我们也可以看到有一个settings.gradle的文件，默认是有<br>include ‘:app’<br>假设我们有三个项目，分别是</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">  MyProject/</div><div class="line"></div><div class="line">| settings.gradle</div><div class="line"></div><div class="line">app/</div><div class="line">| build.gradle</div><div class="line"></div><div class="line">app2/</div><div class="line">| build.gradle</div><div class="line"></div><div class="line">app3/</div><div class="line">| build.gradle</div></pre></td></tr></table></figure>
-<p>那么我们需要修改settings.gradle，变成include ‘:app’, ‘:app2′, ‘:app3′</p>
-<h2 id="1-0-rc的坑（转）"><a href="#1-0-rc的坑（转）" class="headerlink" title="1.0 rc的坑（转）"></a>1.0 rc的坑（转）</h2><ul>
-<li><p>Error:(26, 0) Gradle DSL method not found: ‘runProguard()’问题，这里是runProguard()方法被替换了，把runProguard改为minifyEnabled即可，<a href="http://stackoverflow.com/questions/27016385/error26-0-gradle-dsl-method-not-found-runproguard" target="_blank" rel="external">http://stackoverflow.com/questions/27016385/error26-0-gradle-dsl-method-not-found-runproguard</a></p>
-</li>
-<li><p>“Could not find property ‘packageApplication’ on com.android.build.gradle.internal.api.ApplicationVariantImpl_Decorated”问题，这个属性被取消了，这里是替换要输出的APK的名称，<a href="http://stackoverflow.com/questions/27209188/could-not-find-property-packageapplication-on-com-android-build-gradle-interna" target="_blank" rel="external">http://stackoverflow.com/questions/27209188/could-not-find-property-packageapplication-on-com-android-build-gradle-interna</a></p>
-</li>
-<li><p>“Could not find property ‘processManifest’ on com.android.build.gradle.internal.api.ApplicationVariantImpl”问题，这里是由于manifest merger改动了，解决方法如下：<a href="http://stackoverflow.com/questions/27302965/could-not-find-property-processmanifest-on-com-android-build-gradle-internal-a" target="_blank" rel="external">http://stackoverflow.com/questions/27302965/could-not-find-property-processmanifest-on-com-android-build-gradle-internal-a</a></p>
-</li>
-<li><p>android studio中的plugin也发生了改变，将”apply plugin: ‘android’”改为”apply plugin: ‘com.android.application’”</p>
-</li>
-</ul>
-<p>monkey：不过1.0坑真的很多，大家自己去尝试就知道了。主要是stackoverflow上面的东西太旧。</p>
-<h2 id="修改app和root-project中两个build-gradle"><a href="#修改app和root-project中两个build-gradle" class="headerlink" title="修改app和root project中两个build.gradle"></a>修改app和root project中两个build.gradle</h2><p>我们创建好Android application之后，可以在app目录和根目录下都看到build.gradle文件，这两个文件分别会从app层面和多个project层面进行build的管控。<br>我们先来看下根目录的gradle.build文件。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//其实这里已经有了标识，告诉大家这个是可以管控多个模块的</span></div><div class="line"><span class="comment">// Top-level build file where you can add configuration options common to all sub-projects/modules.</span></div><div class="line"></div><div class="line"><span class="comment">//编译脚本</span></div><div class="line">buildscript &#123;</div><div class="line">    repositories &#123;</div><div class="line"><span class="comment">//这里可以是maven，jcenter等</span></div><div class="line">        jcenter()</div><div class="line">    &#125;</div><div class="line">    dependencies &#123;</div><div class="line">        classpath <span class="string">'com.android.tools.build:gradle:1.0.0'</span></div><div class="line"></div><div class="line">        <span class="comment">// <span class="doctag">NOTE:</span> Do not place your application dependencies here; they belong</span></div><div class="line">        <span class="comment">// in the individual module build.gradle files</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"><span class="comment">// 1.0 rc之后这个需要修改</span></div><div class="line">apply plugin: <span class="string">'com.android.application'</span></div><div class="line"></div><div class="line"></div><div class="line">android &#123;</div><div class="line">    compileSdkVersion <span class="number">21</span></div><div class="line">    buildToolsVersion <span class="string">"20.0.0"</span></div><div class="line"></div><div class="line"><span class="comment">//这里需要设置资源文件，否则会报错，文件找不到</span></div><div class="line">    sourceSets &#123;</div><div class="line">        main &#123;</div><div class="line">            manifest.srcFile <span class="string">'AndroidManifest.xml'</span></div><div class="line">            java.srcDirs = [<span class="string">'src'</span>]</div><div class="line">            resources.srcDirs = [<span class="string">'src/main/res'</span>]</div><div class="line">            aidl.srcDirs = [<span class="string">'src'</span>]</div><div class="line">            renderscript.srcDirs = [<span class="string">'src'</span>]</div><div class="line">            res.srcDirs = [<span class="string">'res/main/res'</span>]</div><div class="line">            assets.srcDirs = [<span class="string">'assets'</span>]</div><div class="line">        &#125;</div><div class="line">        instrumentTest.setRoot(<span class="string">'tests'</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    defaultConfig &#123;</div><div class="line">        applicationId <span class="string">"com.example.monkey.myapplication"</span></div><div class="line">        minSdkVersion <span class="number">10</span></div><div class="line">        targetSdkVersion <span class="number">21</span></div><div class="line">        versionCode <span class="number">1</span></div><div class="line">        versionName <span class="string">"1.0"</span></div><div class="line">    &#125;</div><div class="line"><span class="comment">//增加混淆</span></div><div class="line">    buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">            <span class="function">minifyEnabled <span class="keyword">false</span></span></div><div class="line">            proguardFiles <span class="title">getDefaultProguardFile</span><span class="params">(<span class="string">'proguard-android.txt'</span>)</span>, 'proguard-rules.pro'</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="comment">//这个是解决lint报错的代码</span></div><div class="line">    lintOptions &#123;</div><div class="line">        abortOnError <span class="keyword">false</span></div><div class="line">    &#125;</div><div class="line">  <span class="comment">// 增加签名</span></div><div class="line">    signingConfigs &#123;</div><div class="line">        myConfigs &#123;</div><div class="line">            <span class="function">storeFile <span class="title">file</span><span class="params">(<span class="string">"/Users/monkey/.android/debug.keystore"</span>)</span></span></div><div class="line">            keyAlias "..."</div><div class="line">            keyPassword "..."</div><div class="line">            storePassword "..."</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">allprojects &#123;</div><div class="line">    repositories &#123;</div><div class="line">        jcenter()</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">//替换AndroidManifest.xml的REPLACE_KEY字符串为渠道名称</span></div><div class="line">android.applicationVariants.all &#123; variant -&gt;</div><div class="line">    variant.outputs.each &#123; output -&gt;</div><div class="line">        output.processManifest.doLast &#123;</div><div class="line">            <span class="comment">//v1.11之前这里用的copy&#123;&#125;，我换成了文件操作，这样可以在v1.11版本正常运行，并保持文件夹整洁</span></div><div class="line">            <span class="comment">//$&#123;buildDir&#125;是指build文件夹</span></div><div class="line">            <span class="comment">//$&#123;variant.dirName&#125;是flavor/buildtype，例如GooglePlay/release，运行时会自动生成</span></div><div class="line">            <span class="comment">//下面的路径是类似这样：build/intermediates/manifests/GooglePlay/release/AndroidManifest.xml</span></div><div class="line">            def manifestFile = <span class="string">"$&#123;buildDir&#125;/intermediates/manifests/full/$&#123;variant.dirName&#125;/AndroidManifest.xml"</span></div><div class="line"></div><div class="line">            <span class="comment">//将字符串REPLACE_KEY替换成flavor的名字</span></div><div class="line">            def updatedContent = <span class="keyword">new</span> File(manifestFile).getText(<span class="string">'UTF-8'</span>).replaceAll(<span class="string">"REPLACE_KEY"</span>, <span class="string">"$&#123;variant.productFlavors[0].name&#125;"</span>)</div><div class="line">            <span class="keyword">new</span> File(manifestFile).write(updatedContent, <span class="string">'UTF-8'</span>)</div><div class="line"></div><div class="line">            <span class="comment">//将此次flavor的AndroidManifest.xml文件指定为我们修改过的这个文件</span></div><div class="line">            variant.processResources.manifestFile = file(<span class="string">"$&#123;buildDir&#125;/intermediates/manifests/full/$&#123;variant.dirName&#125;/AndroidManifest.xml"</span>)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>接着看下app下面的build.gradle<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//增加application的apply</span></div><div class="line">apply plugin: <span class="string">'com.android.application'</span></div><div class="line"></div><div class="line">android &#123;</div><div class="line"><span class="comment">//配置sdk版本</span></div><div class="line">    compileSdkVersion <span class="number">21</span></div><div class="line">    buildToolsVersion <span class="string">"20.0.0"</span></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">    defaultConfig &#123;</div><div class="line">        applicationId <span class="string">"com.example.monkey.myapplication"</span></div><div class="line">        minSdkVersion <span class="number">10</span></div><div class="line">        targetSdkVersion <span class="number">21</span></div><div class="line">        versionCode <span class="number">1</span></div><div class="line">        versionName <span class="string">"1.0"</span></div><div class="line">    &#125;</div><div class="line">    buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">            <span class="function">minifyEnabled <span class="keyword">false</span></span></div><div class="line">            proguardFiles <span class="title">getDefaultProguardFile</span><span class="params">(<span class="string">'proguard-android.txt'</span>)</span>, 'proguard-rules.pro'</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//这个是解决lint报错的代码</span></div><div class="line">    lintOptions &#123;</div><div class="line">        abortOnError <span class="keyword">false</span></div><div class="line">    &#125;</div><div class="line">    signingConfigs &#123;</div><div class="line">        myConfigs &#123;</div><div class="line">            <span class="function">storeFile <span class="title">file</span><span class="params">(<span class="string">"/Users/monkey/.android/debug.keystore"</span>)</span></span></div><div class="line">            keyAlias "..."</div><div class="line">            keyPassword "..."</div><div class="line">            storePassword "..."</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"><span class="comment">//增加多个打包渠道配置</span></div><div class="line">    productFlavors &#123;</div><div class="line">        qqqq &#123;</div><div class="line">            applicationId = <span class="string">'com.monkey.qqq'</span></div><div class="line">        &#125;</div><div class="line">        hhhhh &#123;</div><div class="line">            applicationId=<span class="string">'com.monkey.hhh'</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    <span class="function">compile <span class="title">fileTree</span><span class="params">(dir: <span class="string">'libs'</span>, include: [<span class="string">'*.jar'</span>])</span></span></div><div class="line">    compile 'com.android.support:appcompat-v7:21.0.3'</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>我们使用gradlew进行编译之后，我们可以在如下目录下中找到分别为了打不同包所用的Android Manifest.xml文件。</p>
-<p>同时我们也可以在outputs中的apk看到我们编译出的多个apk，但这里只是package name不同，渠道的meta data并没有修改，但是方法是一样的。</p>
-<p>最后的给个编译report。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line">ec2-<span class="number">54</span>-<span class="number">67</span>-<span class="number">1</span>-<span class="number">101</span>:monkeyApplication monkey$ ./gradlew app:assembleDebug</div><div class="line">:app:preBuild</div><div class="line">:app:compileHhhhhDebugNdk UP-TO-DATE</div><div class="line">:app:preHhhhhDebugBuild</div><div class="line">:app:checkHhhhhDebugManifest</div><div class="line">:app:preHhhhhReleaseBuild</div><div class="line">:app:preQqqqDebugBuild</div><div class="line">:app:preQqqqReleaseBuild</div><div class="line">:app:prepareComAndroidSupportAppcompatV72103Library UP-TO-DATE</div><div class="line">:app:prepareComAndroidSupportSupportV42103Library UP-TO-DATE</div><div class="line">:app:prepareHhhhhDebugDependencies</div><div class="line">:app:compileHhhhhDebugAidl UP-TO-DATE</div><div class="line">:app:compileHhhhhDebugRenderscript UP-TO-DATE</div><div class="line">:app:generateHhhhhDebugBuildConfig UP-TO-DATE</div><div class="line">:app:generateHhhhhDebugAssets UP-TO-DATE</div><div class="line">:app:mergeHhhhhDebugAssets UP-TO-DATE</div><div class="line">:app:generateHhhhhDebugResValues UP-TO-DATE</div><div class="line">:app:generateHhhhhDebugResources UP-TO-DATE</div><div class="line">:app:mergeHhhhhDebugResources UP-TO-DATE</div><div class="line">:app:processHhhhhDebugManifest UP-TO-DATE</div><div class="line">:app:processHhhhhDebugResources UP-TO-DATE</div><div class="line">:app:generateHhhhhDebugSources UP-TO-DATE</div><div class="line">:app:compileHhhhhDebugJava UP-TO-DATE</div><div class="line">:app:preDexHhhhhDebug UP-TO-DATE</div><div class="line">:app:dexHhhhhDebug UP-TO-DATE</div><div class="line">:app:processHhhhhDebugJavaRes UP-TO-DATE</div><div class="line">:app:validateDebugSigning</div><div class="line">:app:packageHhhhhDebug UP-TO-DATE</div><div class="line">:app:zipalignHhhhhDebug UP-TO-DATE</div><div class="line">:app:assembleHhhhhDebug UP-TO-DATE</div><div class="line">:app:compileQqqqDebugNdk UP-TO-DATE</div><div class="line">:app:checkQqqqDebugManifest</div><div class="line">:app:prepareQqqqDebugDependencies</div><div class="line">:app:compileQqqqDebugAidl UP-TO-DATE</div><div class="line">:app:compileQqqqDebugRenderscript UP-TO-DATE</div><div class="line">:app:generateQqqqDebugBuildConfig UP-TO-DATE</div><div class="line">:app:generateQqqqDebugAssets UP-TO-DATE</div><div class="line">:app:mergeQqqqDebugAssets UP-TO-DATE</div><div class="line">:app:generateQqqqDebugResValues UP-TO-DATE</div><div class="line">:app:generateQqqqDebugResources UP-TO-DATE</div><div class="line">:app:mergeQqqqDebugResources UP-TO-DATE</div><div class="line">:app:processQqqqDebugManifest UP-TO-DATE</div><div class="line">:app:processQqqqDebugResources UP-TO-DATE</div><div class="line">:app:generateQqqqDebugSources UP-TO-DATE</div><div class="line">:app:compileQqqqDebugJava UP-TO-DATE</div><div class="line">:app:preDexQqqqDebug UP-TO-DATE</div><div class="line">:app:dexQqqqDebug UP-TO-DATE</div><div class="line">:app:processQqqqDebugJavaRes UP-TO-DATE</div><div class="line">:app:packageQqqqDebug UP-TO-DATE</div><div class="line">:app:zipalignQqqqDebug UP-TO-DATE</div><div class="line">:app:assembleQqqqDebug UP-TO-DATE</div><div class="line">:app:assembleDebug UP-TO-DATE</div><div class="line"></div><div class="line">BUILD SUCCESSFUL</div><div class="line"></div><div class="line">Total time: <span class="number">8.73</span> secs</div></pre></td></tr></table></figure>
-<p>总体来讲，gradle的编译会比以往的mvn的pom配置文件来的更灵活，可配置性更强。关于更多的配置见之后的文章吧</p>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2016/11/07/gradle-Androidmanifest/" class="archive-article-date">
-  	<time datetime="2016-11-07T03:33:31.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-07</time>
-</a>
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Gradle/">Gradle</a></li></ul>
-	</div>
-
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-howtostudytest" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/06/howtostudytest/">如何做好移动互联网应用测试</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>首先很高兴的是移动测试会第八期在ucloud的赞助下非常非常圆满的成功了。人真的越来越多，妹子也越来越漂亮了。同时感谢小A和永达以及小马试驾创业公司的支持。移动测试会虽然最早是我个人创立的，但是一个人的能力毕竟有限，所以这第八期说明了团结就是力量：），也希望之后大家更多的来支持我们，本次活动的链接：<a href="http://www.douban.com/event/22861768/" target="_blank" rel="external">http://www.douban.com/event/22861768/</a></p>
-<p>11月8号支付宝上海要开始一天的专场招聘，所以最近我面试也非常的频繁。今天的活动我也碰见了一些朋友来咨询我，所以在这里我想小小的谈论下如何进行移动无线应用的测试学习。</p>
-<p>为什么我定位移动无线互联网的测试，还是应用的测试呢，因为我个人就是做应用测试的，所以我系统测试也做过，不过不深入，所以我就不想去讨论自己不熟悉的领域了。其实在很久前我画过一张技能树的图，也许比较粗糙，但是也还是有价值的。blog链接见：<a href="http://blog.sina.com.cn/s/blog_7022adbf0101b31w.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_7022adbf0101b31w.html</a></p>
-<p>在之前的文章中也已经提到过了行业中的几类人，那么我们应该怎么如何客观的学习呢？请不要觉得自己已经工作很多时间就不愿意往下看了，反正看了你也不少块肉。请跟着以下的文字慢慢阅读，问问自己达到几点，不要自欺欺人就好。</p>
-<p>现在不会做测试的拼命到处问怎么做测试，现在在手动测试的拼命问怎么做自动化，现在做自动化的拼命问怎么写测试框架，现在写测试框架的拼命让团队使用，现在写框架并且让团队使用的拼命问除了维护框架还有什么别的可以做，现在没有事情做的拼命在问到底测试做什么呢？</p>
-<p>不知道每天会有多少人，每秒钟会有多少人会去问怎么做自动化，多少人会去问自己发展方向是什么，学习方向又是什么。我很明确的说，你没有方向原因在于你的无知，人最大的敌人就是恐惧和无知，两者相辅相成，最终就是一事无成。你问那么多有什么用，踏踏实实的先开始学有什么不好。<br>比如你要学习移动互联网的无线应用测试了，比如你要开始学习Android的应用测试了。那么首先第一步你先看google 提供的文档吧，sdk文档不说详细，先浏览一遍吧。然后既然你是一个做测试的，我们就说正常的道路，你至少先将文档中与test这个关键字相关的工具也好，框架也好看一下吧。不懂的可以随时google或者百度来帮助我们阅读完sdk的docs。什么？你从来不看官方文档？android是谁生的？你连亲爹妈都不看，那么你看啥？看后妈？然后抱怨怎么看不懂？你怪谁？</p>
-<p>ok，假设你老老实实的看完了，然后你说你了解你们产品的业务了，你就可以做应用的功能测试了吗？非也，试问大部分测试真的觉得自己够资格去做功能测试吗？觉得功能测试很简单吗？问起来很多人都很自信满满的说自己非常了解业务。ok，试问，你的app中每个功能对应哪些接口你知道吗？这些接口会有什么核心参数知道吗？试问，你的产品的核心代码你有阅读过吗？你的产品前端app对应的后台服务的代码你有阅读过吗？你说你测试的产品有视频是吧，视频格式有哪些？常见分辨率有哪几种？常见码流有哪些？如果这些你都不知道并不代表你不回做功能测试或者业务测试，而是你根本无法深层次的去设计测试用例，那么请问你这算会功能测试了吗？还有的同学和我说用户体验测试，ok，继续问，请问你看过google提供的android的UI Design Guide吗？也许你没有看过，也许你根本不知道，不管是哪条，那么还谈什么用户体验呢？简单来讲，我们做一个测试很简单，要深入做很困难，就如同今天移动测试会上茉莉说的wifi测试，也许让也许人去测试wifi测试也会测试，但是深入呢？我们做测试要踏踏实实，不要浮躁，浮躁只会让你继续sb，但是不会阻止别人nb。</p>
-<p>ok，假设功能测试的点你都清楚了，然后你说你技术多多少少知道点，然后你就可以去做应用的自动化测试了吗？非也。我们一个一个来看。大部分先来做的是UI Automation，ok，appium我在这边就不说了，也许2w字都吐槽吐不完，我就说robotium。那么你第一步是先看下robotium官方网站的sample和wiki，不要到处问例子或者直接上来就导入jar包去做。了解完毕之后，那么可以继续深入的去了解junit 和instrumentation，了解这两者能够让你对robotium更了解并且在写用例的时候更得心应手。然后你会写了sample，能够跑通就算ok了么？非也，那么接着碰见的问题就是如何管理suite，如何管理数据，比如testng，如何做参数配置，比如config.xml，如何进行用例的架构的维护，使用op等。接着如何将其集成到持续集成中？如果你仔细看过instrumentationtestrunner的官方文档你就不会问了。接着除了native的，也许会碰见自定义控件的自动化，最后还有webview和h5的自动化等。那么这些前提是你要先去了解这个自定义控件以及webview到底是什么吧，而不是直接拿robotium自定义的api直接食用，然后抱怨说，啊呀这个怎么跑不通。最后记得一定要结合业务去做设计和断言。<br>接着很多人还会觉得很牛逼的去找到BDD的框架，gem安装，套用cucumber和robotium。但是又会发现各种问题，在做这个事情之前继续试问，ruby gem管理你去学习了么？cucumber是啥知道了么？BDD框架源码结构有看过吗？step怎么封装知道吗？官方的github的wiki和issue有过一遍吗？都没有？那么你还问啥，先去看再做讨论。</p>
-<p>为什么我那么强调学习能力和态度，因为移动互联网的测试已经不是一个工具或者平台能够制霸的时代了。移动互联网现在更多的是注重实用开源框架，注重灵活的使用工具和代码来提升自己的效率，而不是拿来一个工具学会怎么用，然后就给你一个结果告诉你缺陷在什么地方。故而不是再去想什么“怎么做性能自动化测试”这种问题。无论你用360这种app也好，或者别的工具也罢，首先你拿到的数据并非是你公司团队想要的，其次请问这个数据你知道是怎么获取的吗？这个工具告诉你，cpu，内存，电量，流量，GPU绘制消耗，或者crash信息你就信啊？那么请问要你有啥用？你说你连数据怎么来的如果都不知道这个信息你敢用来作为测试报告吗？我们至少得自己去学习一下怎么获取这些数据吧，然后你编写service也好，使用shell也罢将这些做成自动化工具，那么也是有理有据。否则请问你真的会做自动化测试吗？最后记得一定要结合业务，那么势必要详细的了解业务，请看上面。可详见：<a href="https://github.com/monkeytest15/AndroidPerformanceTest_Python" target="_blank" rel="external">https://github.com/monkeytest15/AndroidPerformanceTest_Python</a></p>
-<p>接着来说安全测试也是一样。不要去想“有什么工具能够做安全测试啊？”。好了，这个问题我就不展开讨论了额，否则很多人肯定会觉得我在鄙视他们的智商。安全的测试和大部分人知道的测试根本就是两个领域，不要妄想你连上面几点都不知道的情况下就去做安全测试，真的不是我看不起你们。</p>
-<p>其实我们需要想象我们掌握的知识点是一个一个积木，而现在你先去看哪些积木你还没有，你先去获得。就比如java都不怎么会，然后就说自己要去做自动化，android都不了解就说要做自动化。没有太大必要。积木一个一个去搭，然后方向自然而然的就有了。目前学习移动无线的应用测试没有什么一定的路，每个人所在公司不同，所处业务不同，不要去问别人，最重要的是自己静下心来，记住，是静下心来问自己，自己真的不懂，如果自己是什么都不懂，那么就踏踏实实的从语言的学习，android本身的文档，工具等一个一个去学，不要浮躁。只要踏实了，不会没有方向，方向永远在你的心中。</p>
-<p>最后想强调一点的是，请眼光放长远，站在更高的高度看问题，不要做了10年还在做UI自动化，而且还根本做的不深入。记住，UI只不过是自动化中的冰山一角，你要去看的还有很多。不要局限自己，不要让公司局限你，除非你一辈子就打算在这个公司养老了。如果你不赞同我，那么随意，本来我就不指望所有人都点赞。</p>
-<p>by monkey</p>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2016/11/06/howtostudytest/" class="archive-article-date">
-  	<time datetime="2016-11-06T04:54:14.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-06</time>
-</a>
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/移动无线测试/">移动无线测试</a></li></ul>
-	</div>
-
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-ios-flex" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/04/ios-flex/">iOS 逆天框架 FLEX</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>今天无意之间看到了一个框架还是很逆天的，从首页的gif看就非常的逆天。<br>github的网站：<a href="https://github.com/Flipboard/FLEX" target="_blank" rel="external">https://github.com/Flipboard/FLEX</a></p>
-<p>FLEX是一个需要注入式的一种框架，从描述来看，功能非常多。主要来讲的话能够对正在运行的应用进行样式的修改和控件的读取。</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/9549d16c6a342eeff046b314b24ed06a.gif" alt="gif"></p>
-<p>FLEX会赐予你SuperPower！！！</p>
-<ol>
-<li>可以查看控件的坐标和属性</li>
-<li>看任何一个对象的属性和成员变量</li>
-<li>动态修改属性和成员变量</li>
-<li>动态的调用实例和类方法<br>etc…</li>
-</ol>
-<p>FLEX正因为是注入式的，所以不需要在链接LLDB或者Xocde，或者是远程的调试服务器，它可以在本地随时随地的进行自有的操作和调试</p>
-<p>具体的一些主要功能点我们通过以下几个图来看下：</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/120c625da15bc3f6416ffbcce24782da.gif" alt="gif2"></p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gif3.gif" alt="gif3"></p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/git4.gif" alt="gif4"></p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/gif5.gif" alt="gif5"></p>
-<p>FLEX的设置也非常简单。在Build Settings中点击“＋”，选择Add User-Defined Settings</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/2d9bbd9b94c89365465d6459d8f615ec.png" alt="flex1"></p>
-<p>根据你打包的debug或者release属性进行相应的FLEX＊设置即可。</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/0722ea8935a0d4542610d32979c4e0b1.png" alt="flex2"></p>
-<p>在你的项目中，你想使用FLEX的代码的地方加入#if DEBUG</p>
-<p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/e41310de1e83e9a93e4522a4b3754dce.png" alt="flex3"></p>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2016/11/04/ios-flex/" class="archive-article-date">
-  	<time datetime="2016-11-04T06:35:40.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-04</time>
-</a>
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS测试/">iOS测试</a></li></ul>
-	</div>
-
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-nineyears" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/03/nineyears/">九年来，移动互联测试有什么重要进展</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>看完<a href="http://daily.zhihu.com/story/8662398" target="_blank" rel="external">十年来，编程领域有什么重要进展</a>之后，好多人说还是想看看测试有什么进展。好吧，我就来“临摹”下。虽然我作为88年的老腊肉也没有工作九年，但估计也没有人比我合适来写了。不过总觉得让我这样一个要转行的人来写也不是那么合适了。</p>
-<h2 id="从业人员数量"><a href="#从业人员数量" class="headerlink" title="从业人员数量"></a>从业人员数量</h2><p>好吧，人家都从代码，标准上来讲，测试我能想到的第一个就是人员数量了。在2008年的时候行业内测试人员占比是很少的，更不要说移动互联网了。记得那个时候微软的很多员工说我很看好Android，旁人只当笑话。我在2009年底面试的时候看到了Android G1手机，完全都没有认知，更不要说知道什么移动互联网了。</p>
-<p>但到现在，移动互联网测试越来越多，无论是传统行业，互联网等企业，技术基本上都已经离不开移动互联网。随着时间的推移，每一年也有越来越多的应届生会去选择移动互联网测试岗位。</p>
-<p>明显可以感觉得到现在测试人员的数量越来越多，为了顺应潮流称自己是移动互联网测试的就更多了，但相对水平和素质也越来越层次不齐。不过总体来讲，移动互联网人员的从业数量在9年内几乎是几何倍数的增长，所以我放在了第一位。</p>
-<h2 id="培训机构层出不穷"><a href="#培训机构层出不穷" class="headerlink" title="培训机构层出不穷"></a>培训机构层出不穷</h2><p>其实我真的不想把测试写的那么low，但我还是要实事求是的。在移动互联网之前可能51CTO，51Testing，51xxx都是几家独大的，但在移动互联网时代，尤其是在2014年开始，在线教育，网络直播的兴起，越来越多的草根培训机构层出不穷。相应的，前互联网时代的那些机构却并没有很快的跟上移动互联网的脚步。2013年左右开始私人的培训机构开始越来越多，2015年开始针对测试培训创业的也开始逐渐增多。</p>
-<p>就移动互联网的9年来说，国内的测试培训机构到今天为止的状态可以说是叹为观止。当然这里其实不仅仅只针对测试，前端，后端，编程语言等都是如此。可以说这就是移动互联网本身所带来的一种变革。</p>
-<h2 id="人员要求"><a href="#人员要求" class="headerlink" title="人员要求"></a>人员要求</h2><p>2008年的时候我就不提了，估计公司里都不知道怎么定义移动互联网。<br>​<br>2009年前对于测试的要求就是你好好做功能测试，覆盖功能点，写不写用例等大多数公司都不是很关心，或者不是很懂</p>
-<p>2010年很多大公司还是正规化，需要编写正式的用例。但从业人员要求基本上也是能够会运行Android Monkey的Level</p>
-<p>2011年大家跌爬滚打开始摸索自动化，但总体还是比较关注用例积累和设计的</p>
-<p>2012年是一个分水岭，直接从功能跳跃到了自动化。UI自动化在当时火的不要不要的</p>
-<p>2013年对于自动化的要求更加变本加厉，不但要会使用更要会二次开发</p>
-<p>2014年从点扩展到了面，从自动化的使用扩展到了持续集成的了解和运用</p>
-<p>2015年功能，自动化都告了一个段落，整体开始测试平台化，工具化，技术上开始转移到了无线客户端的专项测试上</p>
-<p>2016年安全元年，全栈也好，敏捷也罢也都到了一个白热化阶段，要求测试不但要懂开发，还要懂业务，还要懂架构等等等。正应了我在2012年的时候说的那句话“应聘测试岗位比CTO都要难”。</p>
-<p>总体来讲，短短9年的时间，移动互联网测试的技能，素质要求简直是升华了好几次，不得不说大家现在对于测试的理解已经远远不是当初那种“门槛低，点点点”那种境界了。虽然很多人平时的工作依然还在点点点，但你们都有CTO的潜质啊喂。</p>
-<p>PS：虽然整体国内的要求在突飞猛进，但大家对于测试的理解依然没有太大的进步。同时测试这个行业整体人员的素质也没有太大的进步。未来还是很令人堪忧的。</p>
-<h2 id="技术"><a href="#技术" class="headerlink" title="技术"></a>技术</h2><p>前几天我还问一位小哥为什么测试大会没有去，小哥回答我说测试大会有啥好去的，技术都是开发这边演进过来的。这话其实本质上也没有错，不过移动互联网技术本身从各个方面上还是进展非常多的。</p>
-<p>早期2009年底我刚开始做的时候，除了Android的官方文档以外，几乎没有任何的社区和博客有记载关于移动互联的测试技术（开发技术倒是蛮多的）</p>
-<p>2011年前基本上都是使用原生工具较多，应用本身复杂程度比较有限，同时开源工具也不是很多</p>
-<p>2011年之后Robotium等一大批UI测试自动化框架开始多了起来，网络上关于测试的技术文章也开始逐步增多。同时一大批测试网站，社区也崭露头角</p>
-<p>2012年之后应用本身复杂程度大幅度提升，移动互联测试很清楚的分成了App和OS两部分。同时开源测试框架，开源测试工具层出不穷。当时很火的并且做的不错的有Emmagee、athrun等等框架。同时测试活动对于代码的依赖和使用开始了一个新的篇章</p>
-<p>2013年过后移动互联所涉及到的技术已经开始有了本质的变化，客户端的内容更多的开始依赖服务端的架构和设计，大家的关注也从一个客户端到了整个一套系统的关注。曾经的Web测试技术，API测试技术，Server测试技术也都慢慢的融入了移动互联。这也是之后为什么测试的关注点会从一个点发展到一个面的根本原因</p>
-<p>截止到现在，技能树可见：<a href="https://zhuanlan.zhihu.com/p/23379241?refer=c_53429125。" target="_blank" rel="external">https://zhuanlan.zhihu.com/p/23379241?refer=c_53429125。</a><br>移动互联网本身的测试工具已经非常多，开源的框架和工具也在github上面遍地开花，另外技术本身已经出现了很多的组合使用。这一切与9年前可以说是天壤之别。现在测试技术可谓遍布各个网站，测试测试栈也几乎可以打通了整个常用的编程语言以及前后端系统。夸张点说现在的移动互联网的测试技术可以说也到了让很多人望而生畏的地步了。</p>
-<h2 id="测试意识"><a href="#测试意识" class="headerlink" title="测试意识"></a>测试意识</h2><p>这点的确是个很有趣的现象，但可能本质上和移动互联网关系并不是非常大，在我看来移动互联网只不过是加速了这一现象的发生。还是需要分成两个方面来讲，学术界和工业界</p>
-<p>早在2009-2012年间吧，整个测试行业可以这两方都有非常明显的活动。</p>
-<ul>
-<li>学术界：办协会，做会刊，登报纸。扩散各种测试用例设计的方法，理念。从国外引入各种新的概念和设计思维等等。当然测试毕竟也是研发过程中的一个环节，所以敏捷、DevOps的一些理论也都不会放过。</li>
-<li>工业界：工业界的同学其实真的忙的都和狗一样，哪里有空去研究别的呀。不过之前几年基本上都是在学习移动互联的新知识，大力研究UI自动化中。（这里对不起狗了，狗其实比我们要轻松多了）</li>
-</ul>
-<p>他们的关注点都在一些通用的方法论上，但这些在2013年之后基本上就消失殆尽了。一来这些在行业中慢慢的很难去赚钱了，二来移动互联网加速了整个国内互联网的各种属性，理论本身也很难去有落地实践的可能性了。但我觉得大家不得不承认一点，学术界在高校中被称之为“未来科学”是有道理的，因为他们在意识层面上的确比工业界的人们要先进的多。</p>
-<p>测试真正意义上的自动化可能是自动化的终极目标，测试本身我们可以简单的分成“测试前”、“测试中”和“测试后”，但现在看来工业界基本上都还在“测试中”这个环节折腾，测试的自动化有通过软件框架实现的，也有通过opencv摄像头＋硬件实现的。但无论是哪一种基本上都还在“测试执行自动化”。</p>
-<p>在早些年工业界很少有人去关心“测试数据，用例设计自动化”以及“测试结果分析，定位，质量自动化”这两个概念，但学术界很多人在研究，甚至国外已经研究了几十年了。近几年才慢慢开始有相关的实践在大公司中落地，比如咸鱼在前年demo的基于脑图的用例生成、遍历技术、线上数据双引擎、大数据质量大盘等等。相信这些在未来都是工业界测试技术可以突破的点。</p>
-<p>总而言之呢，移动互联网在这几年里的测试意识基本上是：<br>功能–&gt;UI自动化–&gt;接口自动化–&gt;Native、WebView、底层分层测试–&gt;持续集成–&gt;专项测试–&gt;平台话、智能化（数据准备、遍历、问题定位）–&gt;质量（贯穿整个系统和整个研发流程）</p>
-<p>其实回过头看看，还是比较可怕的。</p>
-<h2 id="活动"><a href="#活动" class="headerlink" title="活动"></a>活动</h2><p>这的确还是有本质变化的，早几年除了ChinaTest和51XXX的一些活动以外基本上就没有什么针对测试的活动和大会了。经过了这几年洗礼之后，行业我们能够看到不仅仅有很多的测试专属会议以外，BAT也会时不时的有一些技术交流大会，同时开发的各种大会也合入了很多测试的topic在其中。（我都当过讲师，我骄傲我自豪～）</p>
-<p>总体来讲早几年我还苦于没有人交流所以自创了“移动测试会”这样一个沙龙活动来主动和大家交流。现在的同学们就非常幸福了，因为交流的平台和渠道实在太多太多了。</p>
-<h2 id="测试定位"><a href="#测试定位" class="headerlink" title="测试定位"></a>测试定位</h2><p>这里的定位其实在别人眼中的定位，虽然我觉得可能这点上并没有太大的进展，但至少也是从0到1迈出了这样一步——公司里应该要有测试这个岗位和角色。不过国内基本上95%以上的公司和人都分不清楚QA和测试的区别，可悲可叹啊。</p>
-<p>移动互联网中，早期其实大部分公司都是不需要测试的，毕竟测试并不能帮助产品从无到有</p>
-<p>中期的时候呢，为了保证产品质量，引入了一部分传统互联网的测试来做移动互联网，但后来发现不行。一来移动互联网并没有想象中那么赚钱，所以在过程中很多公司其实有过一次测试的裁员。二来发现传统互联网的测试根本就hold不住移动互联网的产品，所以基本上后来就招聘那些有经验的移动互联网测试了</p>
-<p>后期，也就是差不多现在这个时间段。测试和开发、运维等都开始融合了，测试本身的定位也从原本的测试保证到了质量保证。这也算是符合中国国情的一种定位吧。</p>
-<p>简单来讲，这也算是一个很突出的进步了。测试这个角色其实在这几年间就是一个催化剂的作用，让人和企业都慢慢的意识到了测试的重要性，意识到了质量的重要性，意识到了测试并不是想象中的那么简单这样几个点。在我看来这些就足够了。</p>
-<p>话说很多人会问我人员数量上，技术上都有提升了，素质上对应也应该有提升啊。我只想说，不好意思，在我看来人员素质上没有任何提升。9年前测试在抱怨薪资低，qq群里每天水，然后做伸手党，9年后的今天依然如此，没有任何区别。我倒是可以考虑再写写“9年来，测试行业有什么没有任何进展”</p>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2016/11/03/nineyears/" class="archive-article-date">
-  	<time datetime="2016-11-03T07:16:00.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-03</time>
-</a>
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/个人回忆录/">个人回忆录</a></li></ul>
-	</div>
-
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-testtoquilty" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/03/testtoquilty/">测试到质量转变</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>今年我也不知道为什么会突发奇想来讲这个topic，这与我前几年风格非常不符。但也许这正是我觉得2016年应该说的东西吧，事实证明三场大会讲完之后，很多人第一次私下来找我要PPT，同时也觉得这个topic并不是几个小时能讲完的，所以我在这里还是浓缩的写篇文章说明下吧。</p>
-<h2 id="移动互联网测试常见问题"><a href="#移动互联网测试常见问题" class="headerlink" title="移动互联网测试常见问题"></a>移动互联网测试常见问题</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/d5258e61993c68112dc35118c3a9596d.png" alt="test1"></p>
-<p>这基本上就是我今年去别的公司的时候别人问我的问题。其实总体来讲大家现在还是有很大进步的，既关注了整体策略也关注了技术细节。但让我奇怪的是其实大部分人关注的还是别人怎么做，但缺少的就是从自己公司的产品业务和团队情况去思考问题。这不得不让我想到“别人家的xxx”这样一个场景。当初做这个ppt的时候我就是希望贴近主题尽量从全面的去阐述测试到质量的变化。</p>
-<p>反正总体来讲，还是觉得大家太过焦躁，我们总是偶尔的很积极的想去了解，想去学习，但这不可持续发展，这就好像我们会去存很多pdf和网站，但从来不看是一个道理。</p>
-<h2 id="关于测试人员"><a href="#关于测试人员" class="headerlink" title="关于测试人员"></a>关于测试人员</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/7199fe8b43aa452371f32ad198a167f4.png" alt="test2"></p>
-<p>关于人员我想从图中的四个方面进行阐述。毕竟现在整个行业对于测试的要求其实已经不仅仅停留在“你会什么”，“你懂什么”，“你有多少能力”这个level了。取而代之的更多的是“你潜力多少”，“你是否拥有持续学习的能力”等等。所以在关于测试人员中我也顺便提到了“KPI”和“招聘”</p>
-<p>但我在这里不得不强调的就还是所谓的“测试技术”，因为现在基本上行业风气就是大家追求“开发技术”，而不是“测试技术”，我们需要有测试思想和质量意识的去做事儿，而不是仅仅像开发一样去开发某些产品。所以这一切的前提还是需要我们从测试跳出来到质量来思考问题才会有答案。</p>
-<h2 id="一专多能"><a href="#一专多能" class="headerlink" title="一专多能"></a>一专多能</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/8159752a051b3d37b41bc282cbaf1c06.png" alt="test3"></p>
-<p>之前有很多文章讨论过所谓的“全栈”，其实至少从现在来看，“全栈”真正的意义随着时间的推移也开始浮出水面——快速学习的能力和驱动持续学习的兴趣。<br>第二点其实想表述的就是如果我们走出测试来看质量的话，几乎所有事情都不是单纯的测试个体或团队能够完成的。我们需要走出那个“你提需求，别人实现”的时代，取而代之的是“你提需求，你牵头来实现”。我们需要去利用合适的资源去做合适的事情，而不是什么都自己来做。</p>
-<p>在大会上有很多人会问，一个团队是否都应该是这样一专多能，全栈的人。在我的理解里，一个团队中其实肯定不能全栈的人，也不可能都是全栈的工程师。但这里其实特别的去强调了“定位问题”。举个例子来讲，我们在平时测试的过程中发现了一个问题，我们需要有能力去判断这个问题是前端还是后端的，如果是后端的，那么通过各个系统日志和调用关系需要去明白问题出在什么系统上。如果是前端，那么我们需要去发现是框架层的，还是组建层的，还是业务方等等。也就是说其实无论你是功能测试、自动化测试或者其他更牛逼的测试类型，定位问题都是通用的要求。</p>
-<h2 id="KPI"><a href="#KPI" class="headerlink" title="KPI"></a>KPI</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/bd6b69ad672b08c8ce2735f374834ae7.png" alt="test4"></p>
-<p>KPI这边的问题其实就是老生常谈了。但基本上现在都从那么几个点。</p>
-<ul>
-<li>业务占比最大。首先还是要保证产品业务的质量。这个在KPI上可以量化，但在移动互联网大多关注P0的缺陷会比较多，剩下的功能问题，小问题漏测等其实都是比较常见的。</li>
-<li>技术提升。唯一强调的就是技术提升本身需要落地，同时需要给出来使用某技术前后的具体效果的数据对比，一定也是可量化的。一切不落地的技术提升都是耍流氓啊亲</li>
-<li>团队协作。指主动分享、能否主动的牵头解决问题等等。</li>
-</ul>
-<p>基本上也会有细节的不同，但大方向是差不多的</p>
-<h2 id="人员招聘"><a href="#人员招聘" class="headerlink" title="人员招聘"></a>人员招聘</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/2747eb6d71db43c5368b584e9c0f5fbc.png" alt="test5"></p>
-<p>其实这是我理想状态下的招聘，现在行业中虽然是有这样的趋势，但还是有点偏差的。不过现在一些大公司的确更看重看问题的角度和解决问题的方式。而不像前几年比较死板的去考验技术。这点我相信今年只要跳槽的同学都深有体会的。</p>
-<h2 id="测试技术"><a href="#测试技术" class="headerlink" title="测试技术"></a>测试技术</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/f3c1c1ff817949981b27eabc26d63717.png" alt="test6"></p>
-<p>这个就是留给大家思考吧。大家在追求所谓的技术的同时，也关注关注测试吧。测试的一些基础，理念，方法等。我不希望若干年之后说起技术大家都是开发技术，对测试技术却浑然不知，届时到底自己是测试还是开发也许就谁都分不清楚了。</p>
-<h2 id="质量"><a href="#质量" class="headerlink" title="质量"></a>质量</h2><p><img src="https://cdn.rawgit.com/monkeytest15/BlogPNG/master/7a7ec87c29be866979b568016e6b1257.png" alt="test7"></p>
-<p>其实我知道大部分人还是需要这张图的。后面的PPT我也实在写不动了。<a href="https://pan.baidu.com/s/1jIAUQua" target="_blank" rel="external">ppt链接</a>。接下来自己看吧，有啥问题在这里留言就好。相信这个话题还是值得大家来讨论的。</p>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2016/11/03/testtoquilty/" class="archive-article-date">
-  	<time datetime="2016-11-03T06:39:40.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-03</time>
-</a>
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/测试到质量/">测试到质量</a></li></ul>
-	</div>
-
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-MobileSkill" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/02/MobileSkill/">移动无线测试技能树</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>###-常用IDE</p>
-<pre><code>- Android
-    - ADT
-    - Android Studio
-- iOS
-    - Xcode
-- Common
-    - Atom
-    - Sublime Text
-    - Vim
-    - Visual Studio Code
-</code></pre><p>###-基础知识</p>
-<pre><code>- Android
-    - 掌握Android开发基础技能     
-- iOS
-    - 掌握iOS开发基础技能
-- web
-    - 掌握web开发基础技能
-- api
-    - 掌握api相关基础知识
-- 测试
-    - 掌握基本的测试用例设计方法和思想
-</code></pre><p>###-常见应用模式</p>
-<pre><code>- Native
-- Hybrid
-- H5 App
-- ReactNative 
-</code></pre><p>###-常用工具</p>
-<pre><code>- Android
-    - Android sdk manager
-    - adb
-    - ddms
-    - ant
-    - aapt
-    - emulator
-    - Genymotion
-    - hierarchyviewer
-    - monitor
-    - monkey
-    - monkeyrunner
-    - uiautomatorviewer
-- iOS
-    - lldb
-    - iExplorer
-    - libimobiledevice 套件
-    - codesign
-    - instruments
-    - xcodebuild
-    - atos
-    - xcrun
-</code></pre><p>###-常用UI Automation框架</p>
-<pre><code>- Android
-    - Instrumentation
-    - uiautomator2.0
-    - Athrun
-    - Robotium
-    - Monkey
-    - Monkeyrunner
-    - uiautomator
-    - Selendroid
-    - Calabash-Android
-    - monkeytalk
-    - UiAutomation
-    - Espresso
-    - cafe
-- iOS
-    - UIAutomation（旧）
-    - XCUITesting
-    - KIF
-    - Frank
-    - Appium
-    - ios-driver
-    - WebdriverAgent
-    - Mechanic.js
-    - monkeytalk
-    - Calabash-iOS
-    - TuneupJs
-    - ynm3k
-- Appium
-- Macaca
-</code></pre><p>###-常用单元测试框架</p>
-<pre><code>- Android
-    - robolectric
-    - Instrumentation
-    - Mockito
-    - RxJava
-- iOS
-    - OCUnit
-    - GHUnit
-    - XCTest 
-    - OCMock
-    - OCMockito
-    - Expecta
-    - OCHamcrest
-</code></pre><p>###-常用性能工具</p>
-<pre><code>- 抓包
-    - Charles
-    - fiddler
-    - burpsuites
-    - tcpdump
-    - anyproxy
-- 弱网模拟
-    - iOS developer mode
-    - ATC
-    - Charles
-- memory
-    - Android
-        - MAT
-        - ddms
-        - Memory Monitor
-        - Allocation Tracker
-        - LeakCanary
-        - dumpsys
-        - procrank
-        - top
-    - iOS
-        - Memory Leaks
-- Scan
-    - Android
-        - findbugs
-        - lint
-        - infer
-        - CheckStyle
-        - PMD
-    - iOS
-        - scan-build
-        - oclint
-        - infer
-        - deployment
--other
-    - Common
-        - 安捷伦
-        - tcpdump
-        - wireshark
-        - 高速(慢速)摄像机
-        - 埋点
-        - 腾讯GT
-        - 网易Emmagee
-    - Android
-        - gfxinfo
-        - dumpsys
-        - traceview
-        - systrace
-        - GameBench
-        - battery-historian
-    - iOS
-        - Core Animation(instruments)
-        - Network(instruments)
-        - TimeProfiler(instruments)
-        - Zombies(instruments)
-</code></pre><p>###-安全</p>
-<pre><code>- Android
-    - Drozer
-    - apktool
-    - dex2jar
-    - proguard
-    - 加固
-    - exported/permission
-    - AndBug
-    - androguard
-    - Xposed
-
-- iOS
-    - IDB
-    - iRET
-    - DVIA
-    - LibiMobileDevice
-    - otool
-</code></pre><p>###-覆盖率</p>
-<pre><code>- Android
-    - Jacoco
-    - EMMA
-- iOS
-    - gcov
-</code></pre><p>###-动态更新</p>
-<pre><code>- Android
-    - Dexposed（二次开发之后）
-    - Robust
-    - android-frontia
-    - Nuwa
-    - HotFix
-    - RocooFix
-    - DroidFix
-    - AndFix 
-- iOS
-    - JSPatch
-    - WaxPatch
-- ota
-- ReactNative
-- weex
-</code></pre><p>###-abtest</p>
-<pre><code>- AB Tester
-- AppAdhocOptimizer
-- Google Website Optimizer
-- Visual Website Optimizer
-</code></pre><p>###-常用灰度测试工具</p>
-<pre><code>- testflight
-- 蒲公英
-- fir
-- pre
-</code></pre><p>###-常用云测平台</p>
-<pre><code>- testin
-- MQC
-- MTC
-</code></pre><p>###-常用持续集成平台／相关工具</p>
-<pre><code>- Jenkins
-- Travis CI 
-- Android
-    - mvn
-    - gradle
-- iOS
-    - xctool
-    - Cocoapods
-</code></pre><p>###-多语言开发应用</p>
-<pre><code>- SL4A
-- gomobile
-</code></pre><p>###-多设备远程管理平台</p>
-<pre><code>- STF
-</code></pre><p>###-自动遍历工具</p>
-<pre><code>- AppCrawle
-</code></pre><p>###-软技能</p>
-<pre><code>- 知识管理/总结分享
-- 沟通技巧/团队协作
-- 需求管理/PM
-- 交互设计/可用性/可访问性知识
-- 快速的学习能力
-</code></pre>
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2016/11/02/MobileSkill/" class="archive-article-date">
-  	<time datetime="2016-11-02T11:39:11.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-02</time>
-</a>
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/无线测试/">无线测试</a></li></ul>
-	</div>
-
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Monkey_Seven_Memory" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/30/Monkey_Seven_Memory/">Monkey的7年回忆，也是空杯的开始</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>  可能认识我很久的朋友都还记得当初那个刚工作了几年就在行业中各种乱蹦的那个我，一晃眼我工作竟然都7年了。其实朋友圈里我说我已经做了7年了（2009年10月-至今），很多朋友还是很诧异的。其实我自己也经常会有一种错觉，那就是感觉自己年龄在增长，工作年限在增加，而朋友们放佛一直都很年轻，一直没有变老。让我无意间一直会告诉自己，不能落后，要努力前进，追上我的朋友们。但事实上的确大家都在变老，大家也都在前进，我仅仅是为了不让自己落后而前进着。</p>
-<h2 id="自嘲"><a href="#自嘲" class="headerlink" title="自嘲"></a>自嘲</h2><p>  依稀记得高中三年，英语没有及格过。当时找了很多补课的老师，我就是所有学生中英语最差的那个。记得老师说陈晔这个同学吧，发挥的好应该可以上个好的一本，发挥的不好估计就最多二本了。记得高考结束查成绩的时候是某一个夏天，我和外婆住在一起，很晚的时候大家都已经在互相告知能够查成绩了，我也没有办法的打开电脑上网查分数。看到分数的那一刻其实我心里是有预期的，但对我外婆来讲可能打击就非常大了。最终结果是分数刚好能够进一个比较差的专科。我从我外婆的表情中可以得到一个信息————这孩子这辈子已经毁了一大半了。那一晚我没心没肺的睡着了，但我估计我外婆一宿没睡。</p>
-<p>  记得刚找到测试这份工作的时候是在一家创业公司，一做就是做了两年。这两年中我快乐，忙碌，抑郁，焦虑，几乎什么都有，就是没有去思考。我一直忙于业务，功能，间接性会每天工作到凌晨2点，然后一个人打个小黑车到家楼下的牛肉面馆吃个夜宵，接着回到空荡荡的屋子。偶然的几次会不停的反问自己，这样辛苦为了什么，自己有成长吗？这样委屈为了什么？然而每次都是没有结果的。</p>
-<p>  那个时候网络上并没有太多的资料，我在微博上逛游了好久之后看到了段念和左耳朵耗子这样的大神，我也甚至不知深浅的会引用他们的文字并加以自己的评论。那个时候如果知道之后段念能为我的书写序，能和耗子成为同事的话，估计自己要乐疯了。是的，就是这样的。</p>
-<p>  创业公司辞职之后，我有半年找不到工作。我每天会接到很多电话，但最终都是以学历不行告终，是的，半年都是如此，甚至连面试的机会都没有。我那个时候并不奢望BAT，但至少想有一份工作。</p>
-<p>  记得有一天我在上海田林路的一个十字路口告诉自己，我想在这个行业做点什么，我想帮助这个行业更快速的发展。但与此同时看着眼前的高楼大厦，看着来来往往的人群，再审视了失业的自己。不禁觉得太自嘲了，相比眼前的景色，我再渺小不过了，相比这个行业那么多从业者，我甚至还没有找到工作。是的，没有人认识我，我也不认识谁。</p>
-<h2 id="为了生存"><a href="#为了生存" class="headerlink" title="为了生存"></a>为了生存</h2><p>  有一段时间觉得自己不能再窝在公司里了，也想多找人交流交流，想看看外面的世界，也想多知道别人怎么想怎么做的。自己在上海这样一个城市，工作3年了，半年失业，月薪都没有超过7k，心里也是非常着急的。当时2012年年初吧，上海根本就没有什么比较好的交流活动。我就想着自己是不是能自己举办一些交流会，同时也在网上寻求各种交流的机会。虽然现在看来当初这个决定是理所当然的，但对于当初的我来讲简直就是一个不可想象的决定。是的，我决定走出来，去认识大家，让大家认识我。</p>
-<p>  我有一个很好的朋友，认识了快15，6年了。某一天我请他去星爸爸喝咖啡，我告诉他我找他没有别的事儿，就是告诉他下我准备自己去闯荡一番，虽然我不知道行业的凶险到底如何，但毕竟面临的是自己未知的事物。当时我记得我原话是这样说的：</p>
-<blockquote>
-<p>机缘巧合，我可能接下来会在网络上开始尝试做一些分享，在上海线下会尝试举办一些活动。我工作3年了，但我没有意识到自己的进步，我想变得更好，更厉害，所以我选择这样一个途径。当然，我今天找你并非只是告诉你这样一件事情，而是希望你能看着我，如果哪一天我已经忘记了我的初衷，忘记了我的原点，如果哪一天我完全被利益蒙蔽了双眼，那请你来告诉我曾经某一天我找过你，我说过这样一段话</p>
-</blockquote>
-<p>  从那天之后，我开始自己尝试着做在线的分享，起初半年都是免费的，后来慢慢的一次分享50块钱。那个时候依稀记得自己非常开心，拿着50块钱可以买点自己喜欢的游戏，也会给老婆买点吃的。最辛苦的其实莫过于线下活动，可能有些朋友还记得我创立的“移动测试会”这样一个沙龙，沙龙秉持的一个原则就是免费，有人愿意来，一起交流分享我就非常开心了。那个时候每次找沙龙的场地几乎都不同，有时候在上海体育馆附近，有时候在上海南站附近，我自己出钱租场地，买饮料给前来的朋友，我老婆一段时间挺着大肚子帮我做签到记录等。也许从当时看来这是非常纯粹的为了交流，学习，但从现在反观，这一切其实就是为了生存，没有当初的选择，就不会有今天你们认识的Monkey。</p>
-<p>  我从来没有说过情怀就是免费，我认为情怀就是需要坚持那些自己觉得应该坚持的东西，去坚持那些这个世界上已经很多人失去的东西。但赚钱是为了生存，同时也是体现自己劳动成果的一部分。这两者并没有什么冲突的地方，真正的冲突不在这里，而在于每个人的心。我认为我的情怀就在于我贯穿了自己最初的想法，我成为了国内移动互联网测试发展的一个催化剂，并且坚持了7年。</p>
-<h2 id="空杯"><a href="#空杯" class="headerlink" title="空杯"></a>空杯</h2><p>  是的，连我自己都不曾想到，华东理工的一名老师的一句话让我冲动的写出了花费一年时间的《大话移动App测试》这样看似狂妄的一本书。很多人和我说这本书写的多么不好多么不好，至少事实这本书目前也已经卖掉了14000+册。但我对这本书有自己独特的见解。我曾经晚上在新天地和一个朋友在Costa喝咖啡。朋友问我</p>
-<blockquote>
-<p>不久你的书就要出版了，你觉得会卖的好还是不好？</p>
-<p>我说“说实话，无论从文笔和技术内容上来讲这本书肯定不能算好，对一些人有帮助是肯定的，但可能很多人也会觉得非常幼稚。但我个人却认为这本书在现在基本上不可能发挥它的价值，等到国内什么时候大家对于测试都有一个正确认知的时候，如果还有人能记得这本书的话，那届时我相信大家会明白它的价值和我想表达的意思的。</p>
-</blockquote>
-<p>  是的，这就是我的评价。</p>
-<p>  之后就是各种不可思议的事情，《大话移动App测试2.0》和《互联网产品测试故事汇》两本书陆续出版，这得感谢恒温和小兔这样两个真心帮助我的朋友。对于我这样一个高考语文没有及格的人来讲，28岁有3本由清华大学出版社出版的书，至少以后能有资本和我女儿吹牛皮了</p>
-<p>  我参与的公开课，沙龙活动也开始走出上海，遍布了南京，杭州，北京，深圳，成都，长沙，武汉等各个地区。其实对于我来讲，每次也更像一次旅游，毕竟在这之前我从来没有离开过上海这样一个城市。但感谢给我这些机会人和组织，也让我认识到更多的朋友。</p>
-<p>  让我开心的也是这些选择让自己能够有机会前往各个企业进行交流学习，BAT，360，滴滴，银行，JD等企业都让我学习到了很多。之后很多时候也有行业的小伙伴想和我一起去，我说只要有空的都一起过去就ok。谁会拒绝交流学习呢</p>
-<p>  现在越来越多的新朋友认识了我，渠道也开始多样化起来。线上线下的活动，知乎Live，微信公众号，书等等。我很多时候都记不起眼前和我打招呼的人是谁，大家是真的要谅解我。😄</p>
-<p>  但是现在，我不想循规蹈矩的在去做以前这些事儿了，我也不想再停留在现在的Level和做事习惯上了。就好像当初我站在十字路口一样，我想重新做出一些选择，重新规划自己想要做的事情。与当时不同的就是，我不再是我一个人，我的人脉，我的资历，我的技术手段都是我可以利用的工具。<strong>记得之前有一位对我来讲很重要的朋友和我说，一个人一生也许选择很重要，也许果断的作出选择很重要，但更重要的是懂得放下，懂得舍去，舍得舍得，有舍才有得。</strong>也许当我们沉迷在自己已有的境界中的时候同时也是束缚了自己，不是吗？</p>
-<p>  人生还很长，我觉得一个人最失败的地方就是什么都靠自己，不懂的利用资源。如果我下一个7年相比现在没有什么改变，那甚至谈不上活过。前几天我在作出选择的时候，很多人在和我谈人生的意义，我说我觉得我的意义就在于至少我要让这个世界看到我活过，在这个世界上有我活着过的痕迹，我可不想哪一天突然走了之后，在这个世界上甚至找不到我活着过的痕迹，甚至找不到我这个人活着的价值。这并不悲哀，而是悲伤。</p>
-<p>  <strong>很多事情你不做，总有别人在做。就好像我一直认为移动互联网测试圈子，哪怕没有我的存在，但这7年行业所发生的事情依然都会发生，只不过做这些事儿的不是我，而是张三李四。事情永远都会有自己的规律，有没有意义取决于是不是自己在主导。</strong>  </p>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2016/10/30/Monkey_Seven_Memory/" class="archive-article-date">
-  	<time datetime="2016-10-29T16:35:05.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-10-30</time>
-</a>
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/个人回忆录/">个人回忆录</a></li></ul>
-	</div>
-
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 
@@ -1117,7 +846,7 @@
     
     	<section class="tools-section tools-section-tag">
     			<div class="widget tagcloud" id="js-tagcloud">
-    				<a href="/tags/Android性能/" style="font-size: 10px;">Android性能</a> <a href="/tags/Appium/" style="font-size: 10px;">Appium</a> <a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Gradle/" style="font-size: 15px;">Gradle</a> <a href="/tags/Groovy/" style="font-size: 10px;">Groovy</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 15px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/android性能测试/" style="font-size: 10px;">android性能测试</a> <a href="/tags/espresso/" style="font-size: 15px;">espresso</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 15px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 15px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 15px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
+    				<a href="/tags/Android性能/" style="font-size: 10px;">Android性能</a> <a href="/tags/Appium/" style="font-size: 10px;">Appium</a> <a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Gradle/" style="font-size: 13.33px;">Gradle</a> <a href="/tags/Groovy/" style="font-size: 10px;">Groovy</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/IOS/" style="font-size: 10px;">IOS</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 13.33px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/android性能测试/" style="font-size: 10px;">android性能测试</a> <a href="/tags/espresso/" style="font-size: 13.33px;">espresso</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/swift/" style="font-size: 13.33px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 13.33px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 13.33px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 13.33px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
     			</div>
     	</section>
     

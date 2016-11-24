@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://yoursite.com">
+  <title>测试技术无用论 | Monkey`s Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="我先声明，有没有用看你自己，任何事情都是有上下文的，不是100%的。请勿断章取义。文中所提到的观点也许你现在不同意，但是相信未来你可能就会同意。不过无论你同意不同意，在我们没有能力改变这一切之前，我们也只能先follow，慢慢的从自己开始改变，不是么？
+对话“你思考问题，看问题，做计划要有高度”“我们要有idea，技术不是问题，技术实现的人这个世界一抓一大把”“放眼行业高层，有多少是做技术做上去的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="测试技术无用论">
+<meta property="og:url" content="http://yoursite.com/2016/11/22/testnouse/index.html">
+<meta property="og:site_name" content="Monkey`s Note">
+<meta property="og:description" content="我先声明，有没有用看你自己，任何事情都是有上下文的，不是100%的。请勿断章取义。文中所提到的观点也许你现在不同意，但是相信未来你可能就会同意。不过无论你同意不同意，在我们没有能力改变这一切之前，我们也只能先follow，慢慢的从自己开始改变，不是么？
+对话“你思考问题，看问题，做计划要有高度”“我们要有idea，技术不是问题，技术实现的人这个世界一抓一大把”“放眼行业高层，有多少是做技术做上去的">
+<meta property="og:updated_time" content="2016-11-22T09:36:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="测试技术无用论">
+<meta name="twitter:description" content="我先声明，有没有用看你自己，任何事情都是有上下文的，不是100%的。请勿断章取义。文中所提到的观点也许你现在不同意，但是相信未来你可能就会同意。不过无论你同意不同意，在我们没有能力改变这一切之前，我们也只能先follow，慢慢的从自己开始改变，不是么？
+对话“你思考问题，看问题，做计划要有高度”“我们要有idea，技术不是问题，技术实现的人这个世界一抓一大把”“放眼行业高层，有多少是做技术做上去的">
+  
+    <link rel="alternative" href="/atom.xml" title="Monkey`s Note" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/assets/img/favicon.ico">
+  
+  <link rel="stylesheet" href="/main.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/assets/blogImg/litten.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/photos">相册</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">标签</a>
+    			
+    			
+            
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+		        
+					<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+		        
+					<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/assets/blogImg/litten.png" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">这里有你们想要的，大家可以敞开心扉交流</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/photos">相册</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/litten" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/litten225" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-testnouse" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      测试技术无用论
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>我先声明，有没有用看你自己，任何事情都是有上下文的，不是100%的。请勿断章取义。文中所提到的观点也许你现在不同意，但是相信未来你可能就会同意。不过无论你同意不同意，在我们没有能力改变这一切之前，我们也只能先follow，慢慢的从自己开始改变，不是么？</strong></p>
+<h2 id="对话"><a href="#对话" class="headerlink" title="对话"></a>对话</h2><p>“你思考问题，看问题，做计划要有高度”<br>“我们要有idea，技术不是问题，技术实现的人这个世界一抓一大把”<br>“放眼行业高层，有多少是做技术做上去的？就算做上去的，有多少能够混得风生水起的？”</p>
+<p>也许我们在行业的日常中随处都可以听到这样的话语，也许很多人还在努力学习技术，也不关心那么多七七八八的事儿。但是现在行业就是这样的。</p>
+<h2 id="技术无用论"><a href="#技术无用论" class="headerlink" title="技术无用论"></a>技术无用论</h2><p>我其实每次从客观的角度来看“众生”的时候，我就觉得很可悲。大多数的高层（level高，薪水高）有生活，有钱，又不用跟技术；而大多数的底层劳动人民每天学技术学的很苦，却又很难有机会往上走，甚至很少机会能够进入一个心仪的公司和环境，这种对比鲜明的景象我已不想再看下去了。</p>
+<p>我其实想了下现实与我构思的理想世界还是有差距的。</p>
+<h2 id="理想世界"><a href="#理想世界" class="headerlink" title="理想世界"></a>理想世界</h2><table>
+<thead>
+<tr>
+<th>LEVEL</th>
+<th style="text-align:center">练级内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-100</td>
+<td style="text-align:center">积累装备：xx证书、学历、实习经验</td>
+</tr>
+<tr>
+<td>0</td>
+<td style="text-align:center">毕业，都装纯洁，什么都不懂</td>
+</tr>
+<tr>
+<td>10</td>
+<td style="text-align:center">拼命学技术 or 只想不做，抱怨lv100</td>
+</tr>
+<tr>
+<td>20</td>
+<td style="text-align:center">积累背景和项目经验＋ 管理lv1+忽悠lv1+社交lv1＋马屁lv1（可选）</td>
+</tr>
+<tr>
+<td>50</td>
+<td style="text-align:center">积累背景和项目经验＋ 管理lv30+忽悠lv30+社交lv30＋马屁lv30（可选）</td>
+</tr>
+<tr>
+<td>???</td>
+<td style="text-align:center">积累背景和项目经验＋ 管理lv???+忽悠lv???+社交lv???＋马屁lv???（可选）</td>
+</tr>
+</tbody>
+</table>
+<p>所以你们也看到了，涨level和技术没有半毛钱关系。。。。但我也不能排除人家当初还是学过技术的对不对</p>
+<h2 id="现实世界"><a href="#现实世界" class="headerlink" title="现实世界"></a>现实世界</h2><table>
+<thead>
+<tr>
+<th>LEVEL</th>
+<th style="text-align:center">练级内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-100</td>
+<td style="text-align:center">积累装备：xx证书、学历、实习经验</td>
+</tr>
+<tr>
+<td>0</td>
+<td style="text-align:center">毕业，都装纯洁，什么都不懂</td>
+</tr>
+<tr>
+<td>10</td>
+<td style="text-align:center">拼命学技术 or 只想不做，抱怨lv100</td>
+</tr>
+<tr>
+<td>20</td>
+<td style="text-align:center">积累背景和项目经验＋ 管理lv1+忽悠lv1+社交lv1＋马屁lv1（可选）+技术积累lv1+持续学习lv1</td>
+</tr>
+<tr>
+<td>50</td>
+<td style="text-align:center">积累背景和项目经验＋ 管理lv30+忽悠lv30+社交lv30＋马屁lv30（可选）+技术积累lv30+持续学习lv30</td>
+</tr>
+<tr>
+<td>???</td>
+<td style="text-align:center">积累背景和项目经验＋ 管理lv???+忽悠lv???+社交lv???＋马屁lv???（可选） +技术积累lv1???+持续学习lv???</td>
+</tr>
+</tbody>
+</table>
+<p>其实在这个社会混很多是必不可少的，但是更多的需要都有技术的积累和持续学习的态度，否则实则太过不公平，不是么？</p>
+<p>测试现在行业几乎很大比例的永远都在lv10，而真正能到lv20以及往上的极少极少。也许很多人看着光鲜亮丽，但事实上也是各种政治斗争的牺牲者，只是你们不知道而已。</p>
+<h2 id="我想表达的"><a href="#我想表达的" class="headerlink" title="我想表达的"></a>我想表达的</h2><p>很多人现在学技术是一种兴趣驱动，但是能否一直坚持，一直去紧跟行业的新技术，一直做到35岁，45岁，55岁甚至更久那就是一种态度了，就是我们说的匠者。也许我们不会那么多的技能，但是如果我们能够做技术，学习技术一直坚持，一直做下去，做到一种自己能力的极致，那么我相信机会肯定会降临的。</p>
+<p>最后与大家共勉的是“所谓真正的能力和技术每个人都是通过努力所得来的，如果说真的有人有天赋，那么仅仅是他们的学习能力比一般人强，缩短了这个努力的时间罢了”。所以你没有每天坚持学习，你没有去实践，你没有去总结自己，每天都过的很舒适，在现在这个社会就算你很有天赋，那么你也永远在lv10，谢谢。</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/11/22/testnouse/" class="archive-article-date">
+  	<time datetime="2016-11-22T08:21:26.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-22</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/other/">other</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/11/24/iOS-anquan-1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          做 iOS 安全测试之前你应该知道的工具 (一)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/22/toTesters/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">致那些情商不高的测试</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+	    <a class="jiathis_button_twitter"></a>
+	    <a class="jiathis_button_plus"></a> 
+	    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="testnouse" data-title="测试技术无用论" data-url="http://yoursite.com/2016/11/22/testnouse/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"litten-hexo"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 陈晔，行业ID：Monkey。测试行业年龄最小的布道者。QCon，GMTC等全球技术大会测试专题讲师。《大话移动App测试1.0》《大话移动App测试2.0》《互联网产品故事汇》作者。大家有企业内训，公开课，测试培训，财务自由等需求的可以随时呼唤我～
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/Android性能/" style="font-size: 10px;">Android性能</a> <a href="/tags/Appium/" style="font-size: 10px;">Appium</a> <a href="/tags/GeekTesting/" style="font-size: 10px;">GeekTesting</a> <a href="/tags/Gradle/" style="font-size: 13.33px;">Gradle</a> <a href="/tags/Groovy/" style="font-size: 10px;">Groovy</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/IOS/" style="font-size: 10px;">IOS</a> <a href="/tags/RASPBERRY/" style="font-size: 10px;">RASPBERRY</a> <a href="/tags/ReactNative/" style="font-size: 13.33px;">ReactNative</a> <a href="/tags/STF/" style="font-size: 10px;">STF</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/android性能测试/" style="font-size: 10px;">android性能测试</a> <a href="/tags/espresso/" style="font-size: 13.33px;">espresso</a> <a href="/tags/gor/" style="font-size: 10px;">gor</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/iOS测试/" style="font-size: 10px;">iOS测试</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/swift/" style="font-size: 13.33px;">swift</a> <a href="/tags/《大话移动App测试》/" style="font-size: 13.33px;">《大话移动App测试》</a> <a href="/tags/个人回忆录/" style="font-size: 13.33px;">个人回忆录</a> <a href="/tags/持续集成/" style="font-size: 10px;">持续集成</a> <a href="/tags/接口测试/" style="font-size: 13.33px;">接口测试</a> <a href="/tags/无线测试/" style="font-size: 10px;">无线测试</a> <a href="/tags/测试到质量/" style="font-size: 10px;">测试到质量</a> <a href="/tags/移动无线测试/" style="font-size: 10px;">移动无线测试</a>
+    			</div>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">Litten，&lt;br&gt;毕业于华科，就职于鹅厂&lt;br&gt;&lt;br&gt;热爱大海与冷笑话，&lt;br/&gt;目前是一枚前端&lt;br/&gt;&lt;br/&gt;胆小认生，不易相处，&lt;br&gt;年轻无为，卖马为生。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>
